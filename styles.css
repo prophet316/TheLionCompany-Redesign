@@ -632,9 +632,51 @@ a {
     border-top: 1px solid var(--border-subtle);
 }
 
-.newsletter .btn {
-    height: 100%;
+#newsletter-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 2rem auto 0;
+}
+
+#newsletter-form input {
+    flex: 1;
     margin: 0;
+    padding: 0.8rem 1rem;
+    height: 3rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-white);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition-snappy);
+}
+
+#newsletter-form input:focus {
+    border-bottom-color: var(--accent-gold);
+}
+
+#newsletter-form button {
+    height: 3rem;
+    margin: 0;
+    padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    #newsletter-form {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    #newsletter-form input,
+    #newsletter-form button {
+        width: 100%;
+    }
 }
 
 /* Footer */
