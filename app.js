@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initForms();
     initNavbarScroll();
+    initVideoModal();
 });
 
 // Intersection Observer for scroll reveal animations
@@ -105,5 +106,46 @@ function initForms() {
                 }, 1500);
             }
         });
+    });
+}
+
+// Video Modal Logic
+function initVideoModal() {
+    const modal = document.getElementById('video-modal');
+    if (!modal) return;
+
+    const iframe = document.getElementById('video-iframe');
+    const closeTriggers = document.querySelectorAll('.js-modal-close');
+    const openTriggers = document.querySelectorAll('.video-trigger');
+
+    openTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const videoId = trigger.getAttribute('data-video-id');
+            if (videoId) {
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+        });
+    });
+
+    closeTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.remove('active');
+            // Remove the video source to stop playback immediately
+            setTimeout(() => { iframe.src = ''; }, 300);
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            setTimeout(() => { iframe.src = ''; }, 300);
+            document.body.style.overflow = '';
+        }
     });
 }
