@@ -456,7 +456,7 @@ a {
     max-width: 900px;
     margin: 3rem auto 0;
     aspect-ratio: 16/9;
-    background: url('lion_bg.png') center/cover no-repeat;
+    background: url('lion_bg.jpg') center/cover no-repeat;
     position: relative;
     display: flex;
     align-items: center;
@@ -746,7 +746,7 @@ a {
     top: 1rem;
     right: 1rem;
     z-index: 10;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-subtle);
     border-radius: 50%;
     width: 40px;
@@ -799,11 +799,11 @@ a {
     .lightbox-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .lightbox-image {
         min-height: 200px;
     }
-    
+
     .lightbox-body {
         padding: 2rem;
     }
