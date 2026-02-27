@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initForms();
     initNavbarScroll();
     initVideoModal();
+    initStoreLightbox();
 });
 
 // Intersection Observer for scroll reveal animations
@@ -145,6 +146,41 @@ function initVideoModal() {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
             modal.classList.remove('active');
             setTimeout(() => { iframe.src = ''; }, 300);
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// Store Lightbox Logic
+function initStoreLightbox() {
+    const modal = document.getElementById('store-modal');
+    if (!modal) return;
+    
+    // Check if we've already shown it this session to avoid annoyance
+    if (sessionStorage.getItem('storePopupShown')) return;
+    
+    const closeTriggers = modal.querySelectorAll('.js-lightbox-close');
+    
+    // Show after 10 seconds
+    setTimeout(() => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        sessionStorage.setItem('storePopupShown', 'true');
+    }, 10000);
+    
+    // Close logic
+    closeTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
             document.body.style.overflow = '';
         }
     });

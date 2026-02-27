@@ -219,6 +219,46 @@
             </div>
         </section>
 
+        <!-- Store feature section -->
+        <section id="store" class="store-feature section-padding border-top"
+            style="background: radial-gradient(circle at right, rgba(212, 175, 55, 0.05) 0%, transparent 70%);">
+            <div class="container split-layout items-center">
+                <div class="store-feature-text fade-up">
+                    <span class="eyebrow text-gold">OFFICIAL MERCHANDISE</span>
+                    <h2>WEAR THE VISION</h2>
+                    <p class="body-text mt-4">Every purchase from our store directly supports The Lion Company's mission
+                        to bring unity among Christians worldwide. Represent the kingdom with our premium apparel.</p>
+
+                    <a href="https://the-lion-company.printify.me/" target="_blank"
+                        class="btn btn-outline-gold mt-6 inline-flex uppercase">
+                        SHOP THE COLLECTION
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" class="ml-3">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="store-feature-image fade-up relative" style="transition-delay: 200ms;">
+                    <a href="https://the-lion-company.printify.me/" target="_blank" class="block store-featured-card">
+                        <div class="bg-darker rounded overflow-hidden border border-[rgba(255,255,255,0.08)] relative flex items-center justify-center p-12 transition-colors duration-500 hover:border-[#D4AF37]"
+                            style="aspect-ratio: 1/1;">
+                            <!-- Generic placeholder with brand flair -->
+                            <div class="absolute inset-0 bg-cover bg-center"
+                                style="background-image: url('lion_bg.png'); opacity: 0.15; filter: grayscale(100%);">
+                            </div>
+                            <div
+                                class="relative z-10 text-center p-8 border border-[rgba(212,175,55,0.3)] bg-[rgba(0,0,0,0.4)] backdrop-blur-sm">
+                                <h3 class="text-gold tracking-widest text-2xl mb-2 uppercase">PREMIUM APPAREL</h3>
+                                <p class="text-white tracking-widest text-sm uppercase">Available Now</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <!-- Prayer & Contact Split Section -->
         <section id="prayer" class="prayer-contact section-padding bg-darker border-top">
             <div class="container split-layout">
@@ -249,15 +289,10 @@
 
                 <!-- Contact & Store Info -->
                 <div class="store-info-area fade-up" style="transition-delay: 200ms;">
-                    <section id="store" class="store-preview border-bottom pb-6 mb-6">
-                        <span class="eyebrow text-gold">MERCHANDISE</span>
-                        <h2>THE STORE</h2>
-                        <a href="https://the-lion-company.printify.me/" target="_blank"
-                            class="store-item mt-4 block p-4 border border-[rgba(255,255,255,0.08)] rounded hover:border-[#D4AF37] transition-colors">
-                            <h4 class="text-white">Lion Company T-Shirt</h4>
-                            <span class="text-sm border-badge mt-2 inline-block">VIEW PRODUCT</span>
-                        </a>
-                        <p class="muted mt-4 text-sm">New merch coming soon.</p>
+                    <section id="store-contact-spacer" class="store-preview border-bottom pb-6 mb-6">
+                        <span class="eyebrow text-gold">SUPPORT US</span>
+                        <h2>OUR MISSION</h2>
+                        <p class="muted mt-4 text-sm">Thank you for standing with us in prayer and support.</p>
                     </section>
 
                     <section id="contact" class="contact-info mt-8">
@@ -329,6 +364,38 @@
                 <iframe id="video-iframe" src="" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Lightbox Modal -->
+    <div id="store-modal" class="lightbox-modal" aria-hidden="true">
+        <div class="lightbox-overlay js-lightbox-close"></div>
+        <div class="lightbox-content bg-darker border border-[rgba(212,175,55,0.4)]">
+            <button class="lightbox-close js-lightbox-close" aria-label="Close lightbox">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="lightbox-grid">
+                <div class="lightbox-image"
+                    style="background-image: url('lion_bg.png'); background-color: #050505; background-blend-mode: multiply;">
+                    <div class="lightbox-image-inner">
+                        <div class="lightbox-badge border border-white border-opacity-20 p-6">
+                            <h3 class="text-gold text-xl uppercase tracking-widest">Lion Co.</h3>
+                            <p class="text-white tracking-widest text-xs mt-2 uppercase">APPAREL</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lightbox-body">
+                    <span class="eyebrow text-gold mb-2">SUPPORT THE MISSION</span>
+                    <h2 class="text-3xl mb-4 text-white uppercase">Wear The Vision</h2>
+                    <p class="body-text muted mb-8">Every purchase directly supports our mission to bring unity to
+                        believers worldwide. Check out our exclusive premium apparel.</p>
+                    <a href="https://the-lion-company.printify.me/" target="_blank"
+                        class="btn btn-outline-gold w-full text-center">SHOP THE STORE</a>
+                </div>
             </div>
         </div>
     </div>
