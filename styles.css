@@ -728,8 +728,6 @@ a {
     padding: 1rem 0;
     /* Reduced padding from 2rem to 1rem vertical */
     background-color: rgba(0, 0, 0, 0.7);
-    border-top: 1px solid rgba(212, 175, 55, 0.3);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
     backdrop-filter: blur(8px);
     width: 100%;
     /* Scale to fit width of picture */
