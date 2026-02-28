@@ -155,19 +155,19 @@ function initVideoModal() {
 function initStoreLightbox() {
     const modal = document.getElementById('store-modal');
     if (!modal) return;
-    
+
     // Check if we've already shown it this session to avoid annoyance
-    if (sessionStorage.getItem('storePopupShown')) return;
-    
+    // if (sessionStorage.getItem('storePopupShown')) return;
+
     const closeTriggers = modal.querySelectorAll('.js-lightbox-close');
-    
+
     // Show after 10 seconds
     setTimeout(() => {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        sessionStorage.setItem('storePopupShown', 'true');
+        // sessionStorage.setItem('storePopupShown', 'true');
     }, 10000);
-    
+
     // Close logic
     closeTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
@@ -176,7 +176,7 @@ function initStoreLightbox() {
             document.body.style.overflow = '';
         });
     });
-    
+
     // Close on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
