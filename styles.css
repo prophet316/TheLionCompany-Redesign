@@ -725,11 +725,14 @@ a {
     position: relative;
     z-index: 10;
     text-align: center;
-    padding: 2rem;
+    padding: 1rem 0;
+    /* Reduced padding from 2rem to 1rem vertical */
     background-color: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
     backdrop-filter: blur(8px);
-    width: 80%;
+    width: 100%;
+    /* Scale to fit width of picture */
 }
 
 /* Lightbox Modal */
