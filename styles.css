@@ -721,8 +721,15 @@ a {
     position: relative;
 }
 
-.store-feature-image .z-10 {
+.store-feature-image .text-box-overlay {
+    position: relative;
     z-index: 10;
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    backdrop-filter: blur(8px);
+    width: 80%;
 }
 
 /* Lightbox Modal */
