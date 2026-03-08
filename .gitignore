@@ -1,0 +1,43 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.secret
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Node.js (if added later)
+node_modules/
+.npm
+.yarn
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Generated/Output
+*.html.bak
+*.css.bak
