@@ -16,21 +16,17 @@ function initScrollAnimations() {
         threshold: 0.15
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: stop observing once revealed
-                // observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Select all elements with fade-up class
     const revealElements = document.querySelectorAll('.fade-up');
     revealElements.forEach(el => observer.observe(el));
 }
-
 // Mobile Menu Toggle
 function initMobileMenu() {
     const menuBtn = document.querySelector('.mobile-menu-btn');
@@ -41,12 +37,9 @@ function initMobileMenu() {
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('active');
             mobileMenu.classList.toggle('active');
-
-            // Toggle body scroll
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
 
-        // Close menu when a link is clicked
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 menuBtn.classList.remove('active');
@@ -57,15 +50,14 @@ function initMobileMenu() {
     }
 }
 
-// Navbar Scroll Effect (add background on scroll)
+// Navbar Scroll Effect
 function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
-
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(10, 10, 10, 0.9)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
             navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
-            navbar.style.padding = '10px 0'; // Slight shrink effect
+            navbar.style.padding = '10px 0';
         } else {
             navbar.style.background = 'rgba(25, 25, 25, 0.6)';
             navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
@@ -73,48 +65,90 @@ function initNavbarScroll() {
         }
     });
 }
-
-// Form Handling (Basic prevent default for demo)
+// Form Handling — sends via mailto with real validation
 function initForms() {
-    const forms = document.querySelectorAll('form');
-
-    forms.forEach(form => {
-        form.addEventListener('submit', (e) => {
+    const prayerForm = document.getElementById('prayer-form');
+    if (prayerForm) {
+        prayerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-
-            // Get the submit button to show loading state
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerText;
-
-            if (submitBtn) {
-                submitBtn.innerText = 'Sending...';
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = '0.7';
-
-                // Simulate network request
-                setTimeout(() => {
-                    submitBtn.innerText = 'Sent successfully!';
-                    submitBtn.style.backgroundColor = '#10b981'; // Success green
-                    form.reset();
-
-                    // Reset button after 3 seconds
-                    setTimeout(() => {
-                        submitBtn.innerText = originalText;
-                        submitBtn.disabled = false;
-                        submitBtn.style.opacity = '1';
-                        submitBtn.style.backgroundColor = '';
-                    }, 3000);
-                }, 1500);
+            const fname = document.getElementById('prayer-fname').value.trim();
+            const lname = document.getElementById('prayer-lname').value.trim();
+            const email = document.getElementById('prayer-email').value.trim();
+            const phone = document.getElementById('prayer-phone').value.trim();
+            const msg = document.getElementById('prayer-msg').value.trim();
+            if (!fname || !email || !msg) {
+                showFormFeedback(prayerForm, 'Please fill in all required fields.', 'error');
+                return;
             }
+            const subject = encodeURIComponent('Prayer Request from ' + fname + ' ' + lname);
+            const body = encodeURIComponent('Name: ' + fname + ' ' + lname + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nPrayer Request:\n' + msg);
+            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
+            showFormFeedback(prayerForm, 'Opening your email client to send your prayer request...', 'success');
+            prayerForm.reset();
         });
-    });
+    }
+
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fname = document.getElementById('contact-fname').value.trim();
+            const lname = document.getElementById('contact-lname').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const phone = document.getElementById('contact-phone').value.trim();
+            const msg = document.getElementById('contact-msg').value.trim();
+            if (!fname || !email || !msg) {
+                showFormFeedback(contactForm, 'Please fill in all required fields.', 'error');
+                return;
+            }
+            const subject = encodeURIComponent('Contact from ' + fname + ' ' + lname);
+            const body = encodeURIComponent('Name: ' + fname + ' ' + lname + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nMessage:\n' + msg);
+            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
+            showFormFeedback(contactForm, 'Opening your email client to send your message...', 'success');
+            contactForm.reset();
+        });
+    }
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('newsletter-email').value.trim();
+            if (!email) {
+                showFormFeedback(newsletterForm, 'Please enter your email address.', 'error');
+                return;
+            }
+            const subject = encodeURIComponent('Newsletter Signup');
+            const body = encodeURIComponent('Please add me to The Lion Company mailing list.\n\nEmail: ' + email);
+            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
+            showFormFeedback(newsletterForm, 'Opening your email client to confirm signup...', 'success');
+            newsletterForm.reset();
+        });
+    }
 }
 
+function showFormFeedback(form, message, type) {
+    const existing = form.querySelector('.form-feedback');
+    if (existing) existing.remove();
+    const feedback = document.createElement('div');
+    feedback.className = 'form-feedback';
+    feedback.style.cssText = 'padding:12px 16px;border-radius:8px;margin-top:12px;font-size:14px;text-align:center;';
+    if (type === 'success') {
+        feedback.style.background = 'rgba(16,185,129,0.15)';
+        feedback.style.border = '1px solid rgba(16,185,129,0.3)';
+        feedback.style.color = '#10b981';
+    } else {
+        feedback.style.background = 'rgba(239,68,68,0.15)';
+        feedback.style.border = '1px solid rgba(239,68,68,0.3)';
+        feedback.style.color = '#ef4444';
+    }
+    feedback.textContent = message;
+    form.appendChild(feedback);
+    setTimeout(() => { if (feedback.parentNode) feedback.remove(); }, 5000);
+}
 // Video Modal Logic
 function initVideoModal() {
     const modal = document.getElementById('video-modal');
     if (!modal) return;
-
     const iframe = document.getElementById('video-iframe');
     const closeTriggers = document.querySelectorAll('.js-modal-close');
     const openTriggers = document.querySelectorAll('.video-trigger');
@@ -124,9 +158,9 @@ function initVideoModal() {
             e.preventDefault();
             const videoId = trigger.getAttribute('data-video-id');
             if (videoId) {
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
                 modal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                document.body.style.overflow = 'hidden';
             }
         });
     });
@@ -135,13 +169,11 @@ function initVideoModal() {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
-            // Remove the video source to stop playback immediately
             setTimeout(() => { iframe.src = ''; }, 300);
-            document.body.style.overflow = ''; // Restore scrolling
+            document.body.style.overflow = '';
         });
     });
 
-    // Close modal on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
             modal.classList.remove('active');
@@ -151,24 +183,21 @@ function initVideoModal() {
     });
 }
 
-// Store Lightbox Logic
+// Store Lightbox — only shows once per visit
 function initStoreLightbox() {
     const modal = document.getElementById('store-modal');
     if (!modal) return;
-
-    // Check if we've already shown it this session to avoid annoyance
-    // if (sessionStorage.getItem('storePopupShown')) return;
-
     const closeTriggers = modal.querySelectorAll('.js-lightbox-close');
+    let hasShown = false;
 
-    // Show after 10 seconds
     setTimeout(() => {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        // sessionStorage.setItem('storePopupShown', 'true');
-    }, 10000);
+        if (!hasShown) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            hasShown = true;
+        }
+    }, 12000);
 
-    // Close logic
     closeTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
@@ -177,7 +206,6 @@ function initStoreLightbox() {
         });
     });
 
-    // Close on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
             modal.classList.remove('active');
