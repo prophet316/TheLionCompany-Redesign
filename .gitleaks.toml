@@ -1,0 +1,14 @@
+title = "The Lion Company full-history secret policy"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Exact public Turnstile test keys and synthetic non-production fixtures only"
+regexTarget = "match"
+regexes = [
+  '''1x0+AA''',
+  '''ci-only-idempotency-secret-2026-07-11-not-for-production''',
+  '''visual-only-idempotency-secret-2026-07-11-not-for-production''',
+  '''release-origin-contract-secret-more-than-thirty-two-characters''',
+]

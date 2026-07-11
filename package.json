@@ -19,7 +19,20 @@
     "check:transcript-review": "node scripts/check-transcript-review.mjs",
     "refresh:podcast": "tsx scripts/refresh-podcast-snapshot.ts",
     "refresh:teaching-posters": "tsx scripts/refresh-teaching-posters.ts",
-    "check": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "check:html": "html-validate \".next/server/app/**/*.html\"",
+    "check:public": "tsx scripts/check-public-contracts.mjs",
+    "check:static-media": "tsx scripts/check-static-media-architecture.mjs",
+    "check:pii": "node scripts/check-pii-canaries.mjs",
+    "bundle:check": "node scripts/check-bundle-budgets.mjs",
+    "lighthouse:collect": "lhci collect --config=./lighthouserc.cjs",
+    "lighthouse:ci": "npm run lighthouse:collect && tsx scripts/check-lighthouse-results.mjs",
+    "test:e2e:release": "playwright test tests/e2e/release",
+    "release:doi": "node scripts/brevo-doi-lifecycle.mjs",
+    "release:smoke": "tsx scripts/release-smoke.mjs",
+    "release:health": "node scripts/evaluate-release-health.mjs",
+    "release:evidence:seal": "node scripts/seal-release-evidence.mjs",
+    "release:evidence:verify": "node scripts/verify-completion-evidence.mjs"
   },
   "dependencies": {
     "@getbrevo/brevo": "6.0.2",
@@ -35,6 +48,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.61.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
@@ -42,11 +56,16 @@
     "@types/node": "22.20.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
+    "ajv": "8.20.0",
+    "cheerio": "1.2.0",
     "eslint": "10.7.0",
     "eslint-config-next": "16.2.10",
+    "html-validate": "11.5.5",
     "jsdom": "29.1.1",
     "tsx": "4.23.0",
     "typescript": "5.9.3",
-    "vitest": "4.1.10"
+    "vercel": "55.0.0",
+    "vitest": "4.1.10",
+    "wait-on": "9.0.10"
   }
 }
