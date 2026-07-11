@@ -4,6 +4,11 @@ export const indexableStaticRoutes = [
   "/live",
   "/teachings",
   "/podcast",
+  "/prayer",
+  "/connect",
   "/store",
   "/give",
+  "/privacy",
+  "/terms",
+  "/accessibility",
 ] as const;
