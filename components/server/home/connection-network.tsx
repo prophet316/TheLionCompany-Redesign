@@ -9,7 +9,7 @@ export function ConnectionNetwork({ channels }: { readonly channels: readonly De
     (channel) => channel.visible && (isSocialAnalyticsTarget(channel.key) || isPodcastAnalyticsTarget(channel.key)),
   );
   return (
-    <section className={"section " + styles.network} id="contact" aria-labelledby="network-title" data-gathering-stage="network">
+    <section className={"section " + styles.network} aria-labelledby="network-title" data-gathering-stage="network">
       <p className={styles.eyebrow}>Stay connected</p>
       <h2 id="network-title">Choose the channel that fits the moment.</h2>
       <div>

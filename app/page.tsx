@@ -50,13 +50,19 @@ export default function HomePage() {
           <li data-reveal-mask><h3>Education equips the work.</h3><p>Clear teaching helps the whole body grow toward unity.</p></li>
         </ol>
       </section>
-      <TopicFinder topics={topicDefinitions} teachings={teachings} />
-      <WatchListen featured={featured} latestEpisode={episodes[0]} />
+      <div id="media">
+        <TopicFinder topics={topicDefinitions} teachings={teachings} />
+      </div>
+      <div id="podcast">
+        <WatchListen featured={featured} latestEpisode={episodes[0]} />
+      </div>
       <section className={"section " + styles.prayer} id="prayer">
         <div><p className={styles.eyebrow}>Prayer</p><h2>You do not have to carry it alone.</h2><p>A restricted ministry prayer team receives your request. This form is not continuously monitored or an emergency service.</p><Link href="/prayer">Open the private prayer page</Link></div>
         <PrayerForm placement="home" />
       </section>
-      <ConnectionNetwork channels={destinationRegistry} />
+      <div id="contact">
+        <ConnectionNetwork channels={destinationRegistry} />
+      </div>
       <section className={"section " + styles.store} id="store">
         <div><p className={styles.eyebrow}>Wear the vision</p><h2>Carry a visible reminder of unity.</h2><p>Explore real Lion Company merchandise and the story behind it.</p></div>
         <Link href="/store">Visit the editorial store page</Link>

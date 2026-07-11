@@ -6,7 +6,7 @@ import styles from "./home.module.css";
 
 export function WatchListen({ featured, latestEpisode }: { readonly featured: Teaching; readonly latestEpisode?: PodcastEpisode }) {
   return (
-    <section className={"section " + styles.watchListen} id="podcast" aria-labelledby="watch-listen-title" data-gathering-stage="waveform">
+    <section className={"section " + styles.watchListen} aria-labelledby="watch-listen-title" data-gathering-stage="waveform">
       <header><p className={styles.eyebrow}>Watch and listen</p><h2 id="watch-listen-title">Formation beyond the moment.</h2></header>
       <div className={styles.mediaGrid}>
         <article>
