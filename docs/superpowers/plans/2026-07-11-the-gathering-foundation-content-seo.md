@@ -1414,13 +1414,13 @@ Create `docs/content-evidence.md` with dated source rows for each claim that con
 
 Run: `npm run refresh:teaching-posters -- --check && npm run refresh:podcast -- --check && npm run check:assets && npm run test:unit -- tests/unit/media-content.test.ts && npm run check:transcript-review`
 
-Expected: all 32 local poster files match the manifest and ledger; the current checked-in podcast snapshot matches the normalized feed at refresh time; neither refresh check writes files. The media unit test passes by proving the selected teaching is safely direct-link-only while evidence is absent. `npm run check:transcript-review` exits non-zero with `authorized-human transcript review is pending` until the real complete listen-through is recorded. That explicit failure is a release/homepage gate, not a blocker to Experience Tasks 1–6 or Forms Tasks 1–6. Any later episode requires `npm run refresh:podcast -- --write`, a reviewed diff, tests, and a new deployment before it is public.
+Expected: all 32 local poster files match the manifest and ledger; the current checked-in podcast snapshot matches the normalized feed at refresh time; neither refresh check writes files. The media unit test passes by proving the selected teaching is safely direct-link-only while evidence is absent. `npm run check:transcript-review` exits non-zero with `authorized-human transcript review is pending` until the real complete listen-through is recorded. That explicit failure blocks embedding and release, not implementation of the homepage with its direct-link fallback. Any later episode requires `npm run refresh:podcast -- --write`, a reviewed diff, tests, and a new deployment before it is public.
 
 - [ ] **Step 7: Run media, content, type, lint, and build checks**
 
 Run: `npm run test:unit -- tests/unit/media-content.test.ts tests/unit/content-domain.test.ts && npm run typecheck && npm run lint && npm run build`
 
-Expected: all commands exit 0; tests report 32 unique teachings, six represented topics, two parsed fixture episodes, the selected teaching safely ineligible/direct-link-only while human evidence is pending, 32 first-party posters, and a seven-item checked-in public podcast snapshot. The production build performs no Podcast RSS fetch and every public media route is prerendered from Git content. A fully evidenced embeddable featured teaching is required separately by `npm run check:transcript-review` before Experience Tasks 7–8 or release.
+Expected: all commands exit 0; tests report 32 unique teachings, six represented topics, two parsed fixture episodes, the selected teaching safely ineligible/direct-link-only while human evidence is pending, 32 first-party posters, and a seven-item checked-in public podcast snapshot. The production build performs no Podcast RSS fetch and every public media route is prerendered from Git content. A fully evidenced embeddable featured teaching is required separately by `npm run check:transcript-review` before player activation or release.
 
 - [ ] **Step 8: Commit the media content layer**
 
@@ -2568,7 +2568,7 @@ Run: `npm run test:unit && npm run check:assets && npm run typecheck && npm run 
 
 Expected: every command exits 0; production build remains webpack/SRI-based; Chromium proves the canonical, fragments, valid JSON-LD, one-hop 308, branded 410, real 404, preview crawl block, sitemap, manifest, Open Graph image, and transcript-gated media behavior.
 
-Separately run `npm run check:transcript-review`. It must fail closed while the authorized-human evidence array is empty. Record that exact open gate in the handoff; it blocks the homepage featured-player phase and release, but it does not invalidate this safe Foundation code gate or block Experience Tasks 1–6.
+Separately run `npm run check:transcript-review`. It must fail closed while the authorized-human evidence array is empty. Record that exact open gate in the handoff; it blocks homepage player activation and release, but it does not invalidate the safe direct-link homepage implementation.
 
 - [ ] **Step 7: Inspect build output for static-route and budget regressions**
 

@@ -3304,13 +3304,6 @@ vi.mock("@/lib/media/podcast-feed", () => ({
   }],
 }));
 
-vi.mock("@/lib/media/transcripts.server", () => ({
-  getTeachingReviewBundle: (teaching: { slug: string } & Record<string, unknown>) => ({
-    teaching: { ...teaching, captionsVerified: true, transcriptUrl: `https://www.thelioncompany.org/teachings/${teaching.slug}#transcript` },
-    transcript: "Reviewed transcript fixture.",
-  }),
-}));
-
 describe("homepage journey", () => {
   it("renders the entire Seen, Gathered, Formed, Sent hierarchy without motion", async () => {
     render(<AnalyticsProvider enabled={false}><HomePage /></AnalyticsProvider>);
@@ -3319,6 +3312,8 @@ describe("homepage journey", () => {
     expect(screen.getByRole("heading", { name: /love is the beginning/i })).toBeVisible();
     expect(screen.getByRole("link", { name: /submit a prayer request/i })).toBeVisible();
     expect(screen.getByRole("link", { name: /support the mission/i })).toBeVisible();
+    expect(screen.getByRole("link", { name: /watch directly on youtube/i })).toBeVisible();
+    expect(document.querySelector("iframe")).toBeNull();
   });
 });
 ~~~
@@ -3759,7 +3754,6 @@ export default function HomePage() {
   const featuredBase = teachings.find((teaching) => teaching.featured) ?? teachings[0];
   if (!featuredBase) throw new Error("The homepage requires one validated teaching");
   const featured = getTeachingReviewBundle(featuredBase).teaching;
-  if (!featured.captionsVerified || !featured.transcriptUrl) throw new Error("The homepage teaching requires hash-bound complete-listen-through evidence");
   const episodes = getPublishedPodcastEpisodes();
   const buildActiveReplay = activeReplayAt(recentReplay);
   return (
@@ -3805,7 +3799,7 @@ export default function HomePage() {
 
 Run: `npm test -- --run tests/integration/homepage.test.tsx tests/components/gathering-line.test.tsx && npm run typecheck && npm run build`
 
-Expected: both tests pass and the deterministic production build succeeds. The verification plan later owns the compressed JavaScript/CSS budget command and release-blocking thresholds.
+Expected: both tests pass and the deterministic production build succeeds with empty transcript evidence by rendering the featured teaching as a direct YouTube action and no iframe. Valid hash-bound evidence upgrades the same `VideoFacade`; `npm run check:transcript-review` still blocks player activation and release. The verification plan later owns the compressed JavaScript/CSS budget command and release-blocking thresholds.
 
 ~~~bash
 git add app/page.tsx components/server/home components/client/gathering-line.tsx components/client/gathering-line.module.css tests/integration/homepage.test.tsx tests/components/gathering-line.test.tsx

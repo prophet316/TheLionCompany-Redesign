@@ -59,7 +59,7 @@ Required phase evidence:
 - `/start-here` contains evidenced mission, story, practices, cautious public-leadership facts, voluntary-support explanation, and organizational-transparency paths without invented facts;
 - redirects, 410s, canonical resources, schema, sitemap, robots, manifest, icons, and real 404 behavior pass.
 
-The Foundation code gate must pass while the evidence array is empty by proving the safe direct-link fallback. `npm run check:transcript-review` is a separate human release/homepage gate and is expected to fail closed until the authorized review exists. That pending human action does not block Experience Tasks 1–6 or Forms Tasks 1–6; it does block Experience Tasks 7–8, the homepage featured-player composition, and every release phase.
+The Foundation code gate must pass while the evidence array is empty by proving the safe direct-link fallback. `npm run check:transcript-review` is a separate human embedding/release gate and is expected to fail closed until the authorized review exists. That pending human action does not block implementation of Experience Tasks 1–8 or Forms Tasks 1–6: the homepage must render the honest direct-YouTube fallback and no iframe while evidence is absent. It does block enabling the homepage player and every release phase.
 
 ### Phase 2: Complete experience Tasks 1–6
 
@@ -90,6 +90,7 @@ Required phase evidence:
 - the approved lion image appears exactly once;
 - desktop pinning/masks/selective parallax, mobile short transitions, and a complete reduced-motion static path are all implemented;
 - the homepage has permanent Watch, Pray, Grow, Give, Store, newsletter, connect, teaching, and podcast paths;
+- pending transcript evidence renders the featured teaching as a direct YouTube action with no iframe; valid hash-bound evidence upgrades the same facade without changing the homepage hierarchy;
 - prompt priority, inactivity, cross-tab claim, frequency caps, focus restoration, storage failure, and dialog accessibility pass without ever creating a giving prompt.
 
 ### Phase 5: Complete forms Task 7
