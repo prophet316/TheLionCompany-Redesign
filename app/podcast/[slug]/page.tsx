@@ -1,15 +1,48 @@
-import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AudioPlayer } from "@/components/client/audio-player";
+import { TrackedLink } from "@/components/client/tracked-link";
 import { JsonLd } from "@/components/server/json-ld";
-import { PageIntro } from "@/components/server/page-intro";
 import { getDestination } from "@/lib/content";
 import { getPublishedPodcastEpisodes } from "@/lib/media/podcast-feed";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, podcastEpisodeSchema, webPageSchema } from "@/lib/seo/schema";
 
-type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
-export function generateStaticParams() { return getPublishedPodcastEpisodes().map((episode) => ({ slug: episode.slug })); }
-export async function generateMetadata({ params }: Props): Promise<Metadata> { const { slug } = await params; const episode = getPublishedPodcastEpisodes().find((item) => item.slug === slug); if (!episode) return {}; return createPageMetadata({ title: episode.title, description: episode.description, path: `/podcast/${slug}` }); }
-export default async function PodcastEpisodePage({ params }: Props) { const { slug } = await params; const episode = getPublishedPodcastEpisodes().find((item) => item.slug === slug); if (!episode) notFound(); return <><JsonLd id="podcast-episode-schema" data={[webPageSchema({ path: `/podcast/${slug}`, title: episode.title, description: episode.description }), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Podcast", path: "/podcast" }, { name: episode.title, path: `/podcast/${slug}` }]), podcastEpisodeSchema(episode)]} /><PageIntro eyebrow={episode.episodeNumber ? `Episode ${episode.episodeNumber}` : "Podcast episode"} title={episode.title}><p>{episode.description}</p><time dateTime={episode.publishedAt}>{new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "UTC" }).format(new Date(episode.publishedAt))}</time></PageIntro><section className="section shell"><h2>Listen on your preferred platform</h2><p>{episode.transcriptUrl ? <a href={episode.transcriptUrl}>Read the complete transcript</a> : "A complete transcript has not been verified, so the site does not embed an audio player."}</p><div className="cluster"><a className="button" href={episode.pageUrl}>Open this episode on Podbean</a><a href={getDestination("applePodcasts").href}>Apple Podcasts</a><a href={getDestination("spotify").href}>Spotify</a><a href={getDestination("podcastRss").href}>RSS</a><a href={getDestination("youtube").href}>YouTube</a><Link href="/podcast">All episodes</Link></div></section></>; }
+export function generateStaticParams() {
+  return getPublishedPodcastEpisodes().map((episode) => ({ slug: episode.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug;
+  const episode = getPublishedPodcastEpisodes().find((item) => item.slug === slug);
+  return episode
+    ? createPageMetadata({ title: episode.title, description: episode.description, path: "/podcast/" + slug, image: episode.imageUrl ?? undefined })
+    : {};
+}
+
+export default async function PodcastEpisodePage({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug;
+  const episode = getPublishedPodcastEpisodes().find((item) => item.slug === slug);
+  if (!episode) notFound();
+  return (
+    <>
+      <JsonLd id="podcast-episode-schema" data={[webPageSchema({ path: "/podcast/" + episode.slug, title: episode.title, description: episode.description }), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Podcast", path: "/podcast" }, { name: episode.title, path: "/podcast/" + episode.slug }]), podcastEpisodeSchema(episode)]} />
+      <article className="container section">
+        <p>Podcast episode</p>
+        <h1>{episode.title}</h1>
+        <time dateTime={episode.publishedAt}>
+          {new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "UTC" }).format(new Date(episode.publishedAt))}
+        </time>
+        <p>{episode.description}</p>
+        <AudioPlayer episode={episode} />
+        <nav aria-label="Listen to this podcast">
+          <TrackedLink href={episode.pageUrl} eventName="podcast_platform_click" eventProperties={{ target: "podbean", placement: "podcast-detail" }}>Open this episode on Podbean</TrackedLink>
+          {(["applePodcasts", "spotify", "podcastRss", "youtube"] as const).map((key) => {
+            const destination = getDestination(key);
+            return <TrackedLink href={destination.href} eventName="podcast_platform_click" eventProperties={{ target: key, placement: "podcast-detail" }} key={key}>{destination.label}</TrackedLink>;
+          })}
+        </nav>
+      </article>
+    </>
+  );
+}
