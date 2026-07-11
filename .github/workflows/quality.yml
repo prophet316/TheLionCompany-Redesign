@@ -51,6 +51,7 @@ jobs:
       - run: npm run lint
       - run: npm audit --audit-level=high --omit=dev
       - run: npm run build
+      - run: npm run check:static-media
       - run: npm run check:assets
       - run: npm run check:html
       - run: npm run bundle:check
