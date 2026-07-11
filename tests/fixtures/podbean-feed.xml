@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>The Lion Company Podcast</title>
+    <item>
+      <title>When God's Will doesn't go your way</title>
+      <link>https://thelioncompany.podbean.com/e/when-gods-will-doesnt-go-your-way/</link>
+      <pubDate>Fri, 18 Jul 2025 16:09:39 -0500</pubDate>
+      <description><![CDATA[<p>Trusting God when the path takes an unexpected turn.</p>]]></description>
+      <enclosure url="https://mcdn.podbean.com/mf/web/ps6vkqm3eernmuw8/EP7_PODCAST_AUDIOanwkp.mp3" type="audio/mpeg"/>
+      <itunes:duration>2222</itunes:duration>
+      <itunes:episode>7</itunes:episode>
+      <itunes:image href="https://pbcdn1.podbean.com/imglogo/ep-logo/pbblog16332481/The_Lion_Company_Podcast_Thumbnail_q7z96q.jpg"/>
+    </item>
+    <item>
+      <title>The Dark Side of Emotional Intelligence (and How to fix it)</title>
+      <link>https://thelioncompany.podbean.com/e/the-dark-side-of-emotional-intelligence-and-how-to-fix-it/</link>
+      <pubDate>Sat, 11 Jan 2025 00:01:00 -0600</pubDate>
+      <description><![CDATA[<p>A conversation about boundaries, leadership, and relationships.</p>]]></description>
+      <enclosure url="https://mcdn.podbean.com/mf/web/eers7fsdu2aypfhm/The_Lion_Company_Podcast_Episode_4bjew3.mp3" type="audio/mpeg"/>
+      <itunes:duration>63</itunes:duration>
+      <itunes:episode>4</itunes:episode>
+    </item>
+  </channel>
+</rss>

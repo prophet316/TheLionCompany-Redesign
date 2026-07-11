@@ -13,5 +13,10 @@ export default defineConfig({
     setupFiles: ["tests/setup.ts"],
     restoreMocks: true,
   },
-  resolve: { alias: { "@": new URL(".", import.meta.url).pathname } },
+  resolve: {
+    alias: {
+      "server-only": new URL("./tests/stubs/server-only.ts", import.meta.url).pathname,
+      "@": new URL(".", import.meta.url).pathname,
+    },
+  },
 });

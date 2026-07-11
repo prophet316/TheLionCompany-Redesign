@@ -1,4 +1,5 @@
 import { destinationRegistry } from "@/content/destinations";
+import { teachings } from "@/content/teachings";
 import { topicDefinitions } from "@/content/topics";
 import { destinationSchema, liveScheduleSchema, recentReplaySchema, teachingSchema, topicSchema } from "./schemas";
 import type { DestinationKey, LiveSchedule, RecentReplay, SiteContent, Teaching, TopicDefinition, TopicSlug } from "./types";
@@ -47,6 +48,14 @@ export function getTopicBySlug(slug: TopicSlug): TopicDefinition {
   const topic = topicDefinitions.find((item) => item.slug === slug);
   if (!topic) throw new Error(`topic unavailable: ${slug}`);
   return topic;
+}
+
+export function getTeachingBySlug(slug: string) {
+  return teachings.find((teaching) => teaching.slug === slug);
+}
+
+export function getTeachingSlugs() {
+  return teachings.map((teaching) => teaching.slug);
 }
 
 export function isTeachingEmbeddable(teaching: Teaching) {
