@@ -2,7 +2,7 @@
 
 **Date:** July 11, 2026
 
-**Status:** Approved design direction; written specification awaiting review
+**Status:** Approved for implementation on July 11, 2026; giving-visibility clarification added by owner direction, with static-media, transcript-evidence, consent, and staged-release hardening recorded during implementation review the same day
 
 **Repository:** `prophet316/TheLionCompany-Redesign`
 
@@ -197,7 +197,7 @@ Topic labels must correspond to real indexed content. Empty topics stay hidden.
 - One featured teaching using a lightweight facade; do not load a YouTube iframe until intent.
 - Curated topic/series paths.
 - A durable `Explore hundreds of teachings on YouTube` action rather than an unverified `300+` claim.
-- Latest podcast content sourced from Podbean RSS with a checked-in fallback snapshot.
+- Latest podcast content served from the checked-in validated snapshot; an explicit maintainer refresh reads Podbean RSS and requires review, commit, and redeploy.
 - Direct Apple Podcasts, Spotify, Podbean, RSS, and YouTube actions.
 
 ### 5.7 Prayer invitation
@@ -250,6 +250,17 @@ Offer four clear actions:
 - support the mission.
 
 The footer includes legal, accessibility, contact, verified channels, and the existing nonprofit identity after verification.
+
+### 5.12 Giving visibility and tone
+
+The Lion Company’s ministry work is sustained by voluntary givers. Giving must therefore be obvious and easy from every page without using guilt, false urgency, scarcity, interruption, or emotionally coercive copy.
+
+- Desktop header, mobile navigation, homepage participation paths, final invitation, and footer all include a plainly labelled `Give` or `Give to The Lion Company` path.
+- The persistent site path goes first to `/give`, where a prominent normal anchor leads to the single verified Subsplash destination from the typed registry. The path works with JavaScript and analytics disabled.
+- `/give` explains calmly that voluntary gifts sustain teaching, prayer, discipleship, and Christian-unity work; it also explains that Subsplash handles payment and receipt details.
+- The primary Subsplash action appears above the fold at common mobile and desktop sizes and remains keyboard- and screen-reader-operable.
+- Do not use timed giving popups, donation countdowns, fabricated matching deadlines, crisis language, progress bars without authoritative current data, or copy that implies spiritual status is earned through giving.
+- Release tests verify that `/give` is one obvious navigation step from every page shell and that the verified Subsplash action is one further clear step, including at 320 CSS pixels and with JavaScript disabled.
 
 ## 6. Prompt and lightbox behavior
 
@@ -316,7 +327,11 @@ Use Next.js App Router with TypeScript, deployed in the existing Vercel project.
 - Keep GitHub as the source of truth.
 - Keep Wix DNS unchanged except for later email-authentication records.
 - `main` remains the production branch.
-- Pull requests and feature branches receive Vercel preview deployments.
+- Pull requests and feature branches receive Deployment-Protected Vercel Preview deployments with no-send/test-recipient integrations. The Preview QA deployment ID and Git SHA are recorded together; Preview evidence never claims to describe a Production deployment.
+- After explicit production-candidate authorization, create a separate staged Production deployment with `vercel --prod --skip-domain`. It must use the intended Production environment and resources while assigning no custom Production domain, and its generated Vercel URL must remain Deployment Protected. If that URL cannot be protected, release stops before the deployment is exercised.
+- Record the staged Production deployment ID and Git SHA separately from the Preview QA deployment ID. Run the Production-build-dependent static/public-route, security-header, canonical, accessibility, visual, and performance gates against that exact protected staged deployment.
+- Production form origins and Turnstile hostnames remain restricted to `https://www.thelioncompany.org`; do not weaken or spoof those contracts to submit forms from the staged `.vercel.app` URL. Preview performs the full isolated form matrix, while controlled real Production form smoke waits until the canonical domain is assigned.
+- After separate promotion approval, `vercel promote <staged-production-id-or-url>` assigns the custom Production domains to that staged deployment without a rebuild. Release evidence must prove that `www.thelioncompany.org` serves the same staged Production deployment ID and Git SHA; a new deployment ID or rebuild invalidates the candidate and stops release.
 - Public pages are prerendered static HTML.
 - Server Components are the default.
 - Client Components are isolated to navigation, live-schedule clock, scroll narrative, media facade, prompt controller, consent controls, and forms.
@@ -331,7 +346,7 @@ The implementation separates:
 - `content`: typed site copy, social destinations, schedule configuration, featured media, and topic taxonomy;
 - `components/server`: structural page sections and metadata;
 - `components/client`: isolated motion, dialogs, media facades, and forms;
-- `lib/media`: podcast feed parsing, curated YouTube manifest, fallbacks, and validation;
+- `lib/media`: maintainer-only podcast feed parsing, checked-in podcast snapshot selectors, curated YouTube manifest, first-party transcripts/stills, and validation;
 - `lib/forms`: schemas, origin checks, Turnstile adapter, Brevo adapter, sanitization, and response mapping;
 - `lib/analytics`: consent-aware, enumerated event helpers that accept no free-form content;
 - `app/api/forms/*`: newsletter, prayer, and contact route handlers;
@@ -342,8 +357,9 @@ No global client state is needed. Prompt eligibility uses a small client control
 ### 7.3 Content sources
 
 - Core site content and schedule configuration live in typed Git-backed files.
-- Podcast episodes are fetched from the verified Podbean RSS feed during build/revalidation with a checked-in validated fallback.
+- Podcast episodes ship from a checked-in, schema-validated snapshot. An explicit maintainer refresh command fetches the verified Podbean RSS feed, validates and reviews the proposed diff, and then requires a normal commit and redeploy; public page rendering and production requests never depend on Podbean availability or runtime revalidation.
 - YouTube uses a curated, checked-in teaching manifest generated from verified channel data. A local refresh script may update this manifest; production never depends on brittle unauthenticated scraping.
+- Teaching-card and pre-play facade stills are rights-reviewed first-party files recorded in the asset ledger. No YouTube or thumbnail-host request occurs until the visitor explicitly chooses to play or leave for YouTube.
 - The complete library always includes a direct YouTube channel action.
 - TikTok state is manually configurable until a reliable official integration is available.
 - Social destinations are centralized so header, footer, connect page, and schema cannot drift independently.
@@ -359,7 +375,7 @@ The initial authoritative destination registry, audited July 11, 2026, is:
 | Apple Podcasts | `https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612` | Required; fail release validation if not manually verified |
 | Spotify | `https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5` | Required; fail release validation if not manually verified |
 | Podbean | `https://thelioncompany.podbean.com` | Required podcast source |
-| Podcast RSS | `https://feed.podbean.com/thelioncompany/feed.xml` | Required build source with checked-in fallback |
+| Podcast RSS | `https://feed.podbean.com/thelioncompany/feed.xml` | Required maintainer-refresh source; public rendering uses the checked-in snapshot |
 | Instagram | `https://www.instagram.com/thelioncompanyglobal/` | Active replacement for the obsolete `thelioncompanytx` link |
 | Facebook | `https://www.facebook.com/lioncompanytx` | Show when reachable |
 | Threads | `https://www.threads.com/@thelioncompanyglobal/` | Hide automatically if release validation fails |
@@ -486,7 +502,7 @@ Multiple clicks and ordinary network retries reuse the same submission ID. An ac
 
 The production browser-policy baseline is:
 
-- CSP: `default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' <build-generated-hashes> https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://challenges.cloudflare.com; img-src 'self' data: blob: https://i.ytimg.com https://*.ytimg.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com; media-src 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests`;
+- CSP: `default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' <build-generated-hashes> https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://challenges.cloudflare.com; img-src 'self' data: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com; media-src 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests`;
 - `Strict-Transport-Security: max-age=31536000` at launch, without `includeSubDomains`;
 - `X-Content-Type-Options: nosniff`;
 - `Referrer-Policy: strict-origin-when-cross-origin`;
@@ -526,7 +542,7 @@ Analytics is consent-aware and receives no form values or identifiers.
 - The consent choice is stored separately from promotional prompt state and is never inferred from continued browsing.
 - Preview deployments do not send data to the production GA4 property.
 
-The consent state machine has `unknown`, `denied`, and `analytics-granted` states plus a version and timestamp. `unknown` behaves exactly like denied and presents a clear choice without blocking content. A decision lasts 180 days; a consent-text version change or expiry returns to `unknown`. If storage is unavailable, every visit remains denied by default. Withdrawal sends the denied update, stops future hits, deletes first-party `_ga` cookies for this property where technically possible, and persists the new denied state. There is no advertising category or advertising tag in the initial release.
+The consent state machine has `unknown`, `denied`, and `analytics-granted` states plus a version and timestamp. `unknown` behaves exactly like denied and presents a clear choice without blocking content. A decision lasts 180 days; a consent-text version change or expiry returns to `unknown`. If storage is unavailable, every visit remains denied by default. Consent changes synchronize across same-origin tabs. Withdrawal sends the denied update, stops future hits, deletes host-only, `.www.thelioncompany.org`, and `.thelioncompany.org` first-party `_ga` cookies for this property where technically possible, and persists the new denied state; a later affirmative choice sends an explicit `analytics_storage: "granted"` update before measurement resumes. There is no advertising category or advertising tag in the initial release.
 
 Forms, navigation, search, and store/give links work regardless of analytics consent. The YouTube facade makes no third-party request until explicit play; play is a one-time functional media action using `youtube-nocookie` and is allowed even when analytics is denied, but generates no GA event in that state. With JavaScript disabled, analytics remains absent, the site content and direct media links remain available, and abuse-protected forms explain that submission requires JavaScript without exposing a prefilled prayer request in email or a URL.
 
@@ -537,12 +553,13 @@ Events:
 - `social_click`;
 - `tiktok_live_click`;
 - `podcast_platform_click`;
-- `video_start`, `video_progress`, `video_complete`;
+- `video_start` after explicit play. The first release intentionally does not load a separate player API or infer watch progress merely to create analytics events;
 - `store_prompt_view`, `store_prompt_dismiss`, `store_click`;
 - `give_click`;
 - `newsletter_form_start`, `newsletter_submit`, `newsletter_request_accepted`, `newsletter_error`;
 - `contact_form_start`, `contact_submit`, `contact_success`, `contact_error`;
 - `client_error` with only an enumerated component and safe error code, never a message, stack, free-form URL, or form state.
+- `web_vital` only for home-page INP after analytics consent, with exactly `metric_name: "INP"`, an integer `metric_value_ms`, the enumerated `metric_rating`, and `page_group: "home"`; no URL, identifier, preview traffic, or free-form value is accepted.
 
 Prayer acceptance is an aggregate first-party operational metric only: endpoint, UTC day, and accepted count, with no content, browser/session identifier, or audience export. It is not sent to advertising or audience systems.
 
@@ -557,7 +574,7 @@ Outbound measurement is best-effort and consent-gated. The real destination is a
 ### 10.1 Preserve authority
 
 - Keep the home title `The Lion Company — Unity Through Christ` for launch.
-- Preserve visible language around Christian unity, discipleship, church reform, love, relationship, education, Jesus, and nonprofit mission.
+- Preserve visible language around Christian unity, discipleship, church reform, love, relationship, education, Jesus, and the voluntarily giver-supported ministry mission; legal or tax-status wording remains conditional on authoritative current verification.
 - Maintain one-hop redirects and a complete redirect ledger.
 - Keep the current GA4 property.
 - Use the verified `www` canonical everywhere.
@@ -621,7 +638,7 @@ Required:
 
 Any keyboard trap, inaccessible form, missing reduced-motion path, serious Axe violation, or critical contrast failure blocks launch.
 
-The launch teaching library may index more items than it embeds. A video is eligible for an on-site player only when verified captions and a transcript or complete text-equivalent path exist; otherwise its detail page provides an accurate summary and a direct YouTube link without embedding the player. A podcast episode is eligible for an on-site audio player only when a complete transcript exists; otherwise the page provides verified show notes and direct platform links. Content metadata records this eligibility so missing alternatives cannot silently regress.
+The launch teaching library may index more items than it embeds. A video is eligible for an on-site player only when verified captions and a transcript or complete text-equivalent path exist; otherwise its detail page provides an accurate summary and a direct YouTube link without embedding the player. For the selected launch teaching, eligibility is derived at build time only from a structured authorized-human review record bound to the exact teaching ID, source URL and duration, reviewer/date/complete-listen-through decision, transcript path, and transcript SHA-256; a hand-set boolean, prose note, or word-count threshold cannot enable the player. A podcast episode is eligible for an on-site audio player only when a complete transcript exists; otherwise the page provides verified show notes and direct platform links. Content metadata records this eligibility so missing alternatives cannot silently regress.
 
 ## 12. Performance budget
 
@@ -695,20 +712,26 @@ The volume soak runs only on a deployment-protected preview using a time-boxed W
 
 ## 14. Release strategy
 
-### 14.1 Preview-first
+### 14.1 Preview QA, then staged Production
 
 1. Record the current production Vercel deployment and Git commit.
 2. Preserve current HTML/screenshots/Lighthouse evidence outside the repository.
 3. Build on `codex/the-gathering-rebuild`.
-4. Use a Vercel preview with no production mail secrets.
-5. Run the full automated and manual gates.
-6. Review content, visual quality, links, and provider operations on preview.
-7. Promote the tested immutable deployment in the existing Vercel project only after explicit production approval.
-8. Do not change DNS during launch.
+4. Create a Deployment-Protected Vercel Preview with Turnstile test keys, no production provider secrets, and no-send/test recipients.
+5. Run the full Preview-safe automated/manual QA and isolated form, WAF, rate-limit, outage, retention, and Brevo-lifecycle gates against that immutable Preview.
+6. Review content, visual quality, links, and test-provider operations, then record the Preview QA deployment ID and Git SHA together. Preview evidence remains bound to that Preview and SHA; it is not represented as Production-candidate evidence.
+7. Obtain explicit production-candidate authorization before creating any deployment that uses Production environment variables or live resources.
+8. Create a separate staged Production deployment with `vercel --prod --skip-domain`. Confirm that no custom Production domain was assigned, that its generated Vercel URL is Deployment Protected, and that its deployment ID resolves to the approved Git SHA. Stop if any of those checks fail.
+9. Against that exact authenticated staged Production deployment, rerun every Production-build-dependent gate that can be exercised without a canonical-origin form mutation: public/static routes, redirects, real 404, canonical/robots/sitemap/schema, enforced CSP and headers, JavaScript-disabled and accessibility paths, external destinations, Lighthouse, bundles, transfer, long tasks, and approved visual/device checks. Do not relax, spoof, or add the `.vercel.app` origin to the canonical-only form or Turnstile contracts.
+10. Record the staged Production deployment ID, Git SHA, gate evidence, and the separately bound Preview QA ID/SHA in the release record. Evidence must never imply that the Preview and staged Production share a deployment ID.
+11. Obtain explicit promotion approval, then run `vercel promote <staged-production-id-or-url>` so Vercel assigns `www.thelioncompany.org` to the already-tested staged Production deployment without rebuilding it.
+12. Verify immediately that the canonical host serves the identical staged Production deployment ID and Git SHA. A new deployment ID, build, or artifact invalidates the candidate and requires the staged-candidate gates to restart.
+13. Run the controlled Production smoke below, including the real form checks that require the canonical origin. Roll back immediately on a smoke failure.
+14. Do not change DNS during launch.
 
 ### 14.2 Production smoke
 
-Immediately verify:
+Immediately after the no-rebuild promotion, verify against `https://www.thelioncompany.org`:
 
 - canonical host and every legacy redirect;
 - home, teachings, podcast, connect, prayer, store, give, legal routes, sitemap, robots, and real 404;
@@ -719,22 +742,24 @@ Immediately verify:
 - TikTok, YouTube, podcast, social, Printify, and Subsplash destinations;
 - mobile navigation, reduced motion, and prompt frequency caps.
 
+The newsletter, prayer, and contact submissions above are the first end-to-end tests against live Production form providers because the exact origin and Turnstile-hostname policy intentionally rejects the staged `.vercel.app` URL. Use controlled, visibly labeled, non-sensitive submissions only after promotion approval. Any false success, rejection caused by Production configuration, delivery failure, content leak, or unexpected provider mutation triggers immediate rollback before broader traffic validation continues.
+
 ### 14.3 Observability and alert ownership
 
 - Vercel Observability is the source for availability, request volume, function status, latency, and 5xx rates.
 - Brevo accepted-message IDs plus synthetic mailbox checks are the source for delivery; the monitoring record contains IDs and aggregate states, never message bodies or addresses.
 - The consent-gated GA4 `client_error` event is the source for browser error rate among measured sessions; release smoke also treats any uncaught console error as a failure regardless of consent sample size.
-- Three post-promotion Lighthouse runs form the immediate LCP comparison. Consent-gated field Web Vitals are evaluated after at least 200 measured home page views or seven days, whichever comes later.
+- Three post-promotion Lighthouse runs form the immediate LCP comparison against the three-run baseline from the exact staged Production deployment, not the Preview QA deployment. Consent-gated field Web Vitals are evaluated after at least 200 measured home page views or seven days, whichever comes later.
 - Canonical, robots, sitemap, primary routes, and redirects receive synthetic HTTP checks every five minutes for the first 24 hours and every 30 minutes through day seven.
 - Form monitoring uses synthetic, visibly labeled, non-sensitive content and deletes it after verification. Three consecutive provider failures alert immediately.
 
-Before promotion, a named release owner and backup receive Vercel/provider alerts and have permission to promote the recorded rollback deployment. Only those authorized Vercel project owners may execute rollback. The release record includes the candidate baseline, monitoring links, alert recipients, deployment IDs, and checks at 15 minutes, one hour, 24 hours, 72 hours, and seven days.
+Before promotion, a named release owner and backup receive Vercel/provider alerts and have permission to promote the recorded rollback deployment. Only those authorized Vercel project owners may execute rollback. The release record includes the separately bound Preview QA ID/SHA, staged Production ID/SHA, staged-candidate baseline, proof that promotion did not rebuild or change the deployment ID, monitoring links, alert recipients, rollback deployment ID, and checks at 15 minutes, one hour, 24 hours, 72 hours, and seven days.
 
 Threshold evaluation is exact: 5xx rollback requires a five-minute rolling rate above 1% with at least 100 requests or five errors; client-error rollback requires above 2% with at least 100 measured sessions or ten identical safe-code errors in 15 minutes; form delivery rollback requires three consecutive failures or below 95% after at least 20 real/synthetic attempts; LCP rollback requires the median of three identical post-promotion runs to exceed the approved candidate by more than 30%. Availability loss, false form success, a privacy leak, wrong canonical, `noindex`, or redirect loop bypasses sample floors and triggers immediate rollback.
 
 ### 14.4 Rollback
 
-Rollback means promoting the recorded prior Vercel deployment, not changing DNS or deleting user submissions.
+Rollback means promoting the recorded prior Vercel deployment, not rebuilding the failed candidate, changing DNS, or deleting user submissions. The failed live deployment ID and the restored prior deployment ID are both added to the release record.
 
 Immediate rollback triggers include:
 
@@ -764,7 +789,7 @@ Implementation can begin without production credentials. Production form activat
 - Google Search Console property access for URL export, sitemap submission, and post-launch coverage review, or a named property owner who performs the documented handoff and returns dated evidence;
 - a named data steward, mailbox administrator, release owner, and rollback backup;
 - a documented prayer escalation and mailbox-cleanup practice;
-- rights verification for every asset in the shipping asset ledger;
+- exact parity between every shipped image, font, SVG, or code-defined artwork and a complete rights-reviewed shipping-ledger row; an unlisted shipped asset or stale ledger row fails release;
 - access to the named physical Android performance device or an approved slower replacement.
 
 If these are not available at first preview, adapters run in verified no-send/test mode and the preview visibly identifies forms as test-only to authorized reviewers. Production forms never display a success state without real provider acceptance.
