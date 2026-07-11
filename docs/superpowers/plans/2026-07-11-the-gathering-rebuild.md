@@ -14,6 +14,8 @@
 
 **Verified production ancestor:** `492ee8d41d`
 
+**External-agent handoffs:** [`Claude foundation/forms`](../handoffs/2026-07-11-claude-foundation-forms-handoff.md) and [`Grok experience/release`](../handoffs/2026-07-11-grok-experience-release-handoff.md). Run one phase at a time on this branch; never run the two agents concurrently against the same worktree.
+
 ## Global Constraints
 
 - Preserve the existing GitHub-to-Vercel project, canonical `https://www.thelioncompany.org` host, Wix DNS ownership, GA4 property, verified Subsplash giving destination, and verified Printify destination.
