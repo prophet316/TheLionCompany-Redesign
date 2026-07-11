@@ -1,14 +1,39 @@
+import { LiveStatus } from "@/components/client/live-status";
 import { JsonLd } from "@/components/server/json-ld";
 import { PageIntro } from "@/components/server/page-intro";
 import { liveSchedule, recentReplay } from "@/content/live";
-import { getDestination } from "@/lib/content";
+import { activeReplayAt } from "@/lib/live/status";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, webPageSchema } from "@/lib/seo/schema";
 
-const description = "Find The Lion Company's daily TikTok teaching and the honest current or next live state when a schedule has been verified.";
+const description = "Find the current verified TikTok teaching state, recent replay, and an honest daily-live fallback.";
+
 export const metadata = createPageMetadata({ title: "Daily live teaching", description, path: "/live" });
 
 export default function LivePage() {
-  const tiktok = getDestination("tiktok");
-  return <><JsonLd id="live-schema" data={[webPageSchema({ path: "/live", title: "Daily live teaching", description }), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Live", path: "/live" }])]} /><PageIntro eyebrow="Daily discipleship" title="Live daily on TikTok"><p>The ministry has not published a verified exact time for today, so this page will not invent a countdown or claim to be live.</p><a className="button" href={tiktok.href}>See today&apos;s live on TikTok</a></PageIntro><section className="section shell" aria-live="polite"><h2>Current schedule</h2>{liveSchedule ? <p>A verified schedule record is available and the client status island will derive its display state from that record.</p> : <p>Follow the verified TikTok profile for the current start time and notification controls.</p>}{recentReplay ? <p><a href={recentReplay.url}>{recentReplay.title}</a></p> : <p>No unexpired replay has been verified for this page.</p>}</section></>;
+  const buildActiveReplay = activeReplayAt(recentReplay);
+  return (
+    <>
+      <JsonLd
+        id="live-schema"
+        data={[
+          webPageSchema({ path: "/live", title: "Daily live teaching", description }),
+          breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Live", path: "/live" }]),
+        ]}
+      />
+      <PageIntro
+        eyebrow="Daily discipleship"
+        title="Live daily on TikTok"
+        description="The page begins with the evergreen truth and upgrades only from a validated schedule record."
+      />
+      <section className="section shell" aria-labelledby="live-status-title">
+        <h2 id="live-status-title">Today’s verified state</h2>
+        <LiveStatus schedule={liveSchedule} replay={buildActiveReplay} placement="live-page" />
+      </section>
+      <section className="section shell" aria-labelledby="live-reminder-title">
+        <h2 id="live-reminder-title">Get a reminder from TikTok</h2>
+        <p>This site does not send live-alert notifications. Follow <a href="https://www.tiktok.com/@thelioncompanytx">@thelioncompanytx on TikTok</a>, then use TikTok’s Following settings to enable LIVE notifications. TikTok controls delivery and may change the exact setting label.</p>
+      </section>
+    </>
+  );
 }
