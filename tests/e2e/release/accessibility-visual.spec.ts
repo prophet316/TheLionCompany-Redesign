@@ -19,7 +19,7 @@ for (const path of INDEXABLE_SMOKE_ROUTES) {
   });
 }
 
-test("320 CSS pixel reflow proxy for 400% browser zoom retains one horizontal viewport", async ({ page }) => {
+test("320 CSS pixels retain one horizontal viewport", async ({ page }) => {
   test.setTimeout(90_000);
   await page.addInitScript(() => {
     localStorage.setItem("tlc:analytics-consent:v1", JSON.stringify({
@@ -35,6 +35,41 @@ test("320 CSS pixel reflow proxy for 400% browser zoom retains one horizontal vi
     await expectNoHorizontalOverflow(page);
     await expect(page.locator("main")).toBeVisible();
   }
+});
+
+test("Chromium 400% emulation maps a 1280px reference to a 320 CSS pixel reflow viewport", async ({ page, browserName }) => {
+  test.skip(browserName !== "chromium", "Chromium DevTools device-metrics proof; all engines run the 320 CSS pixel reflow test.");
+  const session = await page.context().newCDPSession(page);
+  await session.send("Emulation.setDeviceMetricsOverride", {
+    width: 320,
+    height: 225,
+    screenWidth: 1280,
+    screenHeight: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+    scale: 4,
+  });
+  await page.addInitScript(() => {
+    localStorage.setItem("tlc:analytics-consent:v1", JSON.stringify({
+      state: "denied",
+      version: 1,
+      decidedAt: new Date().toISOString(),
+    }));
+  });
+
+  for (const path of ["/", "/prayer", "/connect", "/teachings"]) {
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+    const metrics = await page.evaluate(() => ({
+      screenWidth: screen.width,
+      innerWidth,
+      clientWidth: document.documentElement.clientWidth,
+    }));
+    expect(metrics).toEqual({ screenWidth: 1280, innerWidth: 320, clientWidth: 320 });
+    await expectNoHorizontalOverflow(page);
+    await expect(page.locator("main")).toBeVisible();
+  }
+
+  await session.send("Emulation.clearDeviceMetricsOverride");
 });
 
 test("increased text spacing and forced colors keep controls visible", async ({ page }) => {
