@@ -1,0 +1,17 @@
+.form { display: grid; gap: .75rem; width: 100%; max-width: 42rem; }
+.fields { display: grid; gap: .75rem; min-inline-size: 0; padding: 0; margin: 0; border: 0; }
+.form input, .form select, .form textarea, .form button { font: inherit; }
+.form input, .form select, .form textarea { width: 100%; min-height: 2.75rem; padding: .75rem; border: 1px solid currentColor; border-radius: .25rem; background: var(--surface, #f4eddf); color: var(--ink, #251c25); }
+.form textarea { resize: vertical; }
+.form button { min-height: 2.75rem; padding: .75rem 1rem; border: 0; border-radius: 999px; cursor: pointer; }
+.form button:disabled { cursor: not-allowed; opacity: .55; }
+.form :focus-visible { outline: 3px solid var(--accent, #a84f3f); outline-offset: 3px; }
+.checkbox { display: grid; grid-template-columns: 1.5rem 1fr; gap: .625rem; align-items: start; }
+.checkbox input { width: 1.5rem; min-height: 1.5rem; margin: 0; }
+.environment { padding: .75rem; border-inline-start: .25rem solid var(--accent, #a84f3f); }
+.errorSummary { display: grid; gap: .5rem; padding: 1rem; border: 2px solid #8d1b1b; }
+.errorSummary a { color: inherit; text-decoration-thickness: .12em; }
+.fieldError { margin: -.5rem 0 0; color: #8d1b1b; font-weight: 650; }
+.honeypot { position: absolute !important; inline-size: 1px !important; block-size: 1px !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
+@media (max-width: 20rem) { .form { gap: .625rem; } .form input, .form select, .form textarea, .form button { max-width: 100%; } }
+@media (forced-colors: active) { .form :focus-visible { outline: 3px solid Highlight; } .errorSummary { border-color: CanvasText; } }
