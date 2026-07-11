@@ -1,0 +1,53 @@
+.library {
+  width: min(calc(100% - 2rem), var(--measure-wide));
+  padding-block-end: var(--space-8);
+  margin-inline: auto;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-block: 1px solid var(--line);
+}
+
+.controls label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: var(--step--1);
+  font-weight: 800;
+}
+
+.controls input,
+.controls select {
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--paper-raised);
+}
+
+.status {
+  color: var(--ink-soft);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.empty {
+  padding: var(--space-7);
+  text-align: center;
+}
+
+@media (max-width: 58rem) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 38rem) {
+  .controls,
+  .grid { grid-template-columns: 1fr; }
+}

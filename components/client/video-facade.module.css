@@ -1,0 +1,46 @@
+.facade,
+.frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-large);
+  background: var(--ink);
+}
+
+.facade {
+  position: relative;
+  cursor: pointer;
+}
+
+.facade > img { object-fit: cover; }
+
+.facade::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(36 21 31 / 0.55), transparent 65%);
+  content: "";
+}
+
+.facade span {
+  position: absolute;
+  z-index: 1;
+  inset: auto auto var(--space-4) var(--space-4);
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.unavailable {
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-large);
+}
