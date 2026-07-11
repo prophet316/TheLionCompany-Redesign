@@ -1,4 +1,6 @@
 import type { NextConfig } from "next";
+import { legacyRouteLedger } from "./config/redirects";
+import { toNextRedirects } from "./lib/redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -7,6 +9,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+  },
+  async redirects() {
+    return toNextRedirects(legacyRouteLedger);
   },
 };
 
