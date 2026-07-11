@@ -1,68 +1,72 @@
 import Link from "next/link";
+import { GatheringLine } from "@/components/client/gathering-line";
+import { NewsletterForm } from "@/components/client/forms/newsletter-form";
+import { PrayerForm } from "@/components/client/forms/prayer-form";
+import { ConnectionNetwork } from "@/components/server/home/connection-network";
+import { FinalInvitation } from "@/components/server/home/final-invitation";
+import { Hero } from "@/components/server/home/hero";
+import { ParticipationPaths } from "@/components/server/home/participation-paths";
+import { TopicFinder } from "@/components/server/home/topic-finder";
+import { WatchListen } from "@/components/server/home/watch-listen";
 import { JsonLd } from "@/components/server/json-ld";
-import { podcastFallback } from "@/content/podcast-fallback";
+import { destinationRegistry } from "@/content/destinations";
+import { liveSchedule, recentReplay } from "@/content/live";
 import { siteContent } from "@/content/site";
 import { teachings } from "@/content/teachings";
-import { getDestination } from "@/lib/content";
+import { topicDefinitions } from "@/content/topics";
+import { activeReplayAt } from "@/lib/live/status";
+import { getTeachingReviewBundle } from "@/lib/media/transcripts.server";
+import { getPublishedPodcastEpisodes } from "@/lib/media/podcast-feed";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { organizationSchema, webPageSchema, websiteSchema } from "@/lib/seo/schema";
+import styles from "@/components/server/home/home.module.css";
 
-export const metadata = createPageMetadata({ title: siteContent.homeTitle, description: siteContent.homeDescription, path: "/" });
+export const metadata = createPageMetadata({
+  title: siteContent.homeTitle,
+  description: siteContent.homeDescription,
+  path: "/",
+});
 
 export default function HomePage() {
-  const featured = teachings.filter((item) => item.featured);
-  const latestPodcast = podcastFallback[0];
+  const featuredBase = teachings.find((teaching) => teaching.featured) ?? teachings[0];
+  if (!featuredBase) throw new Error("The homepage requires one validated teaching");
+  const featured = getTeachingReviewBundle(featuredBase).teaching;
+  const episodes = getPublishedPodcastEpisodes();
+  const buildActiveReplay = activeReplayAt(recentReplay);
   return (
     <>
       <JsonLd id="home-identity" data={[organizationSchema(), websiteSchema(), webPageSchema({ path: "/", title: siteContent.homeTitle, description: siteContent.homeDescription })]} />
-      <section className="section shell" aria-labelledby="home-title">
-        <p className="eyebrow">Seen → Gathered → Formed → Sent</p>
-        <h1 id="home-title">{siteContent.foundationalQuote}</h1>
-        <p>Many lives. One center: Jesus. Come participate, not merely consume.</p>
-        <div className="cluster"><a className="button" href={getDestination("tiktok").href}>Join today&apos;s live</a><Link className="button" data-variant="quiet" href="/start-here">Start here</Link></div>
+      <div id="home-journey" className={styles.journey}>
+        <GatheringLine rootId="home-journey" />
+      <Hero schedule={liveSchedule} replay={buildActiveReplay} />
+      <ParticipationPaths />
+      <section className={"section " + styles.manifesto} id="mission" aria-labelledby="manifesto-title" data-manifesto>
+        <p className={styles.eyebrow}>Gathered around Jesus</p>
+        <h2 id="manifesto-title">The life we practice together.</h2>
+        <ol>
+          <li data-reveal-mask><h3>Love is the beginning.</h3><p>We learn to look like Jesus by receiving and giving his love.</p></li>
+          <li data-reveal-mask><h3>Relationship is the place.</h3><p>Formation happens among people who are willing to know and be known.</p></li>
+          <li data-reveal-mask><h3>Discipleship is the way.</h3><p>We practice truth until it becomes a lived witness.</p></li>
+          <li data-reveal-mask><h3>Education equips the work.</h3><p>Clear teaching helps the whole body grow toward unity.</p></li>
+        </ol>
       </section>
-
-      <section className="section shell" aria-labelledby="participate-title">
-        <p className="eyebrow">A place to participate</p><h2 id="participate-title">Bring your whole life toward Jesus.</h2>
-        <ul><li><Link href="/teachings">Watch a teaching</Link></li><li><Link href="/prayer">Ask for prayer</Link></li><li><Link href="/start-here">Grow in relationship</Link></li><li><Link href="/give">Support the mission</Link></li></ul>
+      <TopicFinder topics={topicDefinitions} teachings={teachings} />
+      <WatchListen featured={featured} latestEpisode={episodes[0]} />
+      <section className={"section " + styles.prayer} id="prayer">
+        <div><p className={styles.eyebrow}>Prayer</p><h2>You do not have to carry it alone.</h2><p>A restricted ministry prayer team receives your request. This form is not continuously monitored or an emergency service.</p><Link href="/prayer">Open the private prayer page</Link></div>
+        <PrayerForm placement="home" />
       </section>
-
-      <section id="mission" className="section shell" aria-labelledby="mission-title">
-        <p className="eyebrow">Gathered around Jesus</p><h2 id="mission-title">{siteContent.missionHeading}</h2><p>{siteContent.missionStatement}</p>
-        {siteContent.pillars.map((pillar) => <article key={pillar.title}><h3>{pillar.title}</h3><p>{pillar.body}</p></article>)}
-        <Link href="/start-here">Read the story and practices</Link>
+      <ConnectionNetwork channels={destinationRegistry} />
+      <section className={"section " + styles.store} id="store">
+        <div><p className={styles.eyebrow}>Wear the vision</p><h2>Carry a visible reminder of unity.</h2><p>Explore real Lion Company merchandise and the story behind it.</p></div>
+        <Link href="/store">Visit the editorial store page</Link>
       </section>
-
-      <section id="podcast" className="section shell" aria-labelledby="podcast-title">
-        <p className="eyebrow">Listen</p><h2 id="podcast-title">The Lion Company Podcast</h2><h3>{latestPodcast.title}</h3><p>{latestPodcast.description}</p>
-        <div className="cluster"><Link href={`/podcast/${latestPodcast.slug}`}>Read episode notes</Link><Link href="/podcast">Explore every episode</Link></div>
+      <section className={"section " + styles.newsletter} id="newsletter">
+        <div><p className={styles.eyebrow}>Monthly field notes</p><h2>One thoughtful letter each month.</h2><p>Teaching, current live guidance, resources, podcast releases, and ministry updates. Confirmation is required.</p></div>
+        <NewsletterForm placement="inline" />
       </section>
-
-      <section id="media" className="section shell" aria-labelledby="media-title">
-        <p className="eyebrow">Watch and learn</p><h2 id="media-title">Teachings for what you are carrying</h2>
-        {featured.map((teaching) => <article key={teaching.slug}><h3><Link href={`/teachings/${teaching.slug}`}>{teaching.title}</Link></h3><p>{teaching.summary}</p></article>)}
-        <div className="cluster"><Link href="/teachings">Browse the teaching library</Link><a href={getDestination("youtube").href}>Explore hundreds of teachings on YouTube</a></div>
-      </section>
-
-      <section id="prayer" className="section shell" aria-labelledby="prayer-title">
-        <p className="eyebrow">You do not have to carry it alone</p><h2 id="prayer-title">How can we pray with you?</h2><p>Your request can be anonymous. The dedicated prayer page explains who receives it, how it is handled, and how to request follow-up separately.</p><Link href="/prayer">Share a private prayer request</Link>
-      </section>
-
-      <section id="store" className="section shell" aria-labelledby="store-title">
-        <p className="eyebrow">Wear the vision</p><h2 id="store-title">Carry the conversation into everyday life.</h2><p>Explore real Lion Company merchandise and the complete catalog through the ministry&apos;s Printify store.</p><Link href="/store">Visit the store story</Link>
-      </section>
-
-      <section id="contact" className="section shell" aria-labelledby="contact-title">
-        <p className="eyebrow">Connection network</p><h2 id="contact-title">Choose the channel that fits the conversation.</h2><p>Find daily live teaching, long-form video, podcast listening, ministry updates, speaking and partnership inquiries, and a general contact path.</p><Link href="/connect">See every way to connect</Link>
-      </section>
-
-      <section id="newsletter" className="section shell" aria-labelledby="newsletter-title">
-        <p className="eyebrow">Monthly field notes</p><h2 id="newsletter-title">One thoughtful letter each month.</h2><p>Receive one monthly teaching, the current live schedule, new resources and podcast releases, ministry updates, and occasional store or support news.</p><Link href="/connect#newsletter">Join with double opt-in</Link>
-      </section>
-
-      <section className="section shell" aria-labelledby="final-title">
-        <h2 id="final-title">What is your next faithful step?</h2><div className="cluster"><Link href="/teachings">Begin with a teaching</Link><Link href="/prayer">Submit a prayer request</Link><Link href="/connect#newsletter">Join the monthly letter</Link><Link href="/give">Support the mission</Link></div>
-      </section>
+        <FinalInvitation />
+      </div>
     </>
   );
 }

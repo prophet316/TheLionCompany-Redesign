@@ -1,0 +1,85 @@
+.journey {
+  position: relative;
+  min-height: 100%;
+  isolation: isolate;
+}
+
+.hero,
+.participation,
+.topics,
+.watchListen,
+.network,
+.final,
+.manifesto,
+.prayer,
+.newsletter,
+.store {
+  width: min(calc(100% - 2rem), var(--measure-wide));
+  margin-inline: auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.7fr);
+  gap: var(--space-6);
+  min-height: calc(100svh - 4.5rem);
+  align-items: center;
+  padding-block: var(--space-7);
+}
+
+.heroCopy h1 {
+  max-width: 15ch;
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+}
+
+.heroCopy > p:not(.eyebrow) { max-width: 42rem; color: var(--ink-soft); }
+.heroVisual { position: relative; display: grid; gap: var(--space-3); align-content: end; overflow: clip; border-radius: var(--radius-large); }
+.heroVisual > img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 36%; filter: saturate(0.72) contrast(1.06); }
+.eyebrow { color: var(--clay-dark); font-size: var(--step--1); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.participation > header, .topics > h2, .watchListen > header, .network > h2, .final > h2, .manifesto > h2 { max-width: 18ch; font-family: var(--font-display); font-size: var(--step-3); font-weight: 400; line-height: 0.98; }
+.pathGrid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(13rem, auto); gap: var(--space-3); }
+.path { position: relative; display: grid; align-content: end; padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-large); background: var(--paper-raised); }
+.pathWide { grid-column: span 2; }
+.pathTall { grid-row: span 2; background: var(--ink); color: var(--paper-raised); }
+.path h3 { font-family: var(--font-display); font-size: var(--step-2); font-weight: 400; }
+.path h3 a::after { position: absolute; inset: 0; content: ""; }
+.topics > div { display: grid; grid-template-columns: repeat(2, 1fr); }
+.topics > div a { display: grid; gap: 0.25rem; min-height: 8rem; align-content: center; padding: var(--space-4); border-block-start: 1px solid var(--line); text-decoration: none; }
+.topics strong { font-family: var(--font-display); font-size: var(--step-1); font-weight: 400; }
+.mediaGrid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
+.mediaGrid h3, .network h3 { font-family: var(--font-display); font-size: var(--step-2); font-weight: 400; }
+.podcastFeature { display: grid; align-content: end; padding: var(--space-5); border-radius: var(--radius-large); background: var(--ink); color: var(--paper-raised); }
+.network > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.network article { padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-large); }
+.final { text-align: center; }
+.final h2 { margin-inline: auto; }
+.final nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+.final nav a { padding: 0.75rem 1rem; border-bottom: 2px solid var(--clay); text-decoration: none; }
+.manifesto { min-height: 100svh; text-align: center; }
+.manifesto ol { display: grid; gap: 25vh; padding: 20vh 0; list-style: none; }
+.manifesto li { max-width: 38rem; margin-inline: auto; }
+.manifesto li h3 { font-family: var(--font-display); font-size: var(--step-3); font-weight: 400; }
+.prayer, .newsletter, .store { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+
+@media (max-width: 64rem) {
+  .hero, .mediaGrid, .prayer, .newsletter, .store { grid-template-columns: 1fr; }
+  .hero { min-height: auto; }
+  .network > div { grid-template-columns: repeat(2, 1fr); }
+  .manifesto ol { gap: var(--space-7); padding: var(--space-6) 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVisual { transform: none !important; }
+  .manifesto li { clip-path: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+@media (max-width: 42rem) {
+  .pathGrid, .topics > div, .network > div { grid-template-columns: 1fr; }
+  .pathWide { grid-column: auto; }
+  .pathTall { grid-row: auto; }
+}
