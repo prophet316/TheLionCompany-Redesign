@@ -77,7 +77,9 @@ export function AnalyticsProvider({
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
+    // Hydrate after mount so SSR and the first client paint stay denied-by-default.
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is client-only
       setConsentState(readConsent(localStorage.getItem(CONSENT_KEY)));
     } catch {
       setConsentState("unknown");

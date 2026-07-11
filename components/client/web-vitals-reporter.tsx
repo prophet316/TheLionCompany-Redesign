@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useReportWebVitals } from "next/web-vitals";
 import { useAnalytics } from "./analytics-provider";
@@ -11,7 +11,10 @@ export function WebVitalsReporter() {
   const pathname = usePathname();
   const { track } = useAnalytics();
   const current = useRef({ pathname, track });
-  current.current = { pathname, track };
+
+  useEffect(() => {
+    current.current = { pathname, track };
+  }, [pathname, track]);
 
   const report = useCallback<Reporter>((metric) => {
     const state = current.current;
