@@ -8,7 +8,7 @@ describe("project contract", () => {
     expect(packageJson.dependencies.next).toBe("16.2.10");
     expect(packageJson.dependencies.react).toBe("19.2.7");
     expect(packageJson.devDependencies.typescript).toBe("5.9.3");
-    expect(packageJson.scripts.build).toBe("next build --webpack");
+    expect(packageJson.scripts.build).toBe("node scripts/build-with-csp.mjs");
   });
 
   it("enables sha256 SRI without static export mode", () => {

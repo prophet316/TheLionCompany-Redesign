@@ -10,3 +10,5 @@ output/playwright/
 !.env.example
 .DS_Store
 *.tsbuildinfo
+config/.generated-csp-hashes.json
+.private-release-evidence/

@@ -83,7 +83,9 @@ describe("form components", () => {
     fireEvent.click(screen.getByLabelText(/send me the monthly field notes/i));
     await completeSecurity();
     fireEvent.submit(screen.getByRole("form", { name: /monthly field notes/i }));
-    expect(await screen.findByRole("heading", { name: /preview test accepted/i })).toHaveFocus();
+    await waitFor(() =>
+      expect(screen.getByRole("heading", { name: /preview test accepted/i })).toHaveFocus(),
+    );
     expect(onAccepted).toHaveBeenCalledTimes(1);
   });
 
@@ -103,7 +105,9 @@ describe("form components", () => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(email).toBeDisabled();
     resolveFetch(acceptedResponse({ body: String(vi.mocked(fetch).mock.calls[0]?.[1]?.body ?? "{}") }));
-    expect(await screen.findByRole("heading", { name: /preview test accepted/i })).toHaveFocus();
+    await waitFor(() =>
+      expect(screen.getByRole("heading", { name: /preview test accepted/i })).toHaveFocus(),
+    );
   });
 
   it("never treats malformed success JSON or a non-202 response as acceptance", async () => {
