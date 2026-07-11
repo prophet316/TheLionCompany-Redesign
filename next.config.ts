@@ -4,6 +4,7 @@ import { toNextRedirects } from "./lib/redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingRoot: process.cwd(),
   experimental: {
     sri: { algorithm: "sha256" },
   },

@@ -13,6 +13,7 @@ describe("project contract", () => {
 
   it("enables sha256 SRI without static export mode", () => {
     expect(nextConfig.experimental?.sri?.algorithm).toBe("sha256");
+    expect(nextConfig.outputFileTracingRoot).toBe(process.cwd());
     expect(nextConfig).not.toHaveProperty("output");
   });
 });
