@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { INDEXABLE_SMOKE_ROUTES, seedProtectedDeploymentCookie } from "../support/release-helpers";
+import { INDEXABLE_SMOKE_ROUTES, seedProtectedDeploymentCookie, denyAnalytics } from "../support/release-helpers";
 
 test.beforeEach(async ({ context }) => seedProtectedDeploymentCookie(context));
 
@@ -32,8 +32,13 @@ test("required routes emit no CSP violation, uncaught error, or failed first-par
   page.on("console", (message) => { if (message.type() === "error") consoleErrors.push(message.text()); });
   page.on("pageerror", (error) => pageErrors.push(error.name));
   page.on("requestfailed", (request) => {
+    const url = new URL(request.url());
     const failure = request.failure()?.errorText ?? "unknown";
-    if (new URL(request.url()).origin === baseOrigin && failure !== "net::ERR_ABORTED") {
+    const expectedNextNavigationAbort = failure === "net::ERR_ABORTED" && (
+      url.searchParams.has("_rsc") ||
+      (request.resourceType() === "script" && url.pathname.startsWith("/_next/static/chunks/"))
+    );
+    if (url.origin === baseOrigin && !expectedNextNavigationAbort) {
       failedFirstParty.push(`${request.url()}:${failure}`);
     }
   });
@@ -42,7 +47,8 @@ test("required routes emit no CSP violation, uncaught error, or failed first-par
     // client activity (consent/analytics hooks), so networkidle is not reliable.
     await page.goto(path, { waitUntil: "domcontentloaded" });
     await page.waitForLoadState("load");
-    await page.waitForTimeout(100);
+    await expect(page.locator("main")).toBeVisible();
+    await denyAnalytics(page);
   }
   expect(cspViolations).toEqual([]);
   expect(consoleErrors).toEqual([]);

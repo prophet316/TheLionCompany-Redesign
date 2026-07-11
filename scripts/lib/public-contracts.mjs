@@ -263,7 +263,7 @@ export async function checkPublicContracts(options) {
     manualChallenges,
   };
   if (options.evidenceDir) {
-    await mkdir(options.evidenceDir, { recursive: true });
+    await mkdir(options.evidenceDir, { recursive: true, mode: 0o700 });
     await writeFile(resolve(options.evidenceDir, `public-contracts-${options.mode}.json`), `${JSON.stringify(result, null, 2)}\n`, { mode: 0o600 });
   }
   return result;
