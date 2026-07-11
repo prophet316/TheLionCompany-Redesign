@@ -15,20 +15,16 @@ describe("curated teaching manifest", () => {
     expect(getTeachingBySlug("heart-over-hammer")?.youtubeId).toBe("zP4ZiKek3Lg");
   });
 
-  it("enables no manifest seed and exactly one hash-bound, fully reviewed text alternative", () => {
+  it("keeps the teaching direct-link-only until hash-bound human review exists", () => {
     expect(teachings.filter(isTeachingEmbeddable)).toHaveLength(0);
     const base = getTeachingBySlug("when-gods-will-doesnt-go-your-way")!;
     const reviewed = getTeachingReviewBundle(base);
-    expect(isTeachingEmbeddable(reviewed.teaching)).toBe(true);
-    expect(reviewed.transcript?.trim().split(/\s+/).length).toBeGreaterThan(1_000);
-    expect(reviewed.evidence).toMatchObject({
-      youtubeId: "TOj6tefx3rI",
-      sourceWatchUrl: "https://www.youtube.com/watch?v=TOj6tefx3rI",
-      sourceDurationSeconds: 2223,
-      reviewMethod: "complete-listen-through",
-      decision: "approved-complete-text-alternative",
-    });
-    expect(reviewed.evidence?.reviewer.trim().length).toBeGreaterThan(1);
+    expect(isTeachingEmbeddable(reviewed.teaching)).toBe(false);
+    expect(reviewed.teaching.captionsVerified).toBe(false);
+    expect(reviewed.teaching.transcriptUrl).toBeNull();
+    expect(reviewed.transcript).toBeUndefined();
+    expect(reviewed.evidence).toBeUndefined();
+    expect(readFileSync("content/transcripts/when-gods-will-doesnt-go-your-way.txt", "utf8").trim().split(/\s+/).length).toBeGreaterThan(1_000);
   });
 
   it("ships one first-party ledgered poster for every teaching", () => {

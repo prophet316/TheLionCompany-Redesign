@@ -16,6 +16,7 @@
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps",
     "check:assets": "node scripts/check-asset-ledger.mjs",
+    "check:transcript-review": "node scripts/check-transcript-review.mjs",
     "refresh:podcast": "tsx scripts/refresh-podcast-snapshot.ts",
     "refresh:teaching-posters": "tsx scripts/refresh-teaching-posters.ts",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"

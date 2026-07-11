@@ -39,6 +39,8 @@ If the preceding dependency is absent, do not improvise around it. Report the mi
 
 You may prepare the caption-derived transcript and the review tooling, but you may not self-attest the required authorized-human complete listen-through. Keep the teaching player ineligible until a human has reviewed all 2,223 seconds and the structured evidence record is identity/date/decision/SHA-256 bound to the exact corrected transcript. Do not invent a reviewer or mark the gate complete from word count, captions, or AI review. Continue every other safe Foundation task; report the exact human action still required.
 
+The ordinary unit/build/browser gate proves the ineligible direct-link fallback and must pass with an empty evidence array. `npm run check:transcript-review` is the separate fail-closed human release/homepage gate. Its pending state does not block safe Experience Tasks 1–6 or Forms Tasks 1–6, but it blocks Experience Tasks 7–8 and release.
+
 ## Completion report
 
 At the end of each Claude phase, output only:

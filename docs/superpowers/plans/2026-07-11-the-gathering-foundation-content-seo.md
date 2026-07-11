@@ -1412,20 +1412,20 @@ Implement `scripts/refresh-teaching-posters.ts` with the same `--check`/`--write
 
 Create `docs/content-evidence.md` with dated source rows for each claim that controls rendering: the verified ministry channel, each teaching ID/title, poster ownership, captions state, complete transcript/text-equivalent URL, podcast snapshot source, and Jonathan and Gina's public hosting/leadership evidence. Do not add a nonprofit/legal-status row unless authoritative current evidence is actually supplied. Prose in this document never enables a player: only a strict record in `content/evidence/teaching-transcript-reviews.json` whose identity, dates, review decision, and transcript SHA-256 pass `getTeachingReviewBundle` can derive `captionsVerified: true`. At least one featured teaching must meet that rule before the homepage facade can ship; otherwise the facade remains a direct YouTube action and the unresolved launch requirement blocks completion rather than being invented.
 
-Run: `npm run refresh:teaching-posters -- --check && npm run refresh:podcast -- --check && npm run check:assets && npm run test:unit -- tests/unit/media-content.test.ts`
+Run: `npm run refresh:teaching-posters -- --check && npm run refresh:podcast -- --check && npm run check:assets && npm run test:unit -- tests/unit/media-content.test.ts && npm run check:transcript-review`
 
-Expected: all 32 local poster files match the manifest and ledger; the current checked-in podcast snapshot matches the normalized feed at refresh time; neither check writes files. Any later episode requires `npm run refresh:podcast -- --write`, a reviewed diff, tests, and a new deployment before it is public.
+Expected: all 32 local poster files match the manifest and ledger; the current checked-in podcast snapshot matches the normalized feed at refresh time; neither refresh check writes files. The media unit test passes by proving the selected teaching is safely direct-link-only while evidence is absent. `npm run check:transcript-review` exits non-zero with `authorized-human transcript review is pending` until the real complete listen-through is recorded. That explicit failure is a release/homepage gate, not a blocker to Experience Tasks 1–6 or Forms Tasks 1–6. Any later episode requires `npm run refresh:podcast -- --write`, a reviewed diff, tests, and a new deployment before it is public.
 
 - [ ] **Step 7: Run media, content, type, lint, and build checks**
 
 Run: `npm run test:unit -- tests/unit/media-content.test.ts tests/unit/content-domain.test.ts && npm run typecheck && npm run lint && npm run build`
 
-Expected: all commands exit 0; tests report 32 unique teachings, six represented topics, two parsed fixture episodes, one fully evidenced embeddable featured teaching, 32 first-party posters, and a seven-item checked-in public podcast snapshot. The production build performs no Podcast RSS fetch and every public media route is prerendered from Git content.
+Expected: all commands exit 0; tests report 32 unique teachings, six represented topics, two parsed fixture episodes, the selected teaching safely ineligible/direct-link-only while human evidence is pending, 32 first-party posters, and a seven-item checked-in public podcast snapshot. The production build performs no Podcast RSS fetch and every public media route is prerendered from Git content. A fully evidenced embeddable featured teaching is required separately by `npm run check:transcript-review` before Experience Tasks 7–8 or release.
 
 - [ ] **Step 8: Commit the media content layer**
 
 ```bash
-git add package.json package-lock.json content/teachings.ts content/transcripts content/evidence content/podcast-fallback.ts lib/content/index.ts lib/media scripts/record-transcript-review.mjs scripts/refresh-podcast-snapshot.ts scripts/refresh-teaching-posters.ts public/images/teachings docs/asset-ledger.csv docs/content-evidence.md tests/fixtures/podbean-feed.xml tests/unit/media-content.test.ts
+git add package.json package-lock.json content/teachings.ts content/transcripts content/evidence content/podcast-fallback.ts lib/content/index.ts lib/media scripts/check-transcript-review.mjs scripts/check-transcript-review.d.mts scripts/record-transcript-review.mjs scripts/refresh-podcast-snapshot.ts scripts/refresh-teaching-posters.ts public/images/teachings docs/asset-ledger.csv docs/content-evidence.md tests/fixtures/podbean-feed.xml tests/unit/media-content.test.ts tests/unit/transcript-review-gate.test.ts
 git commit -m "feat: migrate teaching and podcast content"
 ```
 
@@ -2567,6 +2567,8 @@ test("archive details are crawlable and do not embed inaccessible media", async 
 Run: `npm run test:unit && npm run check:assets && npm run typecheck && npm run lint && npm run build && npx playwright install chromium && PLAYWRIGHT_SERVER_COMMAND='npm run start' npx playwright test tests/e2e/foundation.spec.ts --project=chromium`
 
 Expected: every command exits 0; production build remains webpack/SRI-based; Chromium proves the canonical, fragments, valid JSON-LD, one-hop 308, branded 410, real 404, preview crawl block, sitemap, manifest, Open Graph image, and transcript-gated media behavior.
+
+Separately run `npm run check:transcript-review`. It must fail closed while the authorized-human evidence array is empty. Record that exact open gate in the handoff; it blocks the homepage featured-player phase and release, but it does not invalidate this safe Foundation code gate or block Experience Tasks 1–6.
 
 - [ ] **Step 7: Inspect build output for static-route and budget regressions**
 

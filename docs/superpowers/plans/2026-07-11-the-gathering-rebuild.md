@@ -53,11 +53,13 @@ Required phase evidence:
 
 - deterministic Next.js production build;
 - all 32 teaching records and matching ledgered local posters;
-- the one approved featured teaching remains ineligible until an authorized human has listened through all 2,223 seconds, corrected and approved the complete first-party transcript, and the structured review record is identity/date/decision/SHA-256 bound to that exact file;
+- the one approved featured teaching remains ineligible and direct-link-only until an authorized human has listened through all 2,223 seconds, corrected and approved the complete first-party transcript, and the structured review record is identity/date/decision/SHA-256 bound to that exact file;
 - the existing 1024×573 production lion image is copied, hash-verified, ledgered, and reserved for one homepage use before the legacy root is removed;
 - public podcast rendering uses only the checked-in snapshot with `dynamicParams = false`;
 - `/start-here` contains evidenced mission, story, practices, cautious public-leadership facts, voluntary-support explanation, and organizational-transparency paths without invented facts;
 - redirects, 410s, canonical resources, schema, sitemap, robots, manifest, icons, and real 404 behavior pass.
+
+The Foundation code gate must pass while the evidence array is empty by proving the safe direct-link fallback. `npm run check:transcript-review` is a separate human release/homepage gate and is expected to fail closed until the authorized review exists. That pending human action does not block Experience Tasks 1–6 or Forms Tasks 1–6; it does block Experience Tasks 7–8, the homepage featured-player composition, and every release phase.
 
 ### Phase 2: Complete experience Tasks 1–6
 

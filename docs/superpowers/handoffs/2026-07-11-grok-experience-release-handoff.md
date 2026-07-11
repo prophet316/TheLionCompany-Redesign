@@ -19,8 +19,8 @@ Use the pinned versions, interfaces, tests, commands, evidence boundaries, and t
 
 Determine the next authorized Grok phase from current Git history and execute only that phase:
 
-1. **Grok A — Experience Tasks 1–6.** Start only after Claude has completed Foundation Tasks 1–8 and its integrated gate. Complete Experience Tasks 1–6 and stop.
-2. **Grok B — Experience Tasks 7–8.** Start only after Claude has completed Forms Tasks 1–6. Complete Experience Tasks 7–8 and stop.
+1. **Grok A — Experience Tasks 1–6.** Start only after Foundation Tasks 1–8 pass their code, asset, build, and browser gates with the selected teaching safely ineligible/direct-link-only. `npm run check:transcript-review` may still report the explicit authorized-human pending state. Complete Experience Tasks 1–6 and stop.
+2. **Grok B — Experience Tasks 7–8.** Start only after Claude has completed Forms Tasks 1–6 **and** `npm run check:transcript-review` exits 0. The homepage featured-player composition must not begin while that human gate is pending. Complete Experience Tasks 7–8 and stop.
 3. **Grok C — Experience Task 9.** Start only after Claude has completed Forms Task 7. Complete Experience Task 9 and stop.
 4. **Grok D — Verification Tasks 1–7.** Start only after Claude has completed Forms Task 8. Implement and verify the complete local/Preview-safe release system, but do not create a staged Production deployment or promote anything without a fresh, explicit owner authorization. Stop at the first authorization boundary.
 
