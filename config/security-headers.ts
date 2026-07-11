@@ -8,7 +8,7 @@ export type CspHashManifest = {
 
 type HeaderRule = { source: string; headers: Header[] };
 
-function csp(hashes: readonly string[]): string {
+function csp(hashes: readonly string[], production: boolean): string {
   return [
     "default-src 'self'",
     "base-uri 'self'",
@@ -24,7 +24,7 @@ function csp(hashes: readonly string[]): string {
     "media-src 'self'",
     "worker-src 'self' blob:",
     "manifest-src 'self'",
-    "upgrade-insecure-requests",
+    ...(production ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
 }
 
@@ -40,7 +40,7 @@ export function securityHeaders(input: {
       key: input.production
         ? "Content-Security-Policy"
         : "Content-Security-Policy-Report-Only",
-      value: csp(input.hashes),
+      value: csp(input.hashes, input.production),
     },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

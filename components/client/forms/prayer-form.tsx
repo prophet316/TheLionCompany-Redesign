@@ -51,8 +51,7 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
         });
       }}
     >
-      <p>Your request goes to a restricted ministry mailbox. You may remain anonymous.</p>
-      <p>This inbox is not continuously monitored and is not an emergency service. If you are in immediate danger, contact local emergency services now.</p>
+      <p>This inbox is not continuously monitored and is not an emergency service. If you or someone else is in immediate danger, contact local emergency services now.</p>
       <FormEnvironmentNotice mode={publicFormConfig.deliveryMode} />
       <FormFeedback state={machine.state} formRef={formRef} />
       <fieldset className={styles.fields} disabled={machine.locked}>

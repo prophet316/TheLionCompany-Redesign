@@ -58,6 +58,25 @@ describe("legal and newsletter utility routes", () => {
     expect(prayer).toContain("PrayerForm");
     expect(prayer).toContain('placement="prayer"');
     expect(prayer).toContain("restricted ministry mailbox");
-    expect(prayer).toContain("local emergency services");
+    expect(prayer).toContain("published retention schedule");
+  });
+
+  it("keeps prayer retention on the page and privacy/emergency language only on the form", async () => {
+    const page = await source("app/prayer/page.tsx");
+    const form = await source("components/client/forms/prayer-form.tsx");
+
+    // Page owns the single retention / mailbox statement.
+    expect(page).toContain("restricted ministry mailbox");
+    expect(page).toContain("published retention schedule");
+    expect(page).not.toContain("not an emergency service");
+    expect(page).not.toContain("local emergency services");
+
+    // Form owns the single privacy / emergency statement (not weakened).
+    expect(form).toContain("not continuously monitored");
+    expect(form).toContain("not an emergency service");
+    expect(form).toContain("local emergency services");
+    expect(form).toContain("If you or someone else is in immediate danger");
+    expect(form).not.toContain("restricted ministry mailbox");
+    expect(form).not.toContain("published retention schedule");
   });
 });

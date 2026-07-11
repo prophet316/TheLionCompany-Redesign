@@ -13,6 +13,7 @@ describe("security headers", () => {
   it("uses report-only CSP on preview without HSTS", () => {
     const headers = map(securityHeaders({ production: false, hashes: ["'sha256-testhash='"] }));
     expect(headers.has("Content-Security-Policy-Report-Only")).toBe(true);
+    expect(headers.get("Content-Security-Policy-Report-Only")).not.toContain("upgrade-insecure-requests");
     expect(headers.has("Content-Security-Policy")).toBe(false);
     expect(headers.has("Strict-Transport-Security")).toBe(false);
   });

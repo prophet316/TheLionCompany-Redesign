@@ -24,7 +24,6 @@ export default function PrayerPage() {
       <section className="section shell" aria-labelledby="prayer-form-title">
         <h2 id="prayer-form-title">Send a private prayer request</h2>
         <p>Your request goes to a restricted ministry mailbox and is handled under the published retention schedule.</p>
-        <p>This inbox is not continuously monitored and is not an emergency service. If you or someone else is in immediate danger, contact local emergency services now.</p>
         <PrayerForm placement="prayer" />
       </section>
     </>
