@@ -141,6 +141,21 @@ export function PromptController() {
     }).catch(() => setShown(null));
   }, [exitIntent, inactiveMs, pathname, progress, record, sectionVisibleMs, shown, visibleMs]);
 
+  useEffect(() => {
+    if (!shown) return;
+    const closeBehindExpandedUi = () => {
+      if (document.querySelector('[aria-expanded="true"]')) setShown(null);
+    };
+    const observer = new MutationObserver(closeBehindExpandedUi);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["aria-expanded"],
+      subtree: true,
+    });
+    queueMicrotask(closeBehindExpandedUi);
+    return () => observer.disconnect();
+  }, [shown]);
+
   if (!shown) return null;
   return (
     <PromptInvitation

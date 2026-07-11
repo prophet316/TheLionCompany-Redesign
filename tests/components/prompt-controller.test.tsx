@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AnalyticsProvider } from "@/components/client/analytics-provider";
@@ -58,5 +58,27 @@ describe("PromptController", () => {
       await Promise.resolve();
     });
     expect(screen.getByRole("complementary", { name: /monthly field notes/i })).toBeVisible();
+  });
+
+  it("unmounts an eligible invitation when another disclosure expands", async () => {
+    render(
+      <AnalyticsProvider enabled={false}>
+        <button type="button" aria-expanded="false">Menu</button>
+        <PromptController />
+      </AnalyticsProvider>,
+    );
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(60_000);
+    });
+    expect(screen.getByRole("complementary", { name: /monthly field notes/i })).toBeVisible();
+
+    const menu = screen.getByRole("button", { name: "Menu" });
+    menu.setAttribute("aria-expanded", "true");
+    fireEvent.click(menu);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(screen.queryByRole("complementary")).not.toBeInTheDocument();
   });
 });
