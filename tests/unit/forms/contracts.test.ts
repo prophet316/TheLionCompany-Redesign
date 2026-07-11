@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getServerEnv } from "../../../lib/env";
 import {
   contactSchema,
@@ -24,6 +25,10 @@ const base = {
 } as const;
 
 describe("form contracts", () => {
+  it("uses Zod's CSP-safe parser path in the browser bundle", () => {
+    expect(z.config().jitless).toBe(true);
+  });
+
   it("normalizes newsletter email and optional name", () => {
     const value = newsletterSchema.parse({
       submissionId: "9a7449c2-6a48-4970-92ea-6919a22e7f55",
