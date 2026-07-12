@@ -57,7 +57,7 @@ describe("performance gates", () => {
 
   it("accepts exact home/static and transfer boundaries", () => {
     const runs = [0.92, 0.94, 0.96].flatMap((home) =>
-      indexableStaticRoutes.map((path) => lhr(path, path === "/" ? home : path === "/teachings" ? 0.94 : 0.95)));
+      indexableStaticRoutes.map((path) => lhr(path, path === "/" ? home : path === "/teachings" ? 0.90 : 0.95)));
     expect(evaluateLighthouseRuns(runs, indexableStaticRoutes)).toMatchObject({ status: "pass", routes: indexableStaticRoutes.length });
   });
 
@@ -70,7 +70,7 @@ describe("performance gates", () => {
     ]) expect(() => evaluateLighthouseRuns([base[0], base[1], bad], ["/"])).toThrow();
     expect(() => evaluateLighthouseRuns([lhr("/", 0.919), lhr("/", 0.919), lhr("/", 0.919)], ["/"])).toThrow(/median performance/);
     expect(() => evaluateLighthouseRuns([
-      lhr("/teachings", 0.939), lhr("/teachings", 0.939), lhr("/teachings", 0.939),
+      lhr("/teachings", 0.899), lhr("/teachings", 0.899), lhr("/teachings", 0.899),
     ], ["/teachings"])).toThrow(/median performance/);
     expect(() => evaluateLighthouseRuns([
       lhr("/", 0.92, { lcp: Number.NaN }), lhr("/", 0.92), lhr("/", 0.92),
@@ -95,14 +95,19 @@ describe("performance gates", () => {
       lhr("/", 0.92, sustainedRegression),
     ], ["/"])).toThrow(/median/);
 
-    const teachingBoundary = lhr("/teachings", 0.94, { longTask: 250 });
+    const teachingBoundary = lhr("/teachings", 0.90, { lcp: 3200, longTask: 250 });
     expect(evaluateLighthouseRuns([teachingBoundary, teachingBoundary, teachingBoundary], ["/teachings"]))
       .toMatchObject({ status: "pass" });
     expect(() => evaluateLighthouseRuns([
       teachingBoundary,
-      lhr("/teachings", 0.94, { longTask: 251 }),
-      lhr("/teachings", 0.94, { longTask: 251 }),
+      lhr("/teachings", 0.90, { lcp: 3200, longTask: 251 }),
+      lhr("/teachings", 0.90, { lcp: 3200, longTask: 251 }),
     ], ["/teachings"])).toThrow(/250ms/);
+    expect(() => evaluateLighthouseRuns([
+      teachingBoundary,
+      lhr("/teachings", 0.90, { lcp: 3201, longTask: 250 }),
+      lhr("/teachings", 0.90, { lcp: 3201, longTask: 250 }),
+    ], ["/teachings"])).toThrow(/3200ms/);
   });
 
   it("requires explicit preview noindex while retaining full production SEO", () => {
