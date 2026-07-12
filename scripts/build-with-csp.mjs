@@ -1,11 +1,12 @@
 import { createHash } from "node:crypto";
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const root = process.cwd();
 const output = resolve(root, ".next/server/app");
 const manifest = resolve(root, "config/.generated-csp-hashes.json");
+const maxStabilizationBuilds = 4;
 
 async function files(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -67,14 +68,19 @@ function build(phase) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
+await rm(manifest, { force: true });
 build("discover");
-const discovered = await collectManifest();
-if (Object.keys(discovered.routes).length === 0 || discovered.fallback.length === 0) {
+let expected = await collectManifest();
+if (Object.keys(expected.routes).length === 0 || expected.fallback.length === 0) {
   throw new Error("route-specific inline scripts were not discovered");
 }
-await writeFile(manifest, `${JSON.stringify(discovered, null, 2)}\n`, "utf8");
-build("final");
-const finalManifest = await collectManifest();
-if (JSON.stringify(finalManifest) !== JSON.stringify(discovered)) {
-  throw new Error("final inline scripts differ from discovered CSP hashes");
+
+for (let attempt = 1; attempt <= maxStabilizationBuilds; attempt += 1) {
+  await writeFile(manifest, `${JSON.stringify(expected, null, 2)}\n`, "utf8");
+  build("final");
+  const actual = await collectManifest();
+  if (JSON.stringify(actual) === JSON.stringify(expected)) process.exit(0);
+  expected = actual;
 }
+
+throw new Error(`CSP hashes did not stabilize after ${maxStabilizationBuilds} final builds`);
