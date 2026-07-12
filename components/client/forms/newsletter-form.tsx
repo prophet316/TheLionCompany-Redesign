@@ -78,8 +78,9 @@ export function NewsletterForm(props: NewsletterFormProps): ReactElement {
       <FormEnvironmentNotice mode={publicFormConfig.deliveryMode} />
       <FormFeedback state={machine.state} formRef={formRef} />
       <fieldset className={styles.fields} disabled={machine.locked}>
+      <legend className="sr-only">Monthly field notes signup</legend>
       <label htmlFor={ids.firstName}>First name <span>(optional)</span></label>
-      <input id={ids.firstName} name="firstName" autoComplete="given-name" maxLength={80} {...fieldErrorProps(machine.state, "firstName", ids.firstNameError)} />
+      <input id={ids.firstName} name="firstName" type="text" autoComplete="given-name" maxLength={80} {...fieldErrorProps(machine.state, "firstName", ids.firstNameError)} />
       <FieldError state={machine.state} name="firstName" id={ids.firstNameError} />
       <label htmlFor={ids.email}>Email address</label>
       <input id={ids.email} name="email" type="email" autoComplete="email" required maxLength={254} {...fieldErrorProps(machine.state, "email", ids.emailError)} />
@@ -90,7 +91,7 @@ export function NewsletterForm(props: NewsletterFormProps): ReactElement {
       </label>
       <FieldError state={machine.state} name="consent" id={ids.consentError} />
       <label className={styles.honeypot} aria-hidden="true">
-        Website<input name="website" tabIndex={-1} autoComplete="off" />
+        Website<input name="website" type="text" tabIndex={-1} autoComplete="off" />
       </label>
       <TurnstileField action="newsletter_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Request confirmation email</button>

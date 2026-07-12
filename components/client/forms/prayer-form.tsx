@@ -61,8 +61,9 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
       <FormEnvironmentNotice mode={publicFormConfig.deliveryMode} />
       <FormFeedback state={machine.state} formRef={formRef} />
       <fieldset className={styles.fields} disabled={machine.locked}>
+      <legend className="sr-only">Prayer request details</legend>
       <label htmlFor={ids.displayName}>Name <span>(optional)</span></label>
-      <input id={ids.displayName} name="displayName" autoComplete="name" maxLength={80} {...fieldErrorProps(machine.state, "displayName", ids.displayNameError)} />
+      <input id={ids.displayName} name="displayName" type="text" autoComplete="name" maxLength={80} {...fieldErrorProps(machine.state, "displayName", ids.displayNameError)} />
       <FieldError state={machine.state} name="displayName" id={ids.displayNameError} />
       <label htmlFor={ids.email}>Email address <span>(required only for follow-up)</span></label>
       <input id={ids.email} name="email" type="email" autoComplete="email" required={followUp} maxLength={254} {...fieldErrorProps(machine.state, "email", ids.emailError)} />
@@ -82,7 +83,7 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
         />
         I would like a ministry responder to follow up by email.
       </label>
-      <label className={styles.honeypot} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+      <label className={styles.honeypot} aria-hidden="true">Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
       <TurnstileField action="prayer_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Send private request</button>
       </fieldset>

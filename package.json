@@ -20,7 +20,7 @@
     "refresh:podcast": "tsx scripts/refresh-podcast-snapshot.ts",
     "refresh:teaching-posters": "tsx scripts/refresh-teaching-posters.ts",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
-    "check:html": "html-validate \".next/server/app/**/*.html\"",
+    "check:html": "html-validate --config htmlvalidate.config.mjs \".next/server/app/**/*.html\"",
     "check:public": "tsx scripts/check-public-contracts.mjs",
     "check:static-media": "tsx scripts/check-static-media-architecture.mjs",
     "check:pii": "node scripts/check-pii-canaries.mjs",

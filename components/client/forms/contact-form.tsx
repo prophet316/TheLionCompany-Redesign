@@ -81,8 +81,9 @@ export function ContactForm(props: ContactFormProps): ReactElement {
       <FormEnvironmentNotice mode={publicFormConfig.deliveryMode} />
       <FormFeedback state={machine.state} formRef={formRef} />
       <fieldset className={styles.fields} disabled={machine.locked}>
+      <legend className="sr-only">Contact message details</legend>
       <label htmlFor={ids.name}>Name</label>
-      <input id={ids.name} name="name" autoComplete="name" required maxLength={80} {...fieldErrorProps(machine.state, "name", ids.nameError)} />
+      <input id={ids.name} name="name" type="text" autoComplete="name" required maxLength={80} {...fieldErrorProps(machine.state, "name", ids.nameError)} />
       <FieldError state={machine.state} name="name" id={ids.nameError} />
       <label htmlFor={ids.email}>Email address</label>
       <input id={ids.email} name="email" type="email" autoComplete="email" required maxLength={254} {...fieldErrorProps(machine.state, "email", ids.emailError)} />
@@ -106,7 +107,7 @@ export function ContactForm(props: ContactFormProps): ReactElement {
       <label htmlFor={ids.message}>Message</label>
       <textarea id={ids.message} name="message" minLength={20} maxLength={4000} required rows={8} {...fieldErrorProps(machine.state, "message", ids.messageError)} />
       <FieldError state={machine.state} name="message" id={ids.messageError} />
-      <label className={styles.honeypot} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+      <label className={styles.honeypot} aria-hidden="true">Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
       <TurnstileField action="contact_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Send message</button>
       </fieldset>
