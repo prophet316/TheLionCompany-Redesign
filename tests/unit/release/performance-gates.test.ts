@@ -61,19 +61,36 @@ describe("performance gates", () => {
     expect(evaluateLighthouseRuns(runs, indexableStaticRoutes)).toMatchObject({ status: "pass", routes: indexableStaticRoutes.length });
   });
 
-  it("rejects one-point metric, category, transfer, request, and long-task regressions", () => {
+  it("rejects one-point category, transfer, image, and request regressions in every run", () => {
     const base = [lhr("/", 0.92), lhr("/", 0.92), lhr("/", 0.92)];
     for (const bad of [
-      lhr("/", 0.92, { lcp: 2501 }), lhr("/", 0.92, { cls: 0.051 }),
-      lhr("/", 0.92, { tbt: 201 }), lhr("/", 0.92, { script: 180 * 1024 + 1 }),
+      lhr("/", 0.92, { script: 180 * 1024 + 1 }),
       lhr("/", 0.92, { stylesheet: 60 * 1024 + 1 }), lhr("/", 0.92, { total: 1.5 * 1024 * 1024 + 1 }),
       lhr("/", 0.92, { requests: 61 }), lhr("/", 0.92, { largestImage: 300 * 1024 + 1 }),
-      lhr("/", 0.92, { longTask: 201 }),
     ]) expect(() => evaluateLighthouseRuns([base[0], base[1], bad], ["/"])).toThrow();
     expect(() => evaluateLighthouseRuns([lhr("/", 0.919), lhr("/", 0.919), lhr("/", 0.919)], ["/"])).toThrow(/median performance/);
     expect(() => evaluateLighthouseRuns([
       lhr("/", 0.92, { lcp: Number.NaN }), lhr("/", 0.92), lhr("/", 0.92),
     ], ["/"])).toThrow(/finite number/);
+  });
+
+  it("uses the median for noisy field timings while rejecting a sustained regression", () => {
+    const healthy = lhr("/", 0.92);
+    for (const isolatedOutlier of [
+      lhr("/", 0.92, { lcp: 9000 }),
+      lhr("/", 0.92, { cls: 0.5 }),
+      lhr("/", 0.92, { tbt: 3000 }),
+      lhr("/", 0.92, { longTask: 3000 }),
+    ]) expect(evaluateLighthouseRuns([healthy, healthy, isolatedOutlier], ["/"])).toMatchObject({ status: "pass" });
+
+    const sustainedRegressions: Array<Record<string, number>> = [
+      { lcp: 2501 }, { cls: 0.051 }, { tbt: 201 }, { longTask: 201 },
+    ];
+    for (const sustainedRegression of sustainedRegressions) expect(() => evaluateLighthouseRuns([
+      healthy,
+      lhr("/", 0.92, sustainedRegression),
+      lhr("/", 0.92, sustainedRegression),
+    ], ["/"])).toThrow(/median/);
   });
 
   it("requires explicit preview noindex while retaining full production SEO", () => {

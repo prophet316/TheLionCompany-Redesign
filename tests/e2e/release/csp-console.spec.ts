@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { INDEXABLE_SMOKE_ROUTES, seedProtectedDeploymentCookie, denyAnalytics } from "../support/release-helpers";
 import {
+  isExpectedNextNavigationAbort,
   isExpectedPreviewCspDiagnostic,
   isExpectedWebKitNavigationDiagnostic,
 } from "@/lib/release/browser-diagnostics";
@@ -48,11 +49,7 @@ test("required routes emit no CSP violation, uncaught error, or failed first-par
   page.on("requestfailed", (request) => {
     const url = new URL(request.url());
     const failure = request.failure()?.errorText ?? "unknown";
-    const expectedNextNavigationAbort = failure === "net::ERR_ABORTED" && (
-      url.searchParams.has("_rsc") ||
-      request.resourceType() === "image" ||
-      (request.resourceType() === "script" && url.pathname.startsWith("/_next/static/chunks/"))
-    );
+    const expectedNextNavigationAbort = isExpectedNextNavigationAbort(failure, request.resourceType(), url);
     if (url.origin === baseOrigin && !expectedNextNavigationAbort) {
       failedFirstParty.push(`${request.url()}:${failure}`);
     }

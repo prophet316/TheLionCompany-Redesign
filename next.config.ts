@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   outputFileTracingRoot: process.cwd(),
   experimental: {
+    inlineCss: true,
     sri: { algorithm: "sha256" },
   },
   images: {
