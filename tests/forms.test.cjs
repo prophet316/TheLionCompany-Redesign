@@ -36,14 +36,11 @@ test('rejects requests from an unrelated origin', async () => {
     assert.equal(response.statusCode, 403);
 });
 
-test('allows The Lion Company Vercel preview origins', async () => {
-    global.fetch = async () => ({ ok: true, status: 200, json: async () => ({ success: 'true' }) });
-    const response = await run({
-        type: 'prayer',
-        firstName: 'Preview',
-        email: 'preview@example.com',
-        message: 'Preview verification'
-    }, { origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app' });
+test('allows newsletter storage from The Lion Company Vercel preview origins', async () => {
+    global.fetch = async () => ({ ok: true, status: 200, json: async () => ({ id: 'contact-id' }) });
+    const response = await run({ type: 'newsletter', email: 'preview@example.com' }, {
+        origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app'
+    });
     assert.equal(response.statusCode, 200);
 });
 
@@ -52,7 +49,7 @@ test('validates newsletter email addresses', async () => {
     assert.equal(response.statusCode, 400);
 });
 
-test('saves a newsletter contact and emails Jonathan', async () => {
+test('saves a newsletter contact in Resend', async () => {
     const requests = [];
     global.fetch = async (url, options) => {
         requests.push({ url, body: JSON.parse(options.body) });
@@ -63,18 +60,10 @@ test('saves a newsletter contact and emails Jonathan', async () => {
     assert.equal(response.statusCode, 200);
     assert.equal(requests[0].url, 'https://api.resend.com/contacts');
     assert.equal(requests[0].body.email, 'reader@example.com');
-    assert.match(requests[1].url, /^https:\/\/formsubmit\.co\/ajax\//);
-    assert.equal(requests[1].body.email, 'reader@example.com');
-    assert.match(requests[1].body._subject, /Newsletter Signup/);
+    assert.equal(requests.length, 1);
 });
 
-test('emails a complete prayer request without adding a contact', async () => {
-    const requests = [];
-    global.fetch = async (url, options) => {
-        requests.push({ url, body: JSON.parse(options.body) });
-        return { ok: true, status: 200, json: async () => ({ id: 'test-id' }) };
-    };
-
+test('rejects non-newsletter requests at the storage endpoint', async () => {
     const response = await run({
         type: 'prayer',
         firstName: 'Grace',
@@ -84,11 +73,7 @@ test('emails a complete prayer request without adding a contact', async () => {
         message: 'Please pray for my family.'
     });
 
-    assert.equal(response.statusCode, 200);
-    assert.equal(requests.length, 1);
-    assert.match(requests[0].url, /^https:\/\/formsubmit\.co\/ajax\//);
-    assert.equal(requests[0].body.prayer_request, 'Please pray for my family.');
-    assert.equal(requests[0].body.email, 'grace@example.com');
+    assert.equal(response.statusCode, 400);
 });
 
 test('quietly accepts a filled honeypot without calling Resend', async () => {

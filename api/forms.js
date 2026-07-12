@@ -1,4 +1,3 @@
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/4315c946d999e45eb1e9db1e14403180';
 const ALLOWED_ORIGINS = new Set([
     'https://thelioncompany.org',
     'https://www.thelioncompany.org',
@@ -25,16 +24,6 @@ function validEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
 }
 
-function escapeHtml(value) {
-    return value.replace(/[&<>"']/g, (character) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    })[character]);
-}
-
 async function resendRequest(path, apiKey, method, body) {
     const response = await fetch(`https://api.resend.com${path}`, {
         method,
@@ -47,35 +36,6 @@ async function resendRequest(path, apiKey, method, body) {
     });
     const result = await response.json().catch(() => ({}));
     return { ok: response.ok, status: response.status, result };
-}
-
-async function sendFormNotification(type, fields, notification) {
-    const fieldName = type === 'prayer' ? 'prayer_request' : 'message';
-    const payload = {
-        _subject: notification.subject,
-        _template: 'table',
-        _captcha: 'false',
-        submission_type: type === 'prayer' ? 'Prayer Request' : type === 'contact' ? 'Website Contact' : 'Newsletter Signup',
-        name: [fields.firstName, fields.lastName].filter(Boolean).join(' ') || 'Not provided',
-        email: fields.email,
-        phone: fields.phone || 'Not provided'
-    };
-    if (type !== 'newsletter') payload[fieldName] = fields.message;
-
-    const response = await fetch(FORMSUBMIT_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Origin: 'https://www.thelioncompany.org',
-            Referer: 'https://www.thelioncompany.org/'
-        },
-        body: JSON.stringify(payload)
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok || result.success === 'false' || result.success === false) {
-        throw new Error(`Unable to deliver notification (${response.status})`);
-    }
 }
 
 async function addNewsletterContact(email, apiKey) {
@@ -95,37 +55,6 @@ async function addNewsletterContact(email, apiKey) {
     }
 
     throw new Error(`Unable to save newsletter contact (${created.status})`);
-}
-
-function buildNotification(type, fields) {
-    const fullName = [fields.firstName, fields.lastName].filter(Boolean).join(' ') || 'Not provided';
-    const labels = type === 'prayer'
-        ? { subject: `New Prayer Request — ${fullName}`, heading: 'New prayer request', message: 'Prayer request' }
-        : type === 'contact'
-            ? { subject: `New Website Message — ${fullName}`, heading: 'New website message', message: 'Message' }
-            : { subject: 'New Newsletter Signup — The Lion Company Website', heading: 'New newsletter signup', message: null };
-
-    const lines = [
-        `Name: ${fullName}`,
-        `Email: ${fields.email}`,
-        fields.phone ? `Phone: ${fields.phone}` : null,
-        labels.message ? `\n${labels.message}:\n${fields.message}` : null
-    ].filter(Boolean);
-
-    const htmlRows = [
-        ['Name', fullName],
-        ['Email', fields.email],
-        fields.phone ? ['Phone', fields.phone] : null,
-        labels.message ? [labels.message, fields.message] : null
-    ].filter(Boolean).map(([label, value]) =>
-        `<tr><th align="left" style="padding:8px 12px;vertical-align:top">${escapeHtml(label)}</th><td style="padding:8px 12px;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`
-    ).join('');
-
-    return {
-        subject: labels.subject,
-        text: `${labels.heading}\n\n${lines.join('\n')}`,
-        html: `<h2>${escapeHtml(labels.heading)}</h2><table style="border-collapse:collapse">${htmlRows}</table>`
-    };
 }
 
 module.exports = async function handler(request, response) {
@@ -151,27 +80,20 @@ module.exports = async function handler(request, response) {
         message: clean(body.message, 10000)
     };
 
-    if (!['prayer', 'contact', 'newsletter'].includes(type)) {
+    if (type !== 'newsletter') {
         return sendJson(response, 400, { error: 'Invalid form type' });
     }
     if (!validEmail(fields.email)) {
         return sendJson(response, 400, { error: 'Please enter a valid email address' });
     }
-    if (type !== 'newsletter' && (!fields.firstName || !fields.message)) {
-        return sendJson(response, 400, { error: 'Please complete all required fields' });
-    }
-
     const apiKey = process.env.RESEND_API_KEY;
-    if (type === 'newsletter' && !apiKey) {
+    if (!apiKey) {
         console.error('RESEND_API_KEY is not configured');
         return sendJson(response, 503, { error: 'Newsletter service is not configured' });
     }
 
     try {
-        if (type === 'newsletter') await addNewsletterContact(fields.email, apiKey);
-
-        const notification = buildNotification(type, fields);
-        await sendFormNotification(type, fields, notification);
+        await addNewsletterContact(fields.email, apiKey);
 
         return sendJson(response, 200, { ok: true });
     } catch (error) {

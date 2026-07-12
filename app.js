@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initStoreLightbox();
 });
 
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/4315c946d999e45eb1e9db1e14403180';
+
 // Intersection Observer for scroll reveal animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -144,13 +146,49 @@ async function submitWebsiteForm(form, payload, successMessage) {
     }
 
     try {
-        const response = await fetch('/api/forms', {
+        if (payload.website) {
+            form.reset();
+            showFormFeedback(form, successMessage, 'success');
+            return;
+        }
+
+        // Newsletter addresses are saved privately in Resend before notification.
+        if (payload.type === 'newsletter') {
+            const listResponse = await fetch('/api/forms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const listResult = await listResponse.json().catch(() => ({}));
+            if (!listResponse.ok) throw new Error(listResult.error || 'Unable to save signup');
+        }
+
+        const notification = new FormData();
+        notification.append('_subject', payload.type === 'prayer'
+            ? `New Prayer Request — ${payload.firstName} ${payload.lastName}`.trim()
+            : payload.type === 'contact'
+                ? `New Website Message — ${payload.firstName} ${payload.lastName}`.trim()
+                : 'New Newsletter Signup — The Lion Company Website');
+        notification.append('_template', 'table');
+        notification.append('_captcha', 'false');
+        notification.append('submission_type', payload.type === 'prayer'
+            ? 'Prayer Request'
+            : payload.type === 'contact' ? 'Website Contact' : 'Newsletter Signup');
+        notification.append('name', [payload.firstName, payload.lastName].filter(Boolean).join(' ') || 'Not provided');
+        notification.append('email', payload.email);
+        notification.append('phone', payload.phone || 'Not provided');
+        if (payload.type === 'prayer') notification.append('prayer_request', payload.message);
+        if (payload.type === 'contact') notification.append('message', payload.message);
+
+        const deliveryResponse = await fetch(FORMSUBMIT_ENDPOINT, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            headers: { Accept: 'application/json' },
+            body: notification
         });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(result.error || 'Submission failed');
+        const deliveryResult = await deliveryResponse.json().catch(() => ({}));
+        if (!deliveryResponse.ok || deliveryResult.success === 'false' || deliveryResult.success === false) {
+            throw new Error(deliveryResult.message || 'Unable to deliver submission');
+        }
 
         form.reset();
         showFormFeedback(form, successMessage, 'success');
