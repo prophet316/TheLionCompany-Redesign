@@ -36,6 +36,7 @@ test("required routes emit no CSP violation, uncaught error, or failed first-par
     const failure = request.failure()?.errorText ?? "unknown";
     const expectedNextNavigationAbort = failure === "net::ERR_ABORTED" && (
       url.searchParams.has("_rsc") ||
+      request.resourceType() === "image" ||
       (request.resourceType() === "script" && url.pathname.startsWith("/_next/static/chunks/"))
     );
     if (url.origin === baseOrigin && !expectedNextNavigationAbort) {

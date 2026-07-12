@@ -76,6 +76,10 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.61.1-noble
+    env:
+      # GitHub mounts /github/home from the container image's pwuser account,
+      # while Actions executes the job as root. Firefox refuses that mismatch.
+      HOME: /root
     timeout-minutes: 30
     strategy:
       fail-fast: false
