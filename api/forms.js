@@ -5,6 +5,12 @@ const ALLOWED_ORIGINS = new Set([
     'https://the-lion-company-redesign.vercel.app'
 ]);
 
+function isAllowedOrigin(origin) {
+    return ALLOWED_ORIGINS.has(origin)
+        || /^https:\/\/the-lion-company-redesign-[a-z0-9-]+-prophet316s-projects\.vercel\.app$/.test(origin)
+        || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+}
+
 function sendJson(response, status, body) {
     response.status(status).setHeader('Content-Type', 'application/json');
     response.setHeader('Cache-Control', 'no-store');
@@ -129,7 +135,7 @@ module.exports = async function handler(request, response) {
     }
 
     const origin = request.headers.origin;
-    if (origin && !ALLOWED_ORIGINS.has(origin) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    if (origin && !isAllowedOrigin(origin)) {
         return sendJson(response, 403, { error: 'Invalid origin' });
     }
 

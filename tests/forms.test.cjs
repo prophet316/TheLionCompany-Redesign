@@ -36,6 +36,17 @@ test('rejects requests from an unrelated origin', async () => {
     assert.equal(response.statusCode, 403);
 });
 
+test('allows The Lion Company Vercel preview origins', async () => {
+    global.fetch = async () => ({ ok: true, status: 200, json: async () => ({ success: 'true' }) });
+    const response = await run({
+        type: 'prayer',
+        firstName: 'Preview',
+        email: 'preview@example.com',
+        message: 'Preview verification'
+    }, { origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app' });
+    assert.equal(response.statusCode, 200);
+});
+
 test('validates newsletter email addresses', async () => {
     const response = await run({ type: 'newsletter', email: 'not-an-email' });
     assert.equal(response.statusCode, 400);
