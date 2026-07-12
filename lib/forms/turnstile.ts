@@ -9,6 +9,8 @@ const responseSchema = z.object({
   "error-codes": z.array(z.string()).default([]),
 });
 
+const alwaysPassTestSecret = "1x0000000000000000000000000000000AA";
+
 export interface TurnstileVerifier {
   verify(input: {
     token: string;
@@ -26,6 +28,7 @@ export function createTurnstileVerifier(config: {
   fetcher?: typeof fetch;
 }): TurnstileVerifier {
   const fetcher = config.fetcher ?? fetch;
+  const usesAlwaysPassTestSecret = config.secret === alwaysPassTestSecret;
   return {
     async verify(input) {
       try {
@@ -50,9 +53,10 @@ export function createTurnstileVerifier(config: {
         }
         if (
           !parsed.data.success ||
-          !parsed.data.hostname ||
-          !config.hostnames.includes(parsed.data.hostname) ||
-          parsed.data.action !== input.action
+          (!usesAlwaysPassTestSecret &&
+            (!parsed.data.hostname ||
+              !config.hostnames.includes(parsed.data.hostname) ||
+              parsed.data.action !== input.action))
         ) {
           return { ok: false, code: "turnstile_failed" };
         }

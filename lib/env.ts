@@ -10,6 +10,18 @@ const optionalPositiveInt = z.preprocess(
   (value) => (value === "" || value === undefined ? undefined : Number(value)),
   z.number().int().positive().optional(),
 );
+const turnstileTestSiteKeys = new Set([
+  "1x00000000000000000000AA",
+  "2x00000000000000000000AB",
+  "1x00000000000000000000BB",
+  "2x00000000000000000000BB",
+  "3x00000000000000000000FF",
+]);
+const turnstileTestSecretKeys = new Set([
+  "1x0000000000000000000000000000000AA",
+  "2x0000000000000000000000000000000AA",
+  "3x0000000000000000000000000000000AA",
+]);
 const environmentSchema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
@@ -117,6 +129,13 @@ export function getServerEnv(source: NodeJS.ProcessEnv = process.env) {
   }
   if (value.VERCEL_ENV === "production" && value.FORM_DELIVERY_MODE !== "live") {
     throw new Error("production requires live form delivery");
+  }
+  if (
+    value.VERCEL_ENV === "production" &&
+    (turnstileTestSiteKeys.has(value.NEXT_PUBLIC_TURNSTILE_SITE_KEY) ||
+      turnstileTestSecretKeys.has(value.TURNSTILE_SECRET_KEY))
+  ) {
+    throw new Error("production cannot use Turnstile test credentials");
   }
   if (
     value.VERCEL_ENV === "production" &&

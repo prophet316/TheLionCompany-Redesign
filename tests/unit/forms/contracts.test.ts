@@ -24,6 +24,36 @@ const base = {
   BREVO_CONSENT_VERSION: "2026-07-11",
 } as const;
 
+const productionBase = {
+  ...base,
+  VERCEL_ENV: "production",
+  VERCEL_URL: "production-generated.vercel.app",
+  NEXT_PUBLIC_SITE_URL: "https://www.thelioncompany.org",
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: "production-turnstile-site-key-placeholder",
+  TURNSTILE_SECRET_KEY: "production-turnstile-secret-placeholder",
+  NEXT_PUBLIC_FORM_MODE: "live",
+  FORM_DELIVERY_MODE: "live",
+  FORM_ALLOWED_ORIGINS: "https://www.thelioncompany.org",
+  TURNSTILE_EXPECTED_HOSTNAMES: "www.thelioncompany.org",
+  UPSTASH_REDIS_REST_URL: "https://example.upstash.io",
+  UPSTASH_REDIS_REST_TOKEN: "scoped-token",
+  BREVO_API_KEY: "production-key-placeholder",
+  BREVO_NEWSLETTER_LIST_ID: "12",
+  BREVO_DOI_TEMPLATE_ID: "34",
+  BREVO_SENDER_EMAIL: "forms@thelioncompany.org",
+  BREVO_SENDER_NAME: "The Lion Company",
+  FORM_PRAYER_RECIPIENT: "prayer@thelioncompany.org",
+  FORM_CONTACT_RECIPIENT: "contact@thelioncompany.org",
+  MAILBOX_PROVIDER_PUBLIC_NAME: "Restricted mailbox provider",
+  MAILBOX_BACKUP_AND_DELETION_PUBLIC:
+    "Mailbox trash and provider backups complete final deletion within the verified provider window.",
+  BREVO_BACKUP_AND_DELETION_PUBLIC:
+    "Brevo deletion and backup expiry follow the verified account retention window.",
+  MARKETING_POSTAL_ADDRESS_VERIFIED: "true",
+  DATA_STEWARD_NAME: "Authorized steward",
+  MAILBOX_ADMIN_NAME: "Authorized administrator",
+} as const;
+
 describe("form contracts", () => {
   it("uses Zod's CSP-safe parser path in the browser bundle", () => {
     expect(z.config().jitless).toBe(true);
@@ -148,38 +178,24 @@ describe("server environment", () => {
   });
 
   it("never trusts the generated Vercel hostname as a production browser origin", () => {
-    const productionSource = {
-      ...base,
-      VERCEL_ENV: "production",
-      VERCEL_URL: "production-generated.vercel.app",
-      NEXT_PUBLIC_FORM_MODE: "live",
-      FORM_DELIVERY_MODE: "live",
-      FORM_ALLOWED_ORIGINS: "https://www.thelioncompany.org",
-      TURNSTILE_EXPECTED_HOSTNAMES: "www.thelioncompany.org",
-      UPSTASH_REDIS_REST_URL: "https://example.upstash.io",
-      UPSTASH_REDIS_REST_TOKEN: "scoped-token",
-      BREVO_API_KEY: "production-key-placeholder",
-      BREVO_NEWSLETTER_LIST_ID: "12",
-      BREVO_DOI_TEMPLATE_ID: "34",
-      BREVO_SENDER_EMAIL: "forms@thelioncompany.org",
-      BREVO_SENDER_NAME: "The Lion Company",
-      FORM_PRAYER_RECIPIENT: "prayer@thelioncompany.org",
-      FORM_CONTACT_RECIPIENT: "contact@thelioncompany.org",
-      MAILBOX_PROVIDER_PUBLIC_NAME: "Restricted mailbox provider",
-      MAILBOX_BACKUP_AND_DELETION_PUBLIC: "Mailbox trash and provider backups complete final deletion within the verified provider window.",
-      BREVO_BACKUP_AND_DELETION_PUBLIC: "Brevo deletion and backup expiry follow the verified account retention window.",
-      MARKETING_POSTAL_ADDRESS_VERIFIED: "true",
-      DATA_STEWARD_NAME: "Authorized steward",
-      MAILBOX_ADMIN_NAME: "Authorized administrator",
-    };
-    const env = getServerEnv(productionSource);
+    const env = getServerEnv(productionBase);
     expect(env.allowedOrigins).toEqual(["https://www.thelioncompany.org"]);
     expect(env.turnstileExpectedHostnames).toEqual(["www.thelioncompany.org"]);
     expect(() => getServerEnv({
-      ...productionSource,
+      ...productionBase,
       FORM_ALLOWED_ORIGINS: "https://www.thelioncompany.org,https://extra.example.org",
       TURNSTILE_EXPECTED_HOSTNAMES: "www.thelioncompany.org,extra.example.org",
     })).toThrow(/production forms allow only the canonical origin and hostname/);
+  });
+
+  it("rejects Cloudflare's public test credentials in production", () => {
+    expect(() =>
+      getServerEnv({
+        ...productionBase,
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA",
+        TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA",
+      }),
+    ).toThrow(/production cannot use Turnstile test credentials/);
   });
 
   it("rejects live delivery outside production", () => {

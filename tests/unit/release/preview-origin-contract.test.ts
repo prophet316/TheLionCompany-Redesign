@@ -42,6 +42,8 @@ describe("immutable preview Origin", () => {
       VERCEL_ENV: "production",
       VERCEL_URL: "the-lion-company-candidate-abc.vercel.app",
       NEXT_PUBLIC_SITE_URL: "https://www.thelioncompany.org",
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: "production-turnstile-site-key-placeholder",
+      TURNSTILE_SECRET_KEY: "production-turnstile-secret-placeholder",
       NEXT_PUBLIC_FORM_MODE: "live",
       FORM_DELIVERY_MODE: "live",
       FORM_ALLOWED_ORIGINS: "https://www.thelioncompany.org",

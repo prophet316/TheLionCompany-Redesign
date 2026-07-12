@@ -21,6 +21,45 @@ function verifier(response: object) {
 }
 
 describe("Turnstile verifier", () => {
+  it("accepts Cloudflare's documented always-pass response only with the test secret", async () => {
+    const fetcher = vi.fn(async () =>
+      Response.json({
+        success: true,
+        hostname: "localhost",
+        action: "test",
+        "error-codes": [],
+      }),
+    );
+    const testVerifier = createTurnstileVerifier({
+      secret: "1x0000000000000000000000000000000AA",
+      hostnames: ["preview.example.test"],
+      fetcher,
+    });
+
+    await expect(
+      testVerifier.verify({ token: "XXXX.DUMMY.TOKEN.XXXX", action: "prayer_submit", submissionId }),
+    ).resolves.toEqual({ ok: true });
+  });
+
+  it("accepts Cloudflare's live dummy response shape with the test secret", async () => {
+    const fetcher = vi.fn(async () =>
+      Response.json({
+        success: true,
+        hostname: "example.com",
+        "error-codes": [],
+      }),
+    );
+    const testVerifier = createTurnstileVerifier({
+      secret: "1x0000000000000000000000000000000AA",
+      hostnames: ["preview.example.test"],
+      fetcher,
+    });
+
+    await expect(
+      testVerifier.verify({ token: "XXXX.DUMMY.TOKEN.XXXX", action: "prayer_submit", submissionId }),
+    ).resolves.toEqual({ ok: true });
+  });
+
   it("sends no remote IP and validates action, hostname, and idempotency key", async () => {
     const fixture = verifier({
       success: true,
