@@ -4,7 +4,7 @@ name: quality
 on:
   pull_request:
   push:
-    branches: [main, codex/the-gathering-rebuild]
+    branches: [main]
 
 permissions:
   contents: read
