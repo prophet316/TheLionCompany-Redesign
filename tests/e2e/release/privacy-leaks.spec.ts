@@ -62,19 +62,18 @@ test("offline, timeout, and provider outage retain typed text and never announce
   // exact textbox role avoids the prayer form region, whose accessible name also contains "Prayer request"
   const request = form.getByRole("textbox", { name: "Prayer request", exact: true });
   const alert = form.getByRole("alert");
+  const submit = () => form.evaluate((element) => (element as HTMLFormElement).requestSubmit());
   await request.fill(canary.prayer);
-  await form.getByRole("button", { name: /send private request/i }).evaluate((button) => { (button as HTMLButtonElement).disabled = false; });
 
   await context.setOffline(true);
-  await form.getByRole("button", { name: /send private request/i }).click();
+  await submit();
   await expect(alert).toContainText(/network|connection/i);
   await expect(request).toHaveValue(canary.prayer);
   await context.setOffline(false);
 
   const timeoutHandler = (route: import("@playwright/test").Route) => route.abort("timedout");
   await page.route("**/api/forms/prayer", timeoutHandler);
-  await form.getByRole("button", { name: /send private request/i }).evaluate((button) => { (button as HTMLButtonElement).disabled = false; });
-  await form.getByRole("button", { name: /send private request/i }).click();
+  await submit();
   await expect(alert).toContainText(/network|connection/i);
   await expect(request).toHaveValue(canary.prayer);
   await page.unroute("**/api/forms/prayer", timeoutHandler);
@@ -85,8 +84,7 @@ test("offline, timeout, and provider outage retain typed text and never announce
       message: "We could not deliver this right now. Your text is still here; please try again.",
     }) });
   });
-  await form.getByRole("button", { name: /send private request/i }).evaluate((button) => { (button as HTMLButtonElement).disabled = false; });
-  await form.getByRole("button", { name: /send private request/i }).click();
+  await submit();
   await expect(alert).toContainText(/could not deliver/i);
   await expect(request).toHaveValue(canary.prayer);
   await expect(page.getByText(/was delivered/i)).toHaveCount(0);

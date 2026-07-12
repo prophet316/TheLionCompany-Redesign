@@ -20,7 +20,7 @@ export function TeachingCard({ teaching }: { readonly teaching: Teaching }) {
         ) : (
           <p>Archive teaching</p>
         )}
-        <h3><Link href={"/teachings/" + teaching.slug}>{teaching.title}</Link></h3>
+        <h3><Link href={"/teachings/" + teaching.slug} prefetch={false}>{teaching.title}</Link></h3>
         <p>{teaching.summary}</p>
       </div>
     </article>
