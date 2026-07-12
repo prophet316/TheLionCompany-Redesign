@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/server/site-header";
 import { siteContent } from "@/content/site";
 import "./globals.css";
 
-const display = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-instrument-serif", display: "optional", preload: false });
+const display = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-instrument-serif", display: "swap" });
 const production = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {

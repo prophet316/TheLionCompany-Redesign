@@ -1,5 +1,7 @@
 import packageJson from "../../package.json";
 import nextConfig from "../../next.config";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 describe("project contract", () => {
@@ -15,5 +17,12 @@ describe("project contract", () => {
     expect(nextConfig.experimental?.sri?.algorithm).toBe("sha256");
     expect(nextConfig.outputFileTracingRoot).toBe(process.cwd());
     expect(nextConfig).not.toHaveProperty("output");
+  });
+
+  it("preloads the intended display font instead of leaving typography to timing", () => {
+    const layout = readFileSync(resolve("app/layout.tsx"), "utf8");
+
+    expect(layout).toContain('display: "swap"');
+    expect(layout).not.toContain("preload: false");
   });
 });

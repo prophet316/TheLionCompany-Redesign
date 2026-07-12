@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import { coversCspManifest, mergeCspManifests } from "./lib/csp-manifest.mjs";
 
 const root = process.cwd();
 const output = resolve(root, ".next/server/app");
@@ -79,8 +80,8 @@ for (let attempt = 1; attempt <= maxStabilizationBuilds; attempt += 1) {
   await writeFile(manifest, `${JSON.stringify(expected, null, 2)}\n`, "utf8");
   build("final");
   const actual = await collectManifest();
-  if (JSON.stringify(actual) === JSON.stringify(expected)) process.exit(0);
-  expected = actual;
+  if (coversCspManifest(expected, actual)) process.exit(0);
+  expected = mergeCspManifests(expected, actual);
 }
 
 throw new Error(`CSP hashes did not stabilize after ${maxStabilizationBuilds} final builds`);
