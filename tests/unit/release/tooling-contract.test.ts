@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 const playwright = readFileSync("playwright.config.ts", "utf8");
 const workflow = readFileSync(".github/workflows/quality.yml", "utf8");
 const visualWorkflow = readFileSync(".github/workflows/visual-baselines.yml", "utf8");
+const candidateWorkflow = readFileSync(".github/workflows/release-candidate.yml", "utf8");
 
 describe("release tooling contract", () => {
   it("pins every verification dependency", () => {
@@ -61,5 +62,18 @@ describe("release tooling contract", () => {
     expect(visualWorkflow).toContain("playwright install --with-deps chromium");
     expect(visualWorkflow).toContain("--update-snapshots");
     expect(visualWorkflow).not.toContain("git push");
+  });
+
+  it("keeps staged-candidate verification read-only and binds both immutable deployments", () => {
+    expect(candidateWorkflow).toContain("workflow_dispatch");
+    expect(candidateWorkflow).toContain("permissions:\n  contents: read");
+    expect(candidateWorkflow).toContain("PREVIEW_QA_DEPLOYMENT_ID");
+    expect(candidateWorkflow).toContain("PREVIEW_QA_IMMUTABLE_URL");
+    expect(candidateWorkflow).toContain("RELEASE_MODE: staged-production");
+    expect(candidateWorkflow).toContain("npm run release:smoke");
+    expect(candidateWorkflow).toContain("npm run lighthouse:ci");
+    expect(candidateWorkflow.split("steps:")[0]).not.toContain("secrets.");
+    expect(candidateWorkflow).not.toMatch(/vercel(?:@\S+)?\s+(?:--prod|promote|rollback)/);
+    expect(candidateWorkflow).not.toContain("git push");
   });
 });
