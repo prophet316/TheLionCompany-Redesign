@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type ReactElement } from "react";
 import { useAnalytics } from "../analytics-provider";
-import { contactReasonSchema, type ContactReason } from "../../../lib/forms/contracts";
+import type { ContactReason } from "../../../lib/forms/contracts";
+import { isContactReason } from "../../../lib/forms/client-contracts";
 import { publicFormConfig } from "../../../lib/forms/public-config";
 import { FieldError, FormEnvironmentNotice, FormFeedback, fieldErrorProps } from "./form-feedback";
 import { TurnstileField } from "./turnstile-field";
@@ -40,6 +41,7 @@ export function ContactForm(props: ContactFormProps): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState("");
+  const [securityActive, setSecurityActive] = useState(false);
   useEffect(() => {
     if (machine.state.name === "accepted") successRef.current?.focus();
   }, [machine.state]);
@@ -52,7 +54,10 @@ export function ContactForm(props: ContactFormProps): ReactElement {
       className={`${styles.form} ${props.className ?? ""}`}
       aria-label="Contact The Lion Company"
       noValidate
+      onFocusCapture={() => setSecurityActive(true)}
+      onPointerDownCapture={() => setSecurityActive(true)}
       onInput={() => {
+        setSecurityActive(true);
         machine.markEdited();
         if (!started.current) {
           started.current = true;
@@ -88,8 +93,8 @@ export function ContactForm(props: ContactFormProps): ReactElement {
         name="reason"
         value={reason}
         onChange={(event) => {
-          const parsed = contactReasonSchema.safeParse(event.currentTarget.value);
-          if (parsed.success) setReason(parsed.data);
+          const candidate = event.currentTarget.value;
+          if (isContactReason(candidate)) setReason(candidate);
           machine.markEdited();
         }}
         {...fieldErrorProps(machine.state, "reason", ids.reasonError)}
@@ -102,7 +107,7 @@ export function ContactForm(props: ContactFormProps): ReactElement {
       <textarea id={ids.message} name="message" minLength={20} maxLength={4000} required rows={8} {...fieldErrorProps(machine.state, "message", ids.messageError)} />
       <FieldError state={machine.state} name="message" id={ids.messageError} />
       <label className={styles.honeypot} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-      <TurnstileField action="contact_submit" resetSignal={machine.resetSignal} onToken={setToken} />
+      <TurnstileField action="contact_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Send message</button>
       </fieldset>
       <noscript><p>JavaScript is required for the security check. No message text is placed in email or a URL.</p></noscript>

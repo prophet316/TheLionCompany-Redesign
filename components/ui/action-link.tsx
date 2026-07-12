@@ -20,5 +20,5 @@ export function ActionLink({ href, children, tone = "ink", external = false, cla
     return <TrackedLink className={classes} href={href} eventName="cta_click" eventProperties={tracking} {...(external ? { rel: "noreferrer", target: "_blank" } : {})}>{content}</TrackedLink>;
   }
   if (external) return <a className={classes} href={href} rel="noreferrer" target="_blank">{content}</a>;
-  return <Link className={classes} href={href}>{content}</Link>;
+  return <Link className={classes} href={href} prefetch={false}>{content}</Link>;
 }

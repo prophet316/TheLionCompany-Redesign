@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Instrument_Serif, Manrope } from "next/font/google";
+import { Instrument_Serif } from "next/font/google";
 import { ExperienceProviders } from "@/components/client/experience-providers";
 import { SiteFooter } from "@/components/server/site-footer";
 import { SiteHeader } from "@/components/server/site-header";
 import { siteContent } from "@/content/site";
 import "./globals.css";
 
-const display = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-instrument-serif", display: "swap" });
-const body = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const display = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-instrument-serif", display: "optional", preload: false });
 const production = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {
@@ -33,7 +32,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { readonly children: ReactNode }) {
   const analyticsEnabled = process.env.VERCEL_ENV === "production";
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={display.variable}>
       <body>
         <a className="skip-link" href="#main-content">
           Skip to main content

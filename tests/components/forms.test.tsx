@@ -55,10 +55,24 @@ afterEach(() => {
 });
 
 async function completeSecurity() {
+  if (!screen.queryByRole("button", { name: /complete security check/i })) {
+    await act(async () => {
+      fireEvent.focus(screen.getAllByRole("textbox")[0]);
+      await Promise.resolve();
+    });
+  }
   fireEvent.click(screen.getByRole("button", { name: /complete security check/i }));
 }
 
 describe("form components", () => {
+  it("does not load Turnstile before intentional form interaction", async () => {
+    render(<NewsletterForm placement="inline" />);
+    expect(screen.queryByRole("button", { name: /complete security check/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/security check loads when you begin/i)).toBeVisible();
+    fireEvent.focus(screen.getByLabelText(/email address/i));
+    expect(await screen.findByRole("button", { name: /complete security check/i })).toBeVisible();
+  });
+
   it("emits unique IDs when inline and prompt newsletter forms coexist", () => {
     const { container } = render(
       <>

@@ -15,7 +15,7 @@
   --success: #27634a;
   --danger: #8b2d2b;
   --font-display: var(--font-instrument-serif), Georgia, serif;
-  --font-body: var(--font-manrope), Arial, sans-serif;
+  --font-body: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
   --step--1: clamp(0.79rem, 0.76rem + 0.13vw, 0.88rem);
   --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.13rem);
   --step-1: clamp(1.25rem, 1.13rem + 0.6vw, 1.6rem);
@@ -61,7 +61,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--step-0);
   line-height: 1.65;
-  text-rendering: optimizeLegibility;
+  text-rendering: auto;
 }
 
 body::before {
@@ -76,6 +76,10 @@ body::before {
     repeating-radial-gradient(circle at 75% 65%, rgb(150 69 50 / 0.12) 0 0.35px, transparent 0.6px 4px);
   background-size: 11rem 13rem, 17rem 19rem;
   mix-blend-mode: multiply;
+}
+
+@media (max-width: 64rem) {
+  body::before { display: none; }
 }
 
 body[data-scroll-lock="true"] {

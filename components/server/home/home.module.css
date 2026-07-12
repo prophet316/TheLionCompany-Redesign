@@ -38,7 +38,7 @@
 
 .heroCopy > p:not(.eyebrow) { max-width: 42rem; color: var(--ink-soft); }
 .heroVisual { position: relative; display: grid; gap: var(--space-3); align-content: end; overflow: clip; border-radius: var(--radius-large); }
-.heroVisual > img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 36%; filter: saturate(0.72) contrast(1.06); }
+.heroVisual > img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 36%; }
 .eyebrow { color: var(--clay-dark); font-size: var(--step--1); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .participation > header, .topics > h2, .watchListen > header, .network > h2, .final > h2, .manifesto > h2 { max-width: 18ch; font-family: var(--font-display); font-size: var(--step-3); font-weight: 400; line-height: 0.98; }

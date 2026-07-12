@@ -25,6 +25,7 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
   const successRef = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState("");
   const [followUp, setFollowUp] = useState(false);
+  const [securityActive, setSecurityActive] = useState(false);
   useEffect(() => {
     if (machine.state.name === "accepted") successRef.current?.focus();
   }, [machine.state]);
@@ -37,7 +38,12 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
       className={`${styles.form} ${props.className ?? ""}`}
       aria-label="Private prayer form"
       noValidate
-      onInput={machine.markEdited}
+      onFocusCapture={() => setSecurityActive(true)}
+      onPointerDownCapture={() => setSecurityActive(true)}
+      onInput={() => {
+        setSecurityActive(true);
+        machine.markEdited();
+      }}
       onSubmit={(event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -77,7 +83,7 @@ export function PrayerForm(props: PrayerFormProps): ReactElement {
         I would like a ministry responder to follow up by email.
       </label>
       <label className={styles.honeypot} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-      <TurnstileField action="prayer_submit" resetSignal={machine.resetSignal} onToken={setToken} />
+      <TurnstileField action="prayer_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Send private request</button>
       </fieldset>
       <noscript><p>JavaScript is required for the security check. Your prayer is never placed in an email link or URL.</p></noscript>

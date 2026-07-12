@@ -35,6 +35,7 @@ describe("LiveStatus", () => {
   });
 
   it("server-renders an already build-validated replay for no-JavaScript visitors", () => {
+    vi.setSystemTime(new Date("2026-07-11T17:00:00Z"));
     renderLiveStatus(<LiveStatus schedule={null} replay={{ title: "Recent teaching", url: "https://www.tiktok.com/@thelioncompanytx/video/1", publishedAt: "2026-07-10T00:00:00Z", expiresAt: "2026-07-12T00:00:00Z" }} placement="hero" />);
     expect(screen.getByRole("link", { name: /watch recent replay: recent teaching/i })).toBeVisible();
   });

@@ -37,6 +37,7 @@ export function NewsletterForm(props: NewsletterFormProps): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState("");
+  const [securityActive, setSecurityActive] = useState(false);
   useEffect(() => {
     if (machine.state.name === "accepted") successRef.current?.focus();
   }, [machine.state]);
@@ -50,7 +51,10 @@ export function NewsletterForm(props: NewsletterFormProps): ReactElement {
       aria-label="Monthly field notes"
       aria-labelledby={props.headingId}
       noValidate
+      onFocusCapture={() => setSecurityActive(true)}
+      onPointerDownCapture={() => setSecurityActive(true)}
       onInput={() => {
+        setSecurityActive(true);
         machine.markEdited();
         if (!started.current) {
           started.current = true;
@@ -88,7 +92,7 @@ export function NewsletterForm(props: NewsletterFormProps): ReactElement {
       <label className={styles.honeypot} aria-hidden="true">
         Website<input name="website" tabIndex={-1} autoComplete="off" />
       </label>
-      <TurnstileField action="newsletter_submit" resetSignal={machine.resetSignal} onToken={setToken} />
+      <TurnstileField action="newsletter_submit" active={securityActive} resetSignal={machine.resetSignal} onToken={setToken} />
       <button type="submit" disabled={!token || machine.state.name === "submitting"}>Request confirmation email</button>
       </fieldset>
       <noscript><p>JavaScript is required for the security check. No form text is placed in email or a URL.</p></noscript>

@@ -1,19 +1,37 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gatheringLineStages } from "@/lib/art/gathering-line";
 import styles from "./gathering-line.module.css";
 
 export function GatheringLine({ rootId }: { readonly rootId: string }) {
   const svgRef = useRef<SVGSVGElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = document.getElementById(rootId);
     const svg = svgRef.current;
-    if (!root || !svg || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (!root || !svg) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      svg.dataset.motionReady = "reduced";
+      return;
+    }
     let active = true;
+    let started = false;
+    let scrollTimer = 0;
+    let fallbackTimer = 0;
     let cleanup = () => {};
-    void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+    const immediateEvents = ["pointerdown", "keydown", "touchstart", "lion:prepare-motion"] as const;
+    const removeTriggers = () => {
+      for (const event of immediateEvents) window.removeEventListener(event, startMotion);
+      window.removeEventListener("scroll", scheduleMotion);
+    };
+    const startMotion = () => {
+      if (started) return;
+      started = true;
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(fallbackTimer);
+      removeTriggers();
+      void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
       ([gsapModule, scrollModule]) => {
         if (!active) return;
         const gsap = gsapModule.default;
@@ -65,10 +83,23 @@ export function GatheringLine({ rootId }: { readonly rootId: string }) {
           media.revert();
           context.revert();
         };
+        svg.dataset.motionReady = "true";
       },
-    );
+      () => { if (active) svg.dataset.motionReady = "error"; },
+      );
+    };
+    const scheduleMotion = () => {
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(startMotion, 200);
+    };
+    for (const event of immediateEvents) window.addEventListener(event, startMotion, { passive: true, once: true });
+    window.addEventListener("scroll", scheduleMotion, { passive: true });
+    fallbackTimer = window.setTimeout(startMotion, 15_000);
     return () => {
       active = false;
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(fallbackTimer);
+      removeTriggers();
       cleanup();
     };
   }, [rootId]);

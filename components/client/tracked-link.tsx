@@ -30,7 +30,7 @@ export function TrackedLink<Event extends AnalyticsEventName>({
     if (!event.defaultPrevented) analytics.track(eventName, eventProperties);
   }
   return href.startsWith("/") ? (
-    <Link href={href} {...anchorProps} onClick={handleClick}>{children}</Link>
+    <Link href={href} prefetch={false} {...anchorProps} onClick={handleClick}>{children}</Link>
   ) : (
     <a href={href} {...anchorProps} onClick={handleClick}>{children}</a>
   );

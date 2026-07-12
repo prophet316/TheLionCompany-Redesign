@@ -17,7 +17,7 @@ export function Hero({ schedule, replay }: { readonly schedule: LiveSchedule | n
         </div>
       </div>
       <div className={styles.heroVisual} data-parallax>
-        <Image src="/images/brand/lion-portrait.jpg" alt="" width={1024} height={573} sizes="(max-width: 64rem) 100vw, 38vw" priority />
+        <Image src="/images/brand/lion-portrait.webp" alt="" width={1024} height={573} sizes="(max-width: 64rem) 100vw, 38vw" priority fetchPriority="high" decoding="sync" unoptimized />
         <LiveStatus schedule={schedule} replay={replay} placement="hero" />
       </div>
     </section>

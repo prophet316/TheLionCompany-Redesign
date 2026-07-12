@@ -17,7 +17,7 @@ export function SiteHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.headerInner}>
-        <Link className={styles.brand} href="/" aria-label="The Lion Company home">
+        <Link className={styles.brand} href="/" aria-label="The Lion Company home" prefetch={false}>
           <span aria-hidden="true" className={styles.brandMark}>LC</span>
           <span>The Lion Company</span>
         </Link>

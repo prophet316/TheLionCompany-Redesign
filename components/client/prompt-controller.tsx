@@ -77,7 +77,8 @@ export function PromptController() {
     const scroll = () => {
       activity();
       const denominator = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      setProgress(Math.min(1, scrollY / denominator));
+      const currentProgress = Math.min(1, scrollY / denominator);
+      setProgress((value) => Math.max(value, currentProgress));
     };
     const leave = (event: MouseEvent) => {
       if (event.clientY <= 0 && innerWidth >= 768) setExitIntent(true);

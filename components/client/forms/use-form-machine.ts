@@ -2,12 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  deliveryModeSchema,
-  safeFormErrorCodeSchema,
   type FormEndpoint,
   type FormSubmitResult,
   type SafeFormErrorCode,
 } from "../../../lib/forms/contracts";
+import { isDeliveryMode, isSafeFormErrorCode } from "../../../lib/forms/client-contracts";
 
 type State =
   | { name: "editing" }
@@ -33,7 +32,7 @@ function parseResult(value: unknown, response: Response, submissionId: string): 
       result.submissionId !== submissionId ||
       typeof result.replayed !== "boolean" ||
       typeof result.message !== "string" ||
-      !deliveryModeSchema.safeParse(result.deliveryMode).success
+      !isDeliveryMode(result.deliveryMode)
     ) return null;
     return result as Extract<FormSubmitResult, { ok: true }>;
   }
@@ -43,7 +42,7 @@ function parseResult(value: unknown, response: Response, submissionId: string): 
     result.status !== "error" ||
     typeof result.retryable !== "boolean" ||
     typeof result.message !== "string" ||
-    !safeFormErrorCodeSchema.safeParse(result.code).success
+    !isSafeFormErrorCode(result.code)
   ) return null;
   return result as Extract<FormSubmitResult, { ok: false }>;
 }
