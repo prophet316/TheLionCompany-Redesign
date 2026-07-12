@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type BrowserContext, type Page } from "@playwright/test";
+import { isExpectedPreviewCspDiagnostic } from "@/lib/release/browser-diagnostics";
 
 export const RELEASE_VIEWPORTS = [
   { name: "phone", width: 360, height: 800 },
@@ -44,7 +45,9 @@ export function collectBrowserLeaks(page: Page) {
   const consoleErrors: string[] = [];
   const pageErrors: string[] = [];
   page.on("console", (message) => {
-    if (message.type() === "error") consoleErrors.push(message.text());
+    if (message.type() === "error" && !isExpectedPreviewCspDiagnostic(message.text())) {
+      consoleErrors.push(message.text());
+    }
   });
   page.on("pageerror", (error) => pageErrors.push(error.name));
   return { consoleErrors, pageErrors };

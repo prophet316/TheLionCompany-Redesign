@@ -42,11 +42,16 @@ describe("analytics consent", () => {
       set: vi.fn((value: string) => writes.push(value)),
       configurable: true,
     });
-    removeGaCookies(documentLike as Document, "www.thelioncompany.org");
+    removeGaCookies(documentLike as Document, "www.thelioncompany.org", false);
     expect(writes).toHaveLength(6);
     expect(writes.every((value) => value.includes("Max-Age=0"))).toBe(true);
+    expect(writes.every((value) => !value.includes("Secure"))).toBe(true);
     expect(writes.some((value) => value.includes("Domain=.www.thelioncompany.org"))).toBe(true);
     expect(writes.some((value) => value.includes("Domain=.thelioncompany.org"))).toBe(true);
+
+    writes.length = 0;
+    removeGaCookies(documentLike as Document, "www.thelioncompany.org", true);
+    expect(writes.every((value) => value.endsWith("SameSite=Lax; Secure"))).toBe(true);
   });
 
   it("rejects hostile or free-form values even when the property name is allowed", () => {

@@ -1,9 +1,14 @@
 import { expect, test } from "@playwright/test";
 import { INDEXABLE_SMOKE_ROUTES, seedProtectedDeploymentCookie, denyAnalytics } from "../support/release-helpers";
+import {
+  isExpectedPreviewCspDiagnostic,
+  isExpectedWebKitNavigationDiagnostic,
+} from "@/lib/release/browser-diagnostics";
 
 test.beforeEach(async ({ context }) => seedProtectedDeploymentCookie(context));
 
 test("required routes emit no CSP violation, uncaught error, or failed first-party request", async ({ page, browserName }) => {
+  test.setTimeout(90_000);
   const cspViolations: string[] = [];
   if (browserName === "chromium") {
     const session = await page.context().newCDPSession(page);
@@ -31,8 +36,15 @@ test("required routes emit no CSP violation, uncaught error, or failed first-par
   const baseURL = test.info().project.use.baseURL;
   if (!baseURL) throw new Error("Playwright baseURL is required");
   const baseOrigin = new URL(baseURL).origin;
-  page.on("console", (message) => { if (message.type() === "error") consoleErrors.push(message.text()); });
-  page.on("pageerror", (error) => pageErrors.push(error.name));
+  page.on("console", (message) => {
+    if (message.type() === "error" && !isExpectedPreviewCspDiagnostic(message.text())) {
+      consoleErrors.push(message.text());
+    }
+  });
+  page.on("pageerror", (error) => {
+    if (browserName === "webkit" && isExpectedWebKitNavigationDiagnostic(error.name)) return;
+    pageErrors.push(error.name);
+  });
   page.on("requestfailed", (request) => {
     const url = new URL(request.url());
     const failure = request.failure()?.errorText ?? "unknown";

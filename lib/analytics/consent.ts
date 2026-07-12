@@ -37,7 +37,11 @@ export function writeConsent(state: Exclude<ConsentState, "unknown">, now = Date
   } satisfies StoredConsent);
 }
 
-export function removeGaCookies(documentLike: Document, hostname = location.hostname) {
+export function removeGaCookies(
+  documentLike: Document,
+  hostname = location.hostname,
+  secure = typeof location !== "undefined" && location.protocol === "https:",
+) {
   const domains = [undefined, `.${hostname}`];
   if (hostname === "www.thelioncompany.org") domains.push(".thelioncompany.org");
   documentLike.cookie
@@ -45,6 +49,7 @@ export function removeGaCookies(documentLike: Document, hostname = location.host
     .map((part) => part.trim().split("=")[0])
     .filter((name) => name === "_ga" || name.startsWith("_ga_"))
     .forEach((name) => domains.forEach((domain) => {
-      documentLike.cookie = name + "=; Path=/; " + (domain ? `Domain=${domain}; ` : "") + "Max-Age=0; SameSite=Lax; Secure";
+      documentLike.cookie = name + "=; Path=/; " + (domain ? `Domain=${domain}; ` : "")
+        + "Max-Age=0; SameSite=Lax" + (secure ? "; Secure" : "");
     }));
 }

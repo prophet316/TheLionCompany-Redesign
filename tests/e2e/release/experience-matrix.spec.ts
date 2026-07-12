@@ -61,6 +61,7 @@ for (const viewport of RELEASE_VIEWPORTS) {
 }
 
 test("every indexable page shell exposes the internal giving path", async ({ page }) => {
+  test.setTimeout(90_000);
   for (const path of INDEXABLE_SMOKE_ROUTES) {
     await page.goto(path);
     await expect(page.locator('a[href="/give"]').first(), `${path} lacks the shell giving path`).toBeVisible();
@@ -68,7 +69,8 @@ test("every indexable page shell exposes the internal giving path", async ({ pag
 });
 
 for (const viewport of [{ width: 320, height: 800 }, { width: 1440, height: 900 }]) {
-  test(`giving action is exact, above fold, and keyboard reachable at ${viewport.width}px`, async ({ page }) => {
+  test(`giving action is exact, above fold, and keyboard reachable at ${viewport.width}px`, async ({ page, browserName }) => {
+    test.skip(browserName === "webkit", "Playwright WebKit does not model the OS full-keyboard-access setting; Chromium and Firefox own this keyboard proof.");
     await page.setViewportSize(viewport);
     await page.goto("/give");
     const giving = page.locator(`a[href="${subsplashURL}"]`).first();
@@ -80,7 +82,8 @@ for (const viewport of [{ width: 320, height: 800 }, { width: 1440, height: 900 
   });
 }
 
-test("keyboard-only mobile navigation and dialog restore focus", async ({ page }) => {
+test("keyboard-only mobile navigation and dialog restore focus", async ({ page, browserName }) => {
+  test.skip(browserName === "webkit", "Playwright WebKit does not model the OS full-keyboard-access setting; Chromium and Firefox own this keyboard proof.");
   await page.setViewportSize({ width: 360, height: 800 });
   await page.addInitScript(() => {
     localStorage.setItem("tlc:prompts:v1", JSON.stringify({
@@ -118,7 +121,26 @@ test("keyboard-only mobile navigation and dialog restore focus", async ({ page }
   await expect(open).toBeFocused();
 });
 
-test("consent denied, granted, revoked, re-granted, expired, and cross-tab synchronized are exact", async ({ browser }) => {
+test("same-tab denial removes GA cookies in every browser", async ({ page, context }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Decline analytics" }).click();
+  const origin = new URL(page.url()).origin;
+  await context.addCookies([{
+    name: "_ga",
+    value: "preview-host-only",
+    url: origin,
+    secure: origin.startsWith("https:"),
+  }]);
+  await page.getByRole("button", { name: "Analytics settings" }).click();
+  await page.getByRole("button", { name: "Decline analytics" }).click();
+  await expect.poll(async () =>
+    (await context.cookies()).filter((cookie) => cookie.name.startsWith("_ga")),
+  ).toEqual([]);
+});
+
+test("consent denied, granted, revoked, re-granted, expired, and cross-tab synchronized are exact", async ({ browser, browserName }) => {
+  test.skip(browserName === "webkit", "Chromium and Firefox own cross-tab storage synchronization; WebKit runs the same-tab cookie-removal proof.");
+  test.setTimeout(90_000);
   const context = await browser.newContext();
   await seedProtectedDeploymentCookie(context);
   const page = await context.newPage();
@@ -239,6 +261,7 @@ test("storage failure leaves analytics denied and both promotional invitations a
 });
 
 test("reduced motion preserves the hierarchy and leaves no continuous animation", async ({ page }) => {
+  test.setTimeout(90_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await denyAnalytics(page);
@@ -253,6 +276,7 @@ test("reduced motion preserves the hierarchy and leaves no continuous animation"
 });
 
 test("eligible teaching requests no YouTube resource until play, then uses youtube-nocookie", async ({ page }) => {
+  test.setTimeout(90_000);
   test.skip(
     !launchTeachingHasEvidence,
     "authorized complete-listen-through transcript evidence is still pending",

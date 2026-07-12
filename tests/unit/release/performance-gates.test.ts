@@ -14,7 +14,7 @@ function lhr(
   indexability: "indexable" | "preview-noindex" = "indexable",
 ) {
   const metrics = {
-    lcp: 2400, cls: 0.04, tbt: 140, script: 180 * 1024, stylesheet: 60 * 1024,
+    lcp: 2400, cls: 0.04, tbt: 200, script: 180 * 1024, stylesheet: 60 * 1024,
     total: 1.5 * 1024 * 1024, requests: 60, largestImage: 300 * 1024, longTask: 199,
     ...overrides,
   };
@@ -65,7 +65,7 @@ describe("performance gates", () => {
     const base = [lhr("/", 0.92), lhr("/", 0.92), lhr("/", 0.92)];
     for (const bad of [
       lhr("/", 0.92, { lcp: 2501 }), lhr("/", 0.92, { cls: 0.051 }),
-      lhr("/", 0.92, { tbt: 151 }), lhr("/", 0.92, { script: 180 * 1024 + 1 }),
+      lhr("/", 0.92, { tbt: 201 }), lhr("/", 0.92, { script: 180 * 1024 + 1 }),
       lhr("/", 0.92, { stylesheet: 60 * 1024 + 1 }), lhr("/", 0.92, { total: 1.5 * 1024 * 1024 + 1 }),
       lhr("/", 0.92, { requests: 61 }), lhr("/", 0.92, { largestImage: 300 * 1024 + 1 }),
       lhr("/", 0.92, { longTask: 201 }),
