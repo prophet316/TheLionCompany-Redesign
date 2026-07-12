@@ -86,9 +86,9 @@ test("increased text spacing and forced colors keep controls visible", async ({ 
 });
 
 test.describe("reviewed visual baselines", () => {
-  // Chromium can return corrupted compositor tiles when several large
-  // screenshots are captured concurrently. Keep this evidence deterministic.
-  test.describe.configure({ mode: "serial" });
+  // Each viewport is independent so a changed baseline does not suppress
+  // evidence for the remaining pages in CI.
+  test.describe.configure({ mode: "parallel" });
 
   for (const shot of [
     { name: "home-mobile", path: "/", width: 360, height: 800 },
