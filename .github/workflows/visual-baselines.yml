@@ -1,0 +1,53 @@
+# .github/workflows/visual-baselines.yml
+name: visual-baselines
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Exact commit to render
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    name: visual-baselines / canonical-linux
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
+    timeout-minutes: 30
+    env:
+      NODE_ENV: test
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+      NEXT_PUBLIC_FORM_MODE: no-send
+      FORM_DELIVERY_MODE: no-send
+      FORM_ALLOWED_ORIGINS: http://localhost:3000
+      TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
+      TURNSTILE_EXPECTED_HOSTNAMES: localhost
+      FORM_IDEMPOTENCY_SECRET: visual-only-idempotency-secret-2026-07-11-not-for-production
+      BREVO_CONSENT_VERSION: 2026-07-11
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: "${{ inputs.commit_sha }}" }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.3
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: Generate canonical Linux snapshots without repository write access
+        env:
+          PLAYWRIGHT_SERVER_COMMAND: npm run start
+        run: npx playwright test tests/e2e/release/accessibility-visual.spec.ts --project=chromium --grep 'visual baseline' --update-snapshots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canonical-linux-visual-baselines
+          path: tests/e2e/release/accessibility-visual.spec.ts-snapshots/*-chromium-linux.png
+          if-no-files-found: error
+          retention-days: 14

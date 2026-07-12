@@ -1,0 +1,39 @@
+.status {
+  display: grid;
+  min-height: 10.5rem;
+  align-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-large);
+  background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
+}
+
+.status p,
+.status time {
+  margin: 0;
+}
+
+.label {
+  color: var(--clay-dark);
+  font-size: var(--step--1);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.label[data-state="live"]::before {
+  display: inline-block;
+  width: 0.55rem;
+  aspect-ratio: 1;
+  margin-inline-end: 0.5rem;
+  border-radius: 50%;
+  background: var(--clay);
+  content: "";
+}
+
+.status a {
+  width: fit-content;
+  font-weight: 800;
+  text-underline-offset: 0.25em;
+}

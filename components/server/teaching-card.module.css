@@ -1,0 +1,40 @@
+.card {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-large);
+  background: var(--paper-raised);
+}
+
+.image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--paper-deep);
+}
+
+.image img { object-fit: cover; }
+
+.body {
+  padding: var(--space-4);
+}
+
+.body > p:first-child {
+  color: var(--clay-dark);
+  font-size: var(--step--1);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.body h3 {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.body h3 a::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}

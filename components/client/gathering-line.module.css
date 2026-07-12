@@ -1,0 +1,29 @@
+.line {
+  position: absolute;
+  z-index: -1;
+  inset: 0 50% auto auto;
+  width: min(15rem, 26vw);
+  height: 100%;
+  translate: 50% 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.line path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--clay) 55%, transparent);
+  stroke-linecap: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.line circle {
+  fill: var(--clay);
+  stroke: var(--paper-raised);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+}

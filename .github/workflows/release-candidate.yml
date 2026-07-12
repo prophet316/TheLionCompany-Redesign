@@ -1,0 +1,77 @@
+name: release-candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: Authorized staged Production deployment ID
+        required: true
+        type: string
+      immutable_url:
+        description: Exact staged Production https .vercel.app URL
+        required: true
+        type: string
+      commit_sha:
+        description: Exact 40-character Git SHA
+        required: true
+        type: string
+      preview_qa_deployment_id:
+        description: Separately verified Preview QA deployment ID for the same SHA
+        required: true
+        type: string
+      preview_qa_immutable_url:
+        description: Exact separately verified Preview QA https .vercel.app URL
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: release-candidate / staged-production verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      RELEASE_BASE_URL: ${{ inputs.immutable_url }}
+      PLAYWRIGHT_BASE_URL: ${{ inputs.immutable_url }}
+      LIGHTHOUSE_BASE_URL: ${{ inputs.immutable_url }}
+      RELEASE_MODE: staged-production
+      SITE_CHECK_MODE: staged-production
+      RELEASE_DEPLOYMENT_SCOPE: staged-production
+      RELEASE_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+      RELEASE_COMMIT_SHA: ${{ inputs.commit_sha }}
+      PREVIEW_QA_DEPLOYMENT_ID: ${{ inputs.preview_qa_deployment_id }}
+      PREVIEW_QA_IMMUTABLE_URL: ${{ inputs.preview_qa_immutable_url }}
+      RELEASE_EVIDENCE_DIR: .private-release-evidence/candidate
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.3
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run release:smoke
+        env:
+          VERCEL_ACCESS_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+      - run: npm run test:e2e:release -- --grep-invert "@canonical-form-e2e|@canonical-consent"
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+      - run: npm run lighthouse:ci
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staged-production-candidate-evidence
+          path: |
+            .private-release-evidence/candidate
+            playwright-report
+            test-results/playwright
+          if-no-files-found: error
+          retention-days: 14

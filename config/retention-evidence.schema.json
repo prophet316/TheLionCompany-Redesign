@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "completedAt", "ownerRoles", "mailbox", "brevo", "redis", "syntheticDeletion", "evidenceFiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "ownerRoles": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dataStewardConfirmed", "mailboxAdministratorConfirmed", "mfaConfirmed"],
+      "properties": {
+        "dataStewardConfirmed": { "const": true },
+        "mailboxAdministratorConfirmed": { "const": true },
+        "mfaConfirmed": { "const": true }
+      }
+    },
+    "mailbox": {
+      "type": "object", "additionalProperties": false,
+      "required": ["prayerDeletionDays", "activeFollowUpReviewDays", "activeFollowUpMaxMonths", "activeFollowUpCloseDeletionDays", "contactDeletionMonthsAfterResolution", "unresolvedContactQuarterlyReview", "autoForwardingDisabled", "localArchivesDisabled"],
+      "properties": {
+        "prayerDeletionDays": { "const": 90 },
+        "activeFollowUpReviewDays": { "const": 30 },
+        "activeFollowUpMaxMonths": { "const": 12 },
+        "activeFollowUpCloseDeletionDays": { "const": 30 },
+        "contactDeletionMonthsAfterResolution": { "const": 12 },
+        "unresolvedContactQuarterlyReview": { "const": true },
+        "autoForwardingDisabled": { "const": true },
+        "localArchivesDisabled": { "const": true }
+      }
+    },
+    "brevo": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pendingDoiPurgeDays", "transactionalLogRetentionDays", "messagePreviewsDisabled", "unsubscribeSuppressionEnabled"],
+      "properties": {
+        "pendingDoiPurgeDays": { "const": 30 },
+        "transactionalLogRetentionDays": { "const": 30 },
+        "messagePreviewsDisabled": { "const": true },
+        "unsubscribeSuppressionEnabled": { "const": true }
+      }
+    },
+    "redis": {
+      "type": "object", "additionalProperties": false,
+      "required": ["processingLockSeconds", "acceptedTtlSeconds", "backupsDisabled", "exportsDisabled", "tlsRequired"],
+      "properties": {
+        "processingLockSeconds": { "const": 300 },
+        "acceptedTtlSeconds": { "const": 86400 },
+        "backupsDisabled": { "const": true },
+        "exportsDisabled": { "const": true },
+        "tlsRequired": { "const": true }
+      }
+    },
+    "syntheticDeletion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["prayerProviderIdSha256", "contactProviderIdSha256", "completedAt", "outcome"],
+      "properties": {
+        "prayerProviderIdSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "contactProviderIdSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "outcome": { "const": "deleted" }
+      }
+    },
+    "evidenceFiles": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^[^/].+" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

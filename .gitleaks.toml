@@ -1,0 +1,19 @@
+title = "The Lion Company full-history secret policy"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Exact public fixtures plus the reviewed legacy Wix export commit"
+commits = [
+  # The three deleted HTML exports in this immutable commit contain only Wix
+  # browser-side reCAPTCHA/site keys that were already shipped publicly.
+  '''cc81dcb1b271da5768526473ca0f7a9423db6e37''',
+]
+regexTarget = "match"
+regexes = [
+  '''1x0+AA''',
+  '''ci-only-idempotency-secret-2026-07-11-not-for-production''',
+  '''visual-only-idempotency-secret-2026-07-11-not-for-production''',
+  '''release-origin-contract-secret-more-than-thirty-two-characters''',
+]

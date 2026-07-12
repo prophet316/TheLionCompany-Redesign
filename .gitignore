@@ -1,0 +1,14 @@
+.next/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+.playwright-cli/
+output/playwright/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+config/.generated-csp-hashes.json
+.private-release-evidence/
