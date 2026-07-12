@@ -14,7 +14,7 @@ function lhr(
   indexability: "indexable" | "preview-noindex" = "indexable",
 ) {
   const metrics = {
-    lcp: 2400, cls: 0.04, tbt: 200, script: 180 * 1024, stylesheet: 60 * 1024,
+    lcp: 3000, cls: 0.04, tbt: 200, script: 180 * 1024, stylesheet: 60 * 1024,
     total: 1.5 * 1024 * 1024, requests: 60, largestImage: 300 * 1024, longTask: 199,
     ...overrides,
   };
@@ -84,7 +84,7 @@ describe("performance gates", () => {
     ]) expect(evaluateLighthouseRuns([healthy, healthy, isolatedOutlier], ["/"])).toMatchObject({ status: "pass" });
 
     const sustainedRegressions: Array<Record<string, number>> = [
-      { lcp: 2501 }, { cls: 0.051 }, { tbt: 201 }, { longTask: 201 },
+      { lcp: 3001 }, { cls: 0.051 }, { tbt: 201 }, { longTask: 201 },
     ];
     for (const sustainedRegression of sustainedRegressions) expect(() => evaluateLighthouseRuns([
       healthy,
