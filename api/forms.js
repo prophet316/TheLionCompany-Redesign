@@ -1,4 +1,4 @@
-const RECIPIENT = 'Jonathan@TheLionCompany.org';
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/4315c946d999e45eb1e9db1e14403180';
 const ALLOWED_ORIGINS = new Set([
     'https://thelioncompany.org',
     'https://www.thelioncompany.org',
@@ -41,6 +41,35 @@ async function resendRequest(path, apiKey, method, body) {
     });
     const result = await response.json().catch(() => ({}));
     return { ok: response.ok, status: response.status, result };
+}
+
+async function sendFormNotification(type, fields, notification) {
+    const fieldName = type === 'prayer' ? 'prayer_request' : 'message';
+    const payload = {
+        _subject: notification.subject,
+        _template: 'table',
+        _captcha: 'false',
+        submission_type: type === 'prayer' ? 'Prayer Request' : type === 'contact' ? 'Website Contact' : 'Newsletter Signup',
+        name: [fields.firstName, fields.lastName].filter(Boolean).join(' ') || 'Not provided',
+        email: fields.email,
+        phone: fields.phone || 'Not provided'
+    };
+    if (type !== 'newsletter') payload[fieldName] = fields.message;
+
+    const response = await fetch(FORMSUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Origin: 'https://www.thelioncompany.org',
+            Referer: 'https://www.thelioncompany.org/'
+        },
+        body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.success === 'false' || result.success === false) {
+        throw new Error(`Unable to deliver notification (${response.status})`);
+    }
 }
 
 async function addNewsletterContact(email, apiKey) {
@@ -127,22 +156,16 @@ module.exports = async function handler(request, response) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
+    if (type === 'newsletter' && !apiKey) {
         console.error('RESEND_API_KEY is not configured');
-        return sendJson(response, 503, { error: 'Email service is not configured' });
+        return sendJson(response, 503, { error: 'Newsletter service is not configured' });
     }
 
     try {
         if (type === 'newsletter') await addNewsletterContact(fields.email, apiKey);
 
         const notification = buildNotification(type, fields);
-        const sent = await resendRequest('/emails', apiKey, 'POST', {
-            from: process.env.RESEND_FROM_EMAIL || 'The Lion Company Website <onboarding@resend.dev>',
-            to: [RECIPIENT],
-            reply_to: fields.email,
-            ...notification
-        });
-        if (!sent.ok) throw new Error(`Unable to send notification (${sent.status})`);
+        await sendFormNotification(type, fields, notification);
 
         return sendJson(response, 200, { ok: true });
     } catch (error) {

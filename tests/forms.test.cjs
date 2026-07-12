@@ -52,9 +52,9 @@ test('saves a newsletter contact and emails Jonathan', async () => {
     assert.equal(response.statusCode, 200);
     assert.equal(requests[0].url, 'https://api.resend.com/contacts');
     assert.equal(requests[0].body.email, 'reader@example.com');
-    assert.equal(requests[1].url, 'https://api.resend.com/emails');
-    assert.deepEqual(requests[1].body.to, ['Jonathan@TheLionCompany.org']);
-    assert.match(requests[1].body.subject, /Newsletter Signup/);
+    assert.match(requests[1].url, /^https:\/\/formsubmit\.co\/ajax\//);
+    assert.equal(requests[1].body.email, 'reader@example.com');
+    assert.match(requests[1].body._subject, /Newsletter Signup/);
 });
 
 test('emails a complete prayer request without adding a contact', async () => {
@@ -75,9 +75,9 @@ test('emails a complete prayer request without adding a contact', async () => {
 
     assert.equal(response.statusCode, 200);
     assert.equal(requests.length, 1);
-    assert.equal(requests[0].url, 'https://api.resend.com/emails');
-    assert.match(requests[0].body.text, /Please pray for my family/);
-    assert.equal(requests[0].body.reply_to, 'grace@example.com');
+    assert.match(requests[0].url, /^https:\/\/formsubmit\.co\/ajax\//);
+    assert.equal(requests[0].body.prayer_request, 'Please pray for my family.');
+    assert.equal(requests[0].body.email, 'grace@example.com');
 });
 
 test('quietly accepts a filled honeypot without calling Resend', async () => {
