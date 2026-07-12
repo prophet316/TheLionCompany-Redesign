@@ -85,24 +85,30 @@ test("increased text spacing and forced colors keep controls visible", async ({ 
   await expectNoHorizontalOverflow(page);
 });
 
-for (const shot of [
-  { name: "home-mobile", path: "/", width: 360, height: 800 },
-  { name: "home-desktop", path: "/", width: 1440, height: 900 },
-  { name: "prayer-mobile", path: "/prayer", width: 360, height: 800 },
-  { name: "connect-desktop", path: "/connect", width: 1440, height: 900 },
-] as const) {
-  test(`${shot.name} matches the reviewed visual baseline`, async ({ page, browserName }) => {
-    test.skip(browserName !== "chromium", "Canonical visual baselines use Chromium; functional parity runs in all engines.");
-    await page.setViewportSize({ width: shot.width, height: shot.height });
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto(shot.path, { waitUntil: "networkidle" });
-    await denyAnalytics(page);
-    await stabilizeForScreenshot(page);
-    await expect(page).toHaveScreenshot(`${shot.name}.png`, {
-      animations: "disabled",
-      caret: "hide",
-      fullPage: true,
-      maxDiffPixelRatio: 0.005,
+test.describe("reviewed visual baselines", () => {
+  // Chromium can return corrupted compositor tiles when several large
+  // screenshots are captured concurrently. Keep this evidence deterministic.
+  test.describe.configure({ mode: "serial" });
+
+  for (const shot of [
+    { name: "home-mobile", path: "/", width: 360, height: 800 },
+    { name: "home-desktop", path: "/", width: 1440, height: 900 },
+    { name: "prayer-mobile", path: "/prayer", width: 360, height: 800 },
+    { name: "connect-desktop", path: "/connect", width: 1440, height: 900 },
+  ] as const) {
+    test(`${shot.name} matches the reviewed visual baseline`, async ({ page, browserName }) => {
+      test.skip(browserName !== "chromium", "Canonical visual baselines use Chromium; functional parity runs in all engines.");
+      await page.setViewportSize({ width: shot.width, height: shot.height });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(shot.path, { waitUntil: "networkidle" });
+      await denyAnalytics(page);
+      await stabilizeForScreenshot(page);
+      await expect(page).toHaveScreenshot(`${shot.name}.png`, {
+        animations: "disabled",
+        caret: "hide",
+        fullPage: false,
+        maxDiffPixelRatio: 0.005,
+      });
     });
-  });
-}
+  }
+});

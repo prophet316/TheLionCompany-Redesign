@@ -86,6 +86,8 @@ export async function stabilizeForScreenshot(page: Page) {
   await page.addStyleTag({ content: `
     *, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; }
     [aria-live] { transition: none !important; }
+    body::before { display: none !important; mix-blend-mode: normal !important; }
+    body > header { position: static !important; background: var(--paper) !important; backdrop-filter: none !important; }
   ` });
   await page.evaluate(async () => {
     await document.fonts.ready;

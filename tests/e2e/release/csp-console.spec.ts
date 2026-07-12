@@ -3,26 +3,28 @@ import { INDEXABLE_SMOKE_ROUTES, seedProtectedDeploymentCookie, denyAnalytics } 
 
 test.beforeEach(async ({ context }) => seedProtectedDeploymentCookie(context));
 
-test("required routes emit no CSP violation, uncaught error, or failed first-party request", async ({ page }) => {
+test("required routes emit no CSP violation, uncaught error, or failed first-party request", async ({ page, browserName }) => {
   const cspViolations: string[] = [];
-  const session = await page.context().newCDPSession(page);
-  session.on("Audits.issueAdded", ({ issue }: {
-    issue: {
-      code: string;
-      details?: {
-        contentSecurityPolicyIssueDetails?: {
-          blockedURL?: string;
-          violatedDirective?: string;
-          contentSecurityPolicyViolationType?: string;
+  if (browserName === "chromium") {
+    const session = await page.context().newCDPSession(page);
+    session.on("Audits.issueAdded", ({ issue }: {
+      issue: {
+        code: string;
+        details?: {
+          contentSecurityPolicyIssueDetails?: {
+            blockedURL?: string;
+            violatedDirective?: string;
+            contentSecurityPolicyViolationType?: string;
+          };
         };
       };
-    };
-  }) => {
-    if (issue.code !== "ContentSecurityPolicyIssue") return;
-    const details = issue.details?.contentSecurityPolicyIssueDetails;
-    cspViolations.push(`${details?.violatedDirective ?? "unknown"}:${details?.blockedURL ?? "unknown"}:${details?.contentSecurityPolicyViolationType ?? "unknown"}`);
-  });
-  await session.send("Audits.enable");
+    }) => {
+      if (issue.code !== "ContentSecurityPolicyIssue") return;
+      const details = issue.details?.contentSecurityPolicyIssueDetails;
+      cspViolations.push(`${details?.violatedDirective ?? "unknown"}:${details?.blockedURL ?? "unknown"}:${details?.contentSecurityPolicyViolationType ?? "unknown"}`);
+    });
+    await session.send("Audits.enable");
+  }
   const consoleErrors: string[] = [];
   const pageErrors: string[] = [];
   const failedFirstParty: string[] = [];
