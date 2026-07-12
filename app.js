@@ -65,11 +65,11 @@ function initNavbarScroll() {
         }
     });
 }
-// Form Handling — sends via mailto with real validation
+// Form handling — submits to the site's server-side email/list endpoint.
 function initForms() {
     const prayerForm = document.getElementById('prayer-form');
     if (prayerForm) {
-        prayerForm.addEventListener('submit', (e) => {
+        prayerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const fname = document.getElementById('prayer-fname').value.trim();
             const lname = document.getElementById('prayer-lname').value.trim();
@@ -80,17 +80,21 @@ function initForms() {
                 showFormFeedback(prayerForm, 'Please fill in all required fields.', 'error');
                 return;
             }
-            const subject = encodeURIComponent('Prayer Request from ' + fname + ' ' + lname);
-            const body = encodeURIComponent('Name: ' + fname + ' ' + lname + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nPrayer Request:\n' + msg);
-            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
-            showFormFeedback(prayerForm, 'Opening your email client to send your prayer request...', 'success');
-            prayerForm.reset();
+            await submitWebsiteForm(prayerForm, {
+                type: 'prayer',
+                firstName: fname,
+                lastName: lname,
+                email,
+                phone,
+                message: msg,
+                website: prayerForm.elements.website?.value || ''
+            }, 'Your prayer request has been sent. Thank you for trusting us to pray with you.');
         });
     }
 
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const fname = document.getElementById('contact-fname').value.trim();
             const lname = document.getElementById('contact-lname').value.trim();
@@ -101,28 +105,63 @@ function initForms() {
                 showFormFeedback(contactForm, 'Please fill in all required fields.', 'error');
                 return;
             }
-            const subject = encodeURIComponent('Contact from ' + fname + ' ' + lname);
-            const body = encodeURIComponent('Name: ' + fname + ' ' + lname + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nMessage:\n' + msg);
-            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
-            showFormFeedback(contactForm, 'Opening your email client to send your message...', 'success');
-            contactForm.reset();
+            await submitWebsiteForm(contactForm, {
+                type: 'contact',
+                firstName: fname,
+                lastName: lname,
+                email,
+                phone,
+                message: msg,
+                website: contactForm.elements.website?.value || ''
+            }, 'Your message has been sent. We will be in touch soon.');
         });
     }
     const newsletterForm = document.getElementById('newsletter-form');
     if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
+        newsletterForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('newsletter-email').value.trim();
             if (!email) {
                 showFormFeedback(newsletterForm, 'Please enter your email address.', 'error');
                 return;
             }
-            const subject = encodeURIComponent('Newsletter Signup');
-            const body = encodeURIComponent('Please add me to The Lion Company mailing list.\n\nEmail: ' + email);
-            window.location.href = 'mailto:JONATHAN@THELIONCOMPANY.ORG?subject=' + subject + '&body=' + body;
-            showFormFeedback(newsletterForm, 'Opening your email client to confirm signup...', 'success');
-            newsletterForm.reset();
+            await submitWebsiteForm(newsletterForm, {
+                type: 'newsletter',
+                email,
+                website: newsletterForm.elements.website?.value || ''
+            }, "You're on the list. Thank you for joining The Lion Company.");
         });
+    }
+}
+
+async function submitWebsiteForm(form, payload, successMessage) {
+    const button = form.querySelector('button[type="submit"]');
+    const originalLabel = button ? button.textContent : '';
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = 'SENDING…';
+    }
+
+    try {
+        const response = await fetch('/api/forms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Submission failed');
+
+        form.reset();
+        showFormFeedback(form, successMessage, 'success');
+    } catch (error) {
+        console.error('Website form submission failed:', error);
+        showFormFeedback(form, 'We could not send that just now. Please email Jonathan@TheLionCompany.org.', 'error');
+    } finally {
+        if (button) {
+            button.disabled = false;
+            button.textContent = originalLabel;
+        }
     }
 }
 
