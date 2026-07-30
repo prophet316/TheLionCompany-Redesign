@@ -8,11 +8,16 @@ function responseRecorder() {
         headers: {},
         status(code) { this.statusCode = code; return this; },
         setHeader(name, value) { this.headers[name] = value; },
-        end(value) { this.body = JSON.parse(value); }
+        end(value) {
+            this.rawBody = value;
+            this.body = this.headers['Content-Type']?.startsWith('application/json')
+                ? JSON.parse(value)
+                : value;
+        }
     };
 }
 
-async function run(body, overrides = {}) {
+async function runPost(body, overrides = {}) {
     const response = responseRecorder();
     await handler({
         method: overrides.method || 'POST',
@@ -22,62 +27,259 @@ async function run(body, overrides = {}) {
     return response;
 }
 
+async function runGet(url) {
+    const response = responseRecorder();
+    await handler({
+        method: 'GET',
+        headers: {},
+        url
+    }, response);
+    return response;
+}
+
+function okJson(status = 200, result = { id: 'test-id' }) {
+    return { ok: true, status, json: async () => result };
+}
+
 test.beforeEach(() => {
-    process.env.RESEND_API_KEY = 're_test';
+    process.env.RESEND_API_KEY = 're_test_secret';
+    delete process.env.LION_TEAM_INBOX;
 });
 
 test.afterEach(() => {
     delete process.env.RESEND_API_KEY;
+    delete process.env.LION_TEAM_INBOX;
     global.fetch = undefined;
 });
 
 test('rejects requests from an unrelated origin', async () => {
-    const response = await run({ type: 'newsletter', email: 'person@example.com' }, { origin: 'https://attacker.example' });
+    const response = await runPost(
+        { type: 'newsletter', email: 'person@example.com' },
+        { origin: 'https://attacker.example' }
+    );
     assert.equal(response.statusCode, 403);
 });
 
-test('allows newsletter storage from The Lion Company Vercel preview origins', async () => {
-    global.fetch = async () => ({ ok: true, status: 200, json: async () => ({ id: 'contact-id' }) });
-    const response = await run({ type: 'newsletter', email: 'preview@example.com' }, {
+test('allows prayer submissions from Lion Vercel preview origins', async () => {
+    global.fetch = async () => okJson();
+    const response = await runPost({
+        type: 'prayer',
+        firstName: 'Grace',
+        email: 'grace@example.com',
+        message: 'Please pray for my family.'
+    }, {
         origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app'
     });
     assert.equal(response.statusCode, 200);
 });
 
-test('validates newsletter email addresses', async () => {
-    const response = await run({ type: 'newsletter', email: 'not-an-email' });
-    assert.equal(response.statusCode, 400);
-});
-
-test('saves a newsletter contact in Resend', async () => {
-    const requests = [];
-    global.fetch = async (url, options) => {
-        requests.push({ url, body: JSON.parse(options.body) });
-        return { ok: true, status: 200, json: async () => ({ id: 'test-id' }) };
+test('keeps preview and production idempotency keys separate', async () => {
+    const keys = [];
+    global.fetch = async (_url, options) => {
+        keys.push(options.headers['Idempotency-Key']);
+        return okJson();
     };
 
-    const response = await run({ type: 'newsletter', email: 'Reader@Example.com' });
-    assert.equal(response.statusCode, 200);
-    assert.equal(requests[0].url, 'https://api.resend.com/contacts');
-    assert.equal(requests[0].body.email, 'reader@example.com');
-    assert.equal(requests.length, 1);
+    const submission = {
+        type: 'newsletter',
+        email: 'reader@example.com'
+    };
+    await runPost(submission);
+    await runPost(submission, {
+        origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app'
+    });
+
+    assert.notEqual(keys[1], keys[3]);
 });
 
-test('rejects non-newsletter requests at the storage endpoint', async () => {
-    const response = await run({
+test('sends a branded prayer acknowledgment and a private team notification in one batch', async () => {
+    const requests = [];
+    global.fetch = async (url, options) => {
+        requests.push({ url, options, body: JSON.parse(options.body) });
+        return okJson();
+    };
+
+    const response = await runPost({
         type: 'prayer',
         firstName: 'Grace',
         lastName: 'Example',
-        email: 'grace@example.com',
+        email: 'Grace@Example.com',
         phone: '555-0100',
-        message: 'Please pray for my family.'
+        message: 'Please pray for wisdom in a family decision.'
     });
 
+    assert.equal(response.statusCode, 200);
+    assert.equal(requests.length, 1);
+    assert.equal(requests[0].url, 'https://api.resend.com/emails/batch');
+    assert.match(requests[0].options.headers['Idempotency-Key'], /^lion-prayer-/);
+    assert.equal(requests[0].body.length, 2);
+
+    const [acknowledgment, teamNotification] = requests[0].body;
+    assert.equal(acknowledgment.from, 'The Lion Company <prayer@updates.thelioncompany.org>');
+    assert.deepEqual(acknowledgment.to, ['grace@example.com']);
+    assert.match(acknowledgment.html, /THE LION COMPANY/);
+    assert.match(acknowledgment.html, /We are standing with you/);
+    assert.match(acknowledgment.html, /testimony and miracle unfold/);
+    assert.doesNotMatch(acknowledgment.html, /family decision/);
+
+    assert.equal(teamNotification.from, 'The Lion Company Prayer Team <prayer@updates.thelioncompany.org>');
+    assert.deepEqual(teamNotification.to, ['jonathan@thelioncompany.org']);
+    assert.equal(teamNotification.reply_to, 'grace@example.com');
+    assert.match(teamNotification.html, /family decision/);
+    assert.match(teamNotification.html, /Private ministry information/);
+});
+
+test('uses an explicitly configured Lion team inbox', async () => {
+    process.env.LION_TEAM_INBOX = 'prayer-team@thelioncompany.org';
+    let batch;
+    global.fetch = async (_url, options) => {
+        batch = JSON.parse(options.body);
+        return okJson();
+    };
+    await runPost({
+        type: 'prayer',
+        firstName: 'Grace',
+        email: 'grace@example.com',
+        message: 'Please pray.'
+    });
+    assert.deepEqual(batch[1].to, ['prayer-team@thelioncompany.org']);
+    assert.equal(batch[0].reply_to, 'prayer-team@thelioncompany.org');
+});
+
+test('starts newsletter double opt-in and sends a branded confirmation email', async () => {
+    const requests = [];
+    global.fetch = async (url, options) => {
+        requests.push({ url, options, body: JSON.parse(options.body) });
+        return okJson();
+    };
+
+    const response = await runPost({ type: 'newsletter', email: 'Reader@Example.com' });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(response.body.confirmationRequired, true);
+    assert.equal(requests[0].url, 'https://api.resend.com/contacts');
+    assert.deepEqual(requests[0].body, {
+        email: 'reader@example.com',
+        unsubscribed: true
+    });
+    assert.equal(requests[1].url, 'https://api.resend.com/emails');
+    assert.match(requests[1].options.headers['Idempotency-Key'], /^lion-newsletter-confirmation-/);
+    assert.equal(requests[1].body.from, 'The Lion Company <welcome@updates.thelioncompany.org>');
+    assert.match(requests[1].body.html, /Confirm your place/);
+    assert.match(requests[1].body.html, /Confirm subscription/);
+    assert.match(requests[1].body.html, /lion_bg\.jpg/);
+});
+
+test('resets an existing newsletter contact to pending confirmation', async () => {
+    const requests = [];
+    global.fetch = async (url, options) => {
+        requests.push({ url, body: JSON.parse(options.body) });
+        if (requests.length === 1) {
+            return { ok: false, status: 409, json: async () => ({ message: 'exists' }) };
+        }
+        return okJson();
+    };
+
+    const response = await runPost({ type: 'newsletter', email: 'reader@example.com' });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(requests[1].url, 'https://api.resend.com/contacts/reader%40example.com');
+    assert.deepEqual(requests[1].body, { unsubscribed: true });
+});
+
+test('confirms a signed newsletter subscription link', async () => {
+    let confirmationEmail;
+    global.fetch = async (url, options) => {
+        const body = JSON.parse(options.body);
+        if (url.endsWith('/emails')) confirmationEmail = body;
+        return okJson();
+    };
+
+    await runPost({ type: 'newsletter', email: 'reader@example.com' });
+    const encodedUrl = confirmationEmail.html.match(/href="(https:\/\/www\.thelioncompany\.org\/api\/forms\?[^"]+)"/)[1];
+    const confirmationUrl = encodedUrl.replaceAll('&amp;', '&');
+
+    const requests = [];
+    global.fetch = async (url, options) => {
+        requests.push({ url, body: JSON.parse(options.body) });
+        return okJson();
+    };
+
+    const response = await runGet(confirmationUrl);
+
+    assert.equal(response.statusCode, 200);
+    assert.match(response.headers['Content-Type'], /text\/html/);
+    assert.match(response.body, /You are on the list/);
+    assert.equal(requests[0].url, 'https://api.resend.com/contacts/reader%40example.com');
+    assert.deepEqual(requests[0].body, { unsubscribed: false });
+});
+
+test('rejects a tampered newsletter confirmation link', async () => {
+    const response = await runGet(
+        'https://www.thelioncompany.org/api/forms?action=confirm&email=reader%40example.com&expires=9999999999999&signature=bad'
+    );
+    assert.equal(response.statusCode, 400);
+    assert.match(response.body, /invalid or has expired/);
+});
+
+test('validates prayer and newsletter inputs', async () => {
+    const badEmail = await runPost({ type: 'newsletter', email: 'not-an-email' });
+    assert.equal(badEmail.statusCode, 400);
+
+    const missingPrayer = await runPost({
+        type: 'prayer',
+        email: 'person@example.com',
+        message: ''
+    });
+    assert.equal(missingPrayer.statusCode, 400);
+});
+
+test('rejects non-prayer and non-newsletter requests at the endpoint', async () => {
+    const response = await runPost({
+        type: 'contact',
+        firstName: 'Grace',
+        email: 'grace@example.com',
+        message: 'Hello.'
+    });
     assert.equal(response.statusCode, 400);
 });
 
 test('quietly accepts a filled honeypot without calling Resend', async () => {
     global.fetch = async () => { throw new Error('fetch should not be called'); };
-    const response = await run({ type: 'newsletter', email: 'bot@example.com', website: 'spam' });
+    const response = await runPost({
+        type: 'prayer',
+        firstName: 'Bot',
+        email: 'bot@example.com',
+        message: 'spam',
+        website: 'spam'
+    });
     assert.equal(response.statusCode, 200);
+});
+
+test('preserves the method guard for unrelated GET requests', async () => {
+    const response = await runGet('https://www.thelioncompany.org/api/forms');
+    assert.equal(response.statusCode, 405);
+    assert.equal(response.headers.Allow, 'POST');
+});
+
+test('fails closed when the Resend API key is missing', async () => {
+    delete process.env.RESEND_API_KEY;
+    const response = await runPost({ type: 'newsletter', email: 'person@example.com' });
+    assert.equal(response.statusCode, 503);
+});
+
+test('returns a safe error when Resend rejects delivery', async () => {
+    global.fetch = async () => ({
+        ok: false,
+        status: 422,
+        json: async () => ({ message: 'rejected' })
+    });
+    const response = await runPost({
+        type: 'prayer',
+        firstName: 'Grace',
+        email: 'grace@example.com',
+        message: 'Please pray.'
+    });
+    assert.equal(response.statusCode, 502);
+    assert.deepEqual(response.body, { error: 'Unable to process this submission' });
 });
