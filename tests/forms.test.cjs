@@ -73,6 +73,25 @@ test('allows prayer submissions from Lion Vercel preview origins', async () => {
     assert.equal(response.statusCode, 200);
 });
 
+test('keeps preview and production idempotency keys separate', async () => {
+    const keys = [];
+    global.fetch = async (_url, options) => {
+        keys.push(options.headers['Idempotency-Key']);
+        return okJson();
+    };
+
+    const submission = {
+        type: 'newsletter',
+        email: 'reader@example.com'
+    };
+    await runPost(submission);
+    await runPost(submission, {
+        origin: 'https://the-lion-company-redesign-abc123-prophet316s-projects.vercel.app'
+    });
+
+    assert.notEqual(keys[1], keys[3]);
+});
+
 test('sends a branded prayer acknowledgment and a private team notification in one batch', async () => {
     const requests = [];
     global.fetch = async (url, options) => {

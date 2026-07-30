@@ -359,7 +359,7 @@ module.exports = async function handler(request, response) {
                 }
             ], apiKey, idempotencyKey(
                 'lion-prayer',
-                [fields.email, fields.firstName, fields.lastName, fields.phone, fields.message],
+                [origin || 'direct', fields.email, fields.firstName, fields.lastName, fields.phone, fields.message],
                 10 * 60 * 1000
             ));
             return sendJson(response, 200, { ok: true });
@@ -377,7 +377,7 @@ module.exports = async function handler(request, response) {
                 text: `Thank you for joining The Lion Company.\n\nConfirm your email to receive ministry updates, teachings, gatherings, and stories of what Jesus is doing through this community:\n${confirmationUrl}\n\nIf you did not request this, you can safely ignore this email.`
             }, apiKey, idempotencyKey(
                 'lion-newsletter-confirmation',
-                [fields.email],
+                [origin || 'direct', fields.email],
                 60 * 60 * 1000
             ));
             return sendJson(response, 200, { ok: true, confirmationRequired: true });
