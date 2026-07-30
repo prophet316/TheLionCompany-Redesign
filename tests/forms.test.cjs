@@ -125,8 +125,33 @@ test('sends a branded prayer acknowledgment and a private team notification in o
     assert.equal(teamNotification.from, 'The Lion Company Prayer Team <prayer@updates.thelioncompany.org>');
     assert.deepEqual(teamNotification.to, ['jonathan@thelioncompany.org']);
     assert.equal(teamNotification.reply_to, 'grace@example.com');
+    assert.match(teamNotification.html, /THE LION COMPANY/);
+    assert.match(teamNotification.html, /Prayer Ministry/);
+    assert.match(teamNotification.html, /Private prayer request/);
+    assert.match(teamNotification.html, /A prayer request has arrived/);
+    assert.match(teamNotification.html, /Reply directly to this email/);
     assert.match(teamNotification.html, /family decision/);
-    assert.match(teamNotification.html, /Private ministry information/);
+    assert.match(teamNotification.html, /Confidential ministry information/);
+    assert.match(teamNotification.text, /THE LION COMPANY \| PRAYER MINISTRY/);
+});
+
+test('omits empty phone data from the prayer team notification', async () => {
+    let batch;
+    global.fetch = async (_url, options) => {
+        batch = JSON.parse(options.body);
+        return okJson();
+    };
+
+    await runPost({
+        type: 'prayer',
+        firstName: 'Grace',
+        email: 'grace@example.com',
+        message: 'Please pray.'
+    });
+
+    assert.doesNotMatch(batch[1].html, />Phone</);
+    assert.doesNotMatch(batch[1].html, /Not provided/);
+    assert.doesNotMatch(batch[1].text, /Phone:/);
 });
 
 test('uses an explicitly configured Lion team inbox', async () => {
