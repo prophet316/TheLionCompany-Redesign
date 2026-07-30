@@ -118,18 +118,86 @@ function prayerAcknowledgment(firstName) {
 
 function prayerTeamNotification(fields) {
     const name = [fields.firstName, fields.lastName].filter(Boolean).join(' ') || 'Not provided';
-    const phone = fields.phone || 'Not provided';
-    return emailShell({
-        preheader: `New prayer request from ${name}.`,
-        eyebrow: 'Prayer team',
-        title: 'A new request is ready for prayer.',
-        bodyHtml: `
-            <p style="margin:0 0 10px;"><strong style="color:#FFFFFF;">Name:</strong> ${escapeHtml(name)}</p>
-            <p style="margin:0 0 10px;"><strong style="color:#FFFFFF;">Email:</strong> ${escapeHtml(fields.email)}</p>
-            <p style="margin:0 0 22px;"><strong style="color:#FFFFFF;">Phone:</strong> ${escapeHtml(phone)}</p>
-            <div style="padding:18px;border-left:2px solid #D4AF37;background:#11100E;color:#F1EBDD;white-space:pre-wrap;">${escapeHtml(fields.message)}</div>
-            <p style="margin:22px 0 0;font-size:12px;color:#8F897F;">Private ministry information. Share only with the prayer team members who need it.</p>`
-    });
+    const phoneRow = fields.phone ? `
+        <tr>
+            <td style="padding:0 0 13px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#A99454;text-transform:uppercase;vertical-align:top;">Phone</td>
+            <td style="padding:0 0 13px 20px;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#F3EFE5;vertical-align:top;">${escapeHtml(fields.phone)}</td>
+        </tr>` : '';
+
+    return `<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>New prayer request</title>
+</head>
+<body style="margin:0;padding:0;background:#050505;color:#F7F3E8;">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Private prayer request from ${escapeHtml(name)}. Reply directly to respond.</div>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#050505">
+        <tr>
+            <td align="center" style="padding:28px 12px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:640px;background:#0B0B0B;border:1px solid #2E281A;border-top:4px solid #D4AF37;">
+                    <tr>
+                        <td style="padding:23px 30px 21px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="font-family:Georgia,'Times New Roman',serif;font-size:16px;letter-spacing:4px;color:#FFFFFF;">THE LION COMPANY</td>
+                                    <td align="right" style="font-family:Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;">Prayer Ministry</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="${LION_IMAGE_URL}" width="640" height="150" alt="" style="display:block;width:100%;height:150px;object-fit:cover;object-position:center 43%;border:0;outline:none;text-decoration:none;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:34px 34px 30px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px;">
+                                <tr>
+                                    <td style="padding:6px 10px;border:1px solid #66572B;font-family:Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:1.8px;color:#D4AF37;text-transform:uppercase;">Private prayer request</td>
+                                </tr>
+                            </table>
+                            <h1 style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:32px;line-height:1.18;font-weight:400;color:#FFFFFF;">A prayer request has arrived.</h1>
+                            <p style="margin:0 0 28px;font-family:Arial,sans-serif;font-size:14px;line-height:1.65;color:#9E988C;">Pray with care. Reply directly to this email if a personal follow-up is appropriate.</p>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 24px;padding:20px 20px 7px;background:#11100E;border:1px solid #29251A;">
+                                <tr>
+                                    <td style="padding:0 0 13px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#A99454;text-transform:uppercase;vertical-align:top;">Name</td>
+                                    <td style="padding:0 0 13px 20px;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#F3EFE5;vertical-align:top;">${escapeHtml(name)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:0 0 13px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#A99454;text-transform:uppercase;vertical-align:top;">Email</td>
+                                    <td style="padding:0 0 13px 20px;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#F3EFE5;vertical-align:top;">${escapeHtml(fields.email)}</td>
+                                </tr>
+                                ${phoneRow}
+                            </table>
+
+                            <div style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;">Prayer request</div>
+                            <div style="padding:24px 24px 25px;background:#141310;border:1px solid #413718;border-left:3px solid #D4AF37;font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.72;color:#F1EBDD;white-space:pre-wrap;">${escapeHtml(fields.message)}</div>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:25px;">
+                                <tr>
+                                    <td style="padding-top:18px;border-top:1px solid #29251A;font-family:Arial,sans-serif;font-size:11px;line-height:1.6;color:#777167;">Confidential ministry information. Keep this request within the prayer team.</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding:20px 30px;border-top:1px solid #2B2517;background:#080808;">
+                            <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:2.6px;color:#D4AF37;text-transform:uppercase;">Unity Through Christ</div>
+                            <div style="margin-top:9px;font-family:Arial,sans-serif;font-size:12px;color:#7F7A70;">
+                                <a href="${SITE_URL}" style="color:#B8B1A3;text-decoration:none;">thelioncompany.org</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
 }
 
 function newsletterConfirmation(confirmationUrl) {
@@ -355,7 +423,7 @@ module.exports = async function handler(request, response) {
                     reply_to: fields.email,
                     subject: `New prayer request — ${name}`,
                     html: prayerTeamNotification(fields),
-                    text: `New prayer request\n\nName: ${name}\nEmail: ${fields.email}\nPhone: ${fields.phone || 'Not provided'}\n\n${fields.message}\n\nPrivate ministry information.`
+                    text: `THE LION COMPANY | PRAYER MINISTRY\n\nPRIVATE PRAYER REQUEST\n\nName: ${name}\nEmail: ${fields.email}${fields.phone ? `\nPhone: ${fields.phone}` : ''}\n\nPRAYER REQUEST\n${fields.message}\n\nReply directly to this email if a personal follow-up is appropriate.\n\nConfidential ministry information. Keep this request within the prayer team.`
                 }
             ], apiKey, idempotencyKey(
                 'lion-prayer',
