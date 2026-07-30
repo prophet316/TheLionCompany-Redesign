@@ -90,7 +90,7 @@ function initForms() {
                 phone,
                 message: msg,
                 website: prayerForm.elements.website?.value || ''
-            }, 'Your prayer request has been sent. Thank you for trusting us to pray with you.');
+            }, 'Your prayer request has been received. Please check your email for a confirmation from our prayer team.');
         });
     }
 
@@ -131,7 +131,7 @@ function initForms() {
                 type: 'newsletter',
                 email,
                 website: newsletterForm.elements.website?.value || ''
-            }, "You're on the list. Thank you for joining The Lion Company.");
+            }, 'Check your inbox to confirm your subscription to The Lion Company.');
         });
     }
 }
@@ -152,42 +152,36 @@ async function submitWebsiteForm(form, payload, successMessage) {
             return;
         }
 
-        // Newsletter addresses are saved privately in Resend before notification.
-        if (payload.type === 'newsletter') {
-            const listResponse = await fetch('/api/forms', {
+        // Prayer and newsletter workflows are handled privately by the same-origin
+        // endpoint so acknowledgments and team notifications use the verified Lion domain.
+        if (payload.type === 'prayer' || payload.type === 'newsletter') {
+            const formsResponse = await fetch('/api/forms', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            const listResult = await listResponse.json().catch(() => ({}));
-            if (!listResponse.ok) throw new Error(listResult.error || 'Unable to save signup');
-        }
+            const formsResult = await formsResponse.json().catch(() => ({}));
+            if (!formsResponse.ok) throw new Error(formsResult.error || 'Unable to process submission');
+        } else {
+            const notification = new FormData();
+            notification.append('_subject', `New Website Message — ${payload.firstName} ${payload.lastName}`.trim());
+            notification.append('_template', 'table');
+            notification.append('_captcha', 'false');
+            notification.append('submission_type', 'Website Contact');
+            notification.append('name', [payload.firstName, payload.lastName].filter(Boolean).join(' ') || 'Not provided');
+            notification.append('email', payload.email);
+            notification.append('phone', payload.phone || 'Not provided');
+            notification.append('message', payload.message);
 
-        const notification = new FormData();
-        notification.append('_subject', payload.type === 'prayer'
-            ? `New Prayer Request — ${payload.firstName} ${payload.lastName}`.trim()
-            : payload.type === 'contact'
-                ? `New Website Message — ${payload.firstName} ${payload.lastName}`.trim()
-                : 'New Newsletter Signup — The Lion Company Website');
-        notification.append('_template', 'table');
-        notification.append('_captcha', 'false');
-        notification.append('submission_type', payload.type === 'prayer'
-            ? 'Prayer Request'
-            : payload.type === 'contact' ? 'Website Contact' : 'Newsletter Signup');
-        notification.append('name', [payload.firstName, payload.lastName].filter(Boolean).join(' ') || 'Not provided');
-        notification.append('email', payload.email);
-        notification.append('phone', payload.phone || 'Not provided');
-        if (payload.type === 'prayer') notification.append('prayer_request', payload.message);
-        if (payload.type === 'contact') notification.append('message', payload.message);
-
-        const deliveryResponse = await fetch(FORMSUBMIT_ENDPOINT, {
-            method: 'POST',
-            headers: { Accept: 'application/json' },
-            body: notification
-        });
-        const deliveryResult = await deliveryResponse.json().catch(() => ({}));
-        if (!deliveryResponse.ok || deliveryResult.success === 'false' || deliveryResult.success === false) {
-            throw new Error(deliveryResult.message || 'Unable to deliver submission');
+            const deliveryResponse = await fetch(FORMSUBMIT_ENDPOINT, {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: notification
+            });
+            const deliveryResult = await deliveryResponse.json().catch(() => ({}));
+            if (!deliveryResponse.ok || deliveryResult.success === 'false' || deliveryResult.success === false) {
+                throw new Error(deliveryResult.message || 'Unable to deliver submission');
+            }
         }
 
         form.reset();
