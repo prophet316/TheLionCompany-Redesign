@@ -42,13 +42,13 @@ Lane: `LION-ORG` only
 - Verified the public TXT response independently through Cloudflare (`1.1.1.1`) and Google (`8.8.8.8`) resolvers.
 - Started DKIM authentication in the Lion Google Admin account; Google Admin confirmed `Authenticating email with DKIM.`
 
-## Remaining exact gate
+### DMARC monitoring
 
-### DMARC reporting destination
+- Jonathan selected `jonathan@thelioncompany.org` as the aggregate-report mailbox.
+- Published the monitoring-only TXT record at `_dmarc.thelioncompany.org`:
 
-No current `_dmarc` TXT record or existing DMARC-report delivery was found. Do not publish a record until an exact reporting mailbox or Group is selected and verified able to receive aggregate XML reports. The approved starting policy remains monitoring-only:
-
-`v=DMARC1; p=none; pct=100; rua=mailto:<approved-reporting-address>; adkim=r; aspf=r`
+  `v=DMARC1; p=none; pct=100; rua=mailto:jonathan@thelioncompany.org; adkim=r; aspf=r`
+- Verified the exact public TXT response from both authoritative Cloudflare nameservers and independently through Cloudflare (`1.1.1.1`) and Google (`8.8.8.8`) public resolvers.
 
 Do not move to `quarantine` or `reject` without a new approval after representative report review.
 
