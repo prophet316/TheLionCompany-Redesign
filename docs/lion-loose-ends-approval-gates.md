@@ -28,16 +28,21 @@ Lane: `LION-ORG` only
 
 ## External objects created without audience sends
 
-- Resend Segment `Lion Monthly Newsletter`; verified empty at creation.
-- Resend Topic `Monthly Ministry Updates`; verified `Opt-in` and `public`.
+- Resend Segment `Lion Monthly Newsletter` (`1c59b436-1263-429d-9a86-8a8a8a20db55`); verified empty at creation.
+- Resend Topic `Monthly Ministry Updates` (`2142dc68-36fa-41ed-9326-3bd719b7bb1a`); verified `Opt-in` and `public`.
 - No existing Contacts were imported or added.
 - No Broadcast, newsletter, outreach, or other audience send was created.
 
-## Remaining exact gates
+## Mail authentication completed
 
 ### Google Workspace DKIM
 
-Public DNS has Google Workspace SPF, but the default `google._domainkey` selector does not currently resolve. Google Admin requires Jonathan's passkey before the exact selector/key can be generated or signing status can be changed. Keep that reauthentication scoped to the Lion Google account.
+- Generated a 2048-bit Google Workspace DKIM key using selector `google` for `thelioncompany.org`.
+- Published the exact TXT record at `google._domainkey.thelioncompany.org` in the Lion Cloudflare zone.
+- Verified the public TXT response independently through Cloudflare (`1.1.1.1`) and Google (`8.8.8.8`) resolvers.
+- Started DKIM authentication in the Lion Google Admin account; Google Admin confirmed `Authenticating email with DKIM.`
+
+## Remaining exact gate
 
 ### DMARC reporting destination
 
