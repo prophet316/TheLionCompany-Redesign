@@ -3,6 +3,7 @@ const crypto = require('node:crypto');
 const SITE_URL = 'https://www.thelioncompany.org';
 const LION_IMAGE_URL = `${SITE_URL}/lion_bg.jpg`;
 const DEFAULT_TEAM_INBOX = 'jonathan@thelioncompany.org';
+const DEFAULT_CONTACT_INBOX = 'jonathan@thelioncompany.org';
 const CONFIRMATION_TTL_MS = 48 * 60 * 60 * 1000;
 
 const ALLOWED_ORIGINS = new Set([
@@ -35,6 +36,10 @@ function clean(value, maxLength) {
 
 function validEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
+}
+
+function validResourceId(value) {
+    return /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
 }
 
 function escapeHtml(value) {
@@ -200,6 +205,39 @@ function prayerTeamNotification(fields) {
 </html>`;
 }
 
+function contactAcknowledgment(firstName) {
+    const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : 'Hello,';
+    return emailShell({
+        preheader: 'Your message has been received by The Lion Company.',
+        eyebrow: 'Message received',
+        title: 'Thank you for reaching out.',
+        bodyHtml: `
+            <p style="margin:0 0 18px;">${greeting}</p>
+            <p style="margin:0 0 18px;">Your message has been delivered to The Lion Company.</p>
+            <p style="margin:0;">If a response is appropriate, someone from the ministry will follow up with you directly.</p>`
+    });
+}
+
+function contactTeamNotification(fields) {
+    const name = [fields.firstName, fields.lastName].filter(Boolean).join(' ') || 'Not provided';
+    const phoneLine = fields.phone ? `<p style="margin:0 0 8px;"><strong style="color:#A99454;">Phone:</strong> ${escapeHtml(fields.phone)}</p>` : '';
+
+    return emailShell({
+        preheader: `Website contact message from ${name}.`,
+        eyebrow: 'Website contact',
+        title: 'A new message has arrived.',
+        bodyHtml: `
+            <div style="padding:20px;background:#11100E;border:1px solid #29251A;">
+                <p style="margin:0 0 8px;"><strong style="color:#A99454;">Name:</strong> ${escapeHtml(name)}</p>
+                <p style="margin:0 0 8px;"><strong style="color:#A99454;">Email:</strong> ${escapeHtml(fields.email)}</p>
+                ${phoneLine}
+            </div>
+            <div style="margin:24px 0 8px;font-size:11px;font-weight:700;letter-spacing:1.8px;color:#D4AF37;text-transform:uppercase;">Message</div>
+            <div style="padding:22px;background:#141310;border:1px solid #413718;border-left:3px solid #D4AF37;white-space:pre-wrap;">${escapeHtml(fields.message)}</div>
+            <p style="margin:20px 0 0;font-size:12px;color:#8F897F;">Reply directly to this email to respond to the sender.</p>`
+    });
+}
+
 function newsletterConfirmation(confirmationUrl) {
     return emailShell({
         preheader: 'Confirm your subscription to The Lion Company.',
@@ -255,31 +293,50 @@ async function resendRequest(path, apiKey, method, body, idempotencyKey) {
     const response = await fetch(`https://api.resend.com${path}`, {
         method,
         headers,
-        body: JSON.stringify(body)
+        body: body === undefined ? undefined : JSON.stringify(body)
     });
     const result = await response.json().catch(() => ({}));
     return { ok: response.ok, status: response.status, result };
 }
 
-async function setNewsletterContact(email, apiKey, unsubscribed) {
+async function ensurePendingNewsletterContact(email, apiKey) {
     const created = await resendRequest('/contacts', apiKey, 'POST', {
         email,
-        unsubscribed
+        unsubscribed: true
     });
 
     if (created.ok) return;
 
     if (created.status === 409) {
-        const updated = await resendRequest(`/contacts/${encodeURIComponent(email)}`, apiKey, 'PATCH', {
-            unsubscribed
-        });
-        if (updated.ok) return;
+        // A repeat signup must not globally unsubscribe an already-confirmed
+        // contact while a new confirmation email is pending.
+        const existing = await resendRequest(`/contacts/${encodeURIComponent(email)}`, apiKey, 'GET');
+        if (existing.ok) return;
     }
 
     throw new Error(`Unable to update newsletter contact (${created.status})`);
 }
 
-async function confirmNewsletterContact(email, apiKey) {
+async function confirmNewsletterContact(email, apiKey, segmentId, topicId) {
+    const topicUpdated = await resendRequest(
+        `/contacts/${encodeURIComponent(email)}/topics`,
+        apiKey,
+        'PATCH',
+        { topics: [{ id: topicId, subscription: 'opt_in' }] }
+    );
+    if (!topicUpdated.ok) throw new Error(`Unable to opt in newsletter topic (${topicUpdated.status})`);
+
+    const segmentAdded = await resendRequest(
+        `/contacts/${encodeURIComponent(email)}/segments/${encodeURIComponent(segmentId)}`,
+        apiKey,
+        'POST'
+    );
+    if (!segmentAdded.ok && segmentAdded.status !== 409) {
+        throw new Error(`Unable to add newsletter segment (${segmentAdded.status})`);
+    }
+
+    // Global subscription is enabled last. If targeting setup fails, the
+    // contact remains safely excluded from every Broadcast.
     const updated = await resendRequest(`/contacts/${encodeURIComponent(email)}`, apiKey, 'PATCH', {
         unsubscribed: false
     });
@@ -335,7 +392,7 @@ function requestQuery(request) {
     return Object.fromEntries(url.searchParams.entries());
 }
 
-async function handleConfirmation(request, response, apiKey) {
+async function handleConfirmation(request, response, apiKey, segmentId, topicId) {
     const query = requestQuery(request);
     if (query.action !== 'confirm') {
         response.setHeader('Allow', 'POST');
@@ -352,9 +409,13 @@ async function handleConfirmation(request, response, apiKey) {
     if (!validSignature(email, expires, signature, apiKey)) {
         return sendHtml(response, 400, confirmationErrorPage('This confirmation link is invalid or has expired.'));
     }
+    if (!validResourceId(segmentId) || !validResourceId(topicId)) {
+        console.error('Newsletter Segment or Topic is not configured');
+        return sendHtml(response, 503, confirmationErrorPage('Newsletter preferences are not configured yet. Please try again later.'));
+    }
 
     try {
-        await confirmNewsletterContact(email, apiKey);
+        await confirmNewsletterContact(email, apiKey, segmentId, topicId);
         return sendHtml(response, 200, newsletterConfirmedPage());
     } catch (error) {
         console.error('Newsletter confirmation failed:', error);
@@ -370,7 +431,13 @@ module.exports = async function handler(request, response) {
     }
 
     if (request.method === 'GET') {
-        return handleConfirmation(request, response, apiKey);
+        return handleConfirmation(
+            request,
+            response,
+            apiKey,
+            clean(process.env.LION_NEWSLETTER_SEGMENT_ID, 100),
+            clean(process.env.LION_NEWSLETTER_TOPIC_ID, 100)
+        );
     }
     if (request.method !== 'POST') {
         response.setHeader('Allow', 'POST');
@@ -400,6 +467,8 @@ module.exports = async function handler(request, response) {
 
     const configuredTeamInbox = clean(process.env.LION_TEAM_INBOX, 254).toLowerCase();
     const teamInbox = validEmail(configuredTeamInbox) ? configuredTeamInbox : DEFAULT_TEAM_INBOX;
+    const configuredContactInbox = clean(process.env.LION_CONTACT_INBOX, 254).toLowerCase();
+    const contactInbox = validEmail(configuredContactInbox) ? configuredContactInbox : DEFAULT_CONTACT_INBOX;
 
     try {
         if (type === 'prayer') {
@@ -421,7 +490,8 @@ module.exports = async function handler(request, response) {
                     from: 'The Lion Company Prayer Team <prayer@updates.thelioncompany.org>',
                     to: [teamInbox],
                     reply_to: fields.email,
-                    subject: `New prayer request — ${name}`,
+                    subject: `[Lion Website Form] Prayer — ${name}`,
+                    tags: [{ name: 'lion_form_type', value: 'prayer' }],
                     html: prayerTeamNotification(fields),
                     text: `THE LION COMPANY | PRAYER MINISTRY\n\nPRIVATE PRAYER REQUEST\n\nName: ${name}\nEmail: ${fields.email}${fields.phone ? `\nPhone: ${fields.phone}` : ''}\n\nPRAYER REQUEST\n${fields.message}\n\nReply directly to this email if a personal follow-up is appropriate.\n\nConfidential ministry information. Keep this request within the prayer team.`
                 }
@@ -433,8 +503,40 @@ module.exports = async function handler(request, response) {
             return sendJson(response, 200, { ok: true });
         }
 
+        if (type === 'contact') {
+            if (!fields.firstName || !fields.message) {
+                return sendJson(response, 400, { error: 'Please complete the required contact fields' });
+            }
+
+            const name = [fields.firstName, fields.lastName].filter(Boolean).join(' ');
+            await sendEmailBatch([
+                {
+                    from: 'The Lion Company <contact@updates.thelioncompany.org>',
+                    to: [fields.email],
+                    reply_to: contactInbox,
+                    subject: 'We received your message',
+                    html: contactAcknowledgment(fields.firstName),
+                    text: `Hi ${fields.firstName},\n\nYour message has been delivered to The Lion Company. If a response is appropriate, someone from the ministry will follow up with you directly.\n\nUnity Through Christ\nThe Lion Company`
+                },
+                {
+                    from: 'The Lion Company Contact <contact@updates.thelioncompany.org>',
+                    to: [contactInbox],
+                    reply_to: fields.email,
+                    subject: `[Lion Website Form] Contact — ${name}`,
+                    tags: [{ name: 'lion_form_type', value: 'contact' }],
+                    html: contactTeamNotification(fields),
+                    text: `THE LION COMPANY | WEBSITE CONTACT\n\nName: ${name}\nEmail: ${fields.email}${fields.phone ? `\nPhone: ${fields.phone}` : ''}\n\nMESSAGE\n${fields.message}\n\nReply directly to this email to respond to the sender.`
+                }
+            ], apiKey, idempotencyKey(
+                'lion-contact',
+                [origin || 'direct', fields.email, fields.firstName, fields.lastName, fields.phone, fields.message],
+                10 * 60 * 1000
+            ));
+            return sendJson(response, 200, { ok: true });
+        }
+
         if (type === 'newsletter') {
-            await setNewsletterContact(fields.email, apiKey, true);
+            await ensurePendingNewsletterContact(fields.email, apiKey);
             const confirmationUrl = buildConfirmationUrl(fields.email, apiKey);
             await sendEmail({
                 from: 'The Lion Company <welcome@updates.thelioncompany.org>',
