@@ -303,7 +303,7 @@
                     <p class="body-text muted mt-2 mb-6">Your request will be kept private & prayed over. We are
                         praying.</p>
 
-                    <form id="prayer-form" class="minimal-form">
+                    <form id="prayer-form" class="minimal-form" aria-describedby="prayer-privacy-note">
                         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
                         <div class="input-line grid-2">
                             <input type="text" id="prayer-fname" required placeholder="First Name">
@@ -319,6 +319,10 @@
                         </div>
                         <button type="submit" class="btn btn-outline-gold mt-6 w-full">SUBMIT REQUEST</button>
                     </form>
+                    <p id="prayer-privacy-note" class="form-privacy-note">We use these details to deliver your request
+                        privately to The Lion Company for prayer and, when appropriate, a response. See our
+                        <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.
+                    </p>
                 </div>
 
                 <!-- Contact & Store Info -->
@@ -332,7 +336,7 @@
                     <section id="contact" class="contact-info mt-8">
                         <span class="eyebrow text-gold">GET IN TOUCH</span>
                         <h2>CONTACT US</h2>
-                        <form id="contact-form" class="minimal-form mt-4">
+                        <form id="contact-form" class="minimal-form mt-4" aria-describedby="contact-privacy-note">
                             <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
                             <div class="input-line grid-2">
                                 <input type="text" id="contact-fname" required placeholder="First Name">
@@ -348,6 +352,10 @@
                             </div>
                             <button type="submit" class="btn btn-outline-gold mt-6 w-full mb-6">SEND MESSAGE</button>
                         </form>
+                        <p id="contact-privacy-note" class="form-privacy-note">We use these details to deliver your
+                            message to The Lion Company and respond when appropriate. See our
+                            <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.
+                        </p>
                         <a href="mailto:JONATHAN@THELIONCOMPANY.ORG" class="contact-link text-white mt-4 block">
                             JONATHAN@THELIONCOMPANY.ORG
                         </a>
@@ -363,13 +371,14 @@
             <div class="container fade-up">
                 <h3 class="hero-eyebrow text-gold">JOIN OUR MAILING LIST!</h3>
                 <h2 class="mt-2 text-white text-3xl">Stay connected with The Lion Company</h2>
-                <form id="newsletter-form" class="mt-6">
+                <form id="newsletter-form" class="mt-6" aria-describedby="newsletter-privacy-note">
                     <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
                     <input type="email" id="newsletter-email" required placeholder="Email *">
                     <button type="submit" class="btn btn-outline-gold">JOIN</button>
                 </form>
-                <p class="newsletter-consent">By joining, you agree to receive ministry updates from The Lion
-                    Company. Confirm by email; unsubscribe anytime.</p>
+                <p id="newsletter-privacy-note" class="newsletter-consent form-privacy-note-centered">By joining, you
+                    agree to receive ministry updates from The Lion Company. Confirm by email; unsubscribe anytime.
+                    See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.</p>
             </div>
         </section>
     </main>
@@ -384,6 +393,8 @@
             <div class="footer-right">
                 <a href="#contact" class="muted text-sm">Contact Us</a>
                 <a href="mailto:JONATHAN@THELIONCOMPANY.ORG" class="muted text-sm ml-4">Email Us</a>
+                <a href="/privacy" class="muted text-sm ml-4">Privacy Policy</a>
+                <a href="/terms" class="muted text-sm ml-4">Terms & Conditions</a>
             </div>
         </div>
     </footer>

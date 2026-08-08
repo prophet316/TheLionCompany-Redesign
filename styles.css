@@ -587,6 +587,32 @@ a {
     width: 100%;
 }
 
+.form-privacy-note {
+    margin-top: 1rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.form-privacy-note-centered {
+    max-width: 540px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.form-privacy-note a,
+.legal-copy a {
+    color: var(--accent-gold);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.form-privacy-note a:hover,
+.legal-copy a:hover {
+    color: var(--accent-gold-hover);
+}
+
 /* Store / Contact Area */
 .store-item {
     padding: 1.5rem;
@@ -699,6 +725,67 @@ a {
     align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-right a:hover {
+    color: var(--accent-gold);
+}
+
+/* Legal pages use the existing Lion palette and typography. */
+.legal-hero {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+}
+
+.legal-hero h1 {
+    max-width: 900px;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 0.05em;
+}
+
+.legal-content-section {
+    padding: 5rem 0 7rem;
+}
+
+.legal-copy {
+    max-width: 900px;
+}
+
+.legal-copy section + section {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.legal-copy h2 {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.legal-copy p,
+.legal-copy li {
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.legal-copy p + p,
+.legal-copy p + ul,
+.legal-copy ul + p {
+    margin-top: 1rem;
+}
+
+.legal-copy ul {
+    padding-left: 1.5rem;
+}
+
+.legal-copy li + li {
+    margin-top: 0.75rem;
 }
 
 /* Store Feature Section */
@@ -840,6 +927,21 @@ a {
 }
 
 @media (max-width: 768px) {
+    .split-layout > * {
+        min-width: 0;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .contact-link {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        font-size: 1rem;
+    }
+
     .lightbox-grid {
         grid-template-columns: 1fr;
     }
@@ -972,6 +1074,19 @@ a {
     .footer-flex {
         flex-direction: column;
         text-align: center;
+    }
+
+    .footer-right {
+        justify-content: center;
+    }
+
+    .legal-hero {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .legal-content-section {
+        padding: 4rem 0 5rem;
     }
 }
 

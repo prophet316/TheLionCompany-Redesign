@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initStoreLightbox();
 });
 
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/4315c946d999e45eb1e9db1e14403180';
-
 // Intersection Observer for scroll reveal animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -152,42 +150,21 @@ async function submitWebsiteForm(form, payload, successMessage) {
             return;
         }
 
-        // Prayer and newsletter workflows are handled privately by the same-origin
-        // endpoint so acknowledgments and team notifications use the verified Lion domain.
-        if (payload.type === 'prayer' || payload.type === 'newsletter') {
-            const formsResponse = await fetch('/api/forms', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const formsResult = await formsResponse.json().catch(() => ({}));
-            if (!formsResponse.ok) throw new Error(formsResult.error || 'Unable to process submission');
-        } else {
-            const notification = new FormData();
-            notification.append('_subject', `New Website Message — ${payload.firstName} ${payload.lastName}`.trim());
-            notification.append('_template', 'table');
-            notification.append('_captcha', 'false');
-            notification.append('submission_type', 'Website Contact');
-            notification.append('name', [payload.firstName, payload.lastName].filter(Boolean).join(' ') || 'Not provided');
-            notification.append('email', payload.email);
-            notification.append('phone', payload.phone || 'Not provided');
-            notification.append('message', payload.message);
-
-            const deliveryResponse = await fetch(FORMSUBMIT_ENDPOINT, {
-                method: 'POST',
-                headers: { Accept: 'application/json' },
-                body: notification
-            });
-            const deliveryResult = await deliveryResponse.json().catch(() => ({}));
-            if (!deliveryResponse.ok || deliveryResult.success === 'false' || deliveryResult.success === false) {
-                throw new Error(deliveryResult.message || 'Unable to deliver submission');
-            }
-        }
+        // All Lion website workflows stay on the same-origin endpoint so private
+        // content and visitor acknowledgments use the verified Lion domain.
+        const formsResponse = await fetch('/api/forms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const formsResult = await formsResponse.json().catch(() => ({}));
+        if (!formsResponse.ok) throw new Error(formsResult.error || 'Unable to process submission');
 
         form.reset();
         showFormFeedback(form, successMessage, 'success');
     } catch (error) {
-        console.error('Website form submission failed:', error);
+        // Do not place submitted form fields or provider responses in browser logs.
+        console.error('Website form submission failed.');
         showFormFeedback(form, 'We could not send that just now. Please email Jonathan@TheLionCompany.org.', 'error');
     } finally {
         if (button) {

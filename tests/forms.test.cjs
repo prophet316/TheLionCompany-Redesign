@@ -43,12 +43,18 @@ function okJson(status = 200, result = { id: 'test-id' }) {
 
 test.beforeEach(() => {
     process.env.RESEND_API_KEY = 're_test_secret';
+    process.env.LION_NEWSLETTER_SEGMENT_ID = '11111111-1111-4111-8111-111111111111';
+    process.env.LION_NEWSLETTER_TOPIC_ID = '22222222-2222-4222-8222-222222222222';
     delete process.env.LION_TEAM_INBOX;
+    delete process.env.LION_CONTACT_INBOX;
 });
 
 test.afterEach(() => {
     delete process.env.RESEND_API_KEY;
+    delete process.env.LION_NEWSLETTER_SEGMENT_ID;
+    delete process.env.LION_NEWSLETTER_TOPIC_ID;
     delete process.env.LION_TEAM_INBOX;
+    delete process.env.LION_CONTACT_INBOX;
     global.fetch = undefined;
 });
 
@@ -125,6 +131,8 @@ test('sends a branded prayer acknowledgment and a private team notification in o
     assert.equal(teamNotification.from, 'The Lion Company Prayer Team <prayer@updates.thelioncompany.org>');
     assert.deepEqual(teamNotification.to, ['jonathan@thelioncompany.org']);
     assert.equal(teamNotification.reply_to, 'grace@example.com');
+    assert.match(teamNotification.subject, /^\[Lion Website Form\] Prayer/);
+    assert.deepEqual(teamNotification.tags, [{ name: 'lion_form_type', value: 'prayer' }]);
     assert.match(teamNotification.html, /THE LION COMPANY/);
     assert.match(teamNotification.html, /Prayer Ministry/);
     assert.match(teamNotification.html, /Private prayer request/);
@@ -171,6 +179,39 @@ test('uses an explicitly configured Lion team inbox', async () => {
     assert.equal(batch[0].reply_to, 'prayer-team@thelioncompany.org');
 });
 
+test('sends a branded contact acknowledgment and routes the private message separately', async () => {
+    process.env.LION_CONTACT_INBOX = 'contact-team@thelioncompany.org';
+    let batch;
+    global.fetch = async (_url, options) => {
+        batch = JSON.parse(options.body);
+        return okJson();
+    };
+
+    const response = await runPost({
+        type: 'contact',
+        firstName: 'Grace',
+        lastName: 'Example',
+        email: 'Grace@Example.com',
+        phone: '555-0100',
+        message: 'I would like to ask about the next gathering.'
+    });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(batch.length, 2);
+    assert.equal(batch[0].from, 'The Lion Company <contact@updates.thelioncompany.org>');
+    assert.deepEqual(batch[0].to, ['grace@example.com']);
+    assert.equal(batch[0].reply_to, 'contact-team@thelioncompany.org');
+    assert.match(batch[0].html, /Thank you for reaching out/);
+    assert.doesNotMatch(batch[0].html, /next gathering/);
+
+    assert.equal(batch[1].from, 'The Lion Company Contact <contact@updates.thelioncompany.org>');
+    assert.deepEqual(batch[1].to, ['contact-team@thelioncompany.org']);
+    assert.equal(batch[1].reply_to, 'grace@example.com');
+    assert.match(batch[1].subject, /^\[Lion Website Form\] Contact/);
+    assert.deepEqual(batch[1].tags, [{ name: 'lion_form_type', value: 'contact' }]);
+    assert.match(batch[1].html, /next gathering/);
+});
+
 test('starts newsletter double opt-in and sends a branded confirmation email', async () => {
     const requests = [];
     global.fetch = async (url, options) => {
@@ -195,12 +236,15 @@ test('starts newsletter double opt-in and sends a branded confirmation email', a
     assert.match(requests[1].body.html, /lion_bg\.jpg/);
 });
 
-test('resets an existing newsletter contact to pending confirmation', async () => {
+test('does not globally unsubscribe an existing contact during repeat signup', async () => {
     const requests = [];
     global.fetch = async (url, options) => {
-        requests.push({ url, body: JSON.parse(options.body) });
+        requests.push({ url, method: options.method, body: options.body ? JSON.parse(options.body) : undefined });
         if (requests.length === 1) {
             return { ok: false, status: 409, json: async () => ({ message: 'exists' }) };
+        }
+        if (requests.length === 2) {
+            return okJson(200, { email: 'reader@example.com', unsubscribed: false });
         }
         return okJson();
     };
@@ -209,7 +253,8 @@ test('resets an existing newsletter contact to pending confirmation', async () =
 
     assert.equal(response.statusCode, 200);
     assert.equal(requests[1].url, 'https://api.resend.com/contacts/reader%40example.com');
-    assert.deepEqual(requests[1].body, { unsubscribed: true });
+    assert.equal(requests[1].method, 'GET');
+    assert.equal(requests.some((request) => request.method === 'PATCH' && request.body?.unsubscribed === true), false);
 });
 
 test('confirms a signed newsletter subscription link', async () => {
@@ -226,7 +271,7 @@ test('confirms a signed newsletter subscription link', async () => {
 
     const requests = [];
     global.fetch = async (url, options) => {
-        requests.push({ url, body: JSON.parse(options.body) });
+        requests.push({ url, method: options.method, body: options.body ? JSON.parse(options.body) : undefined });
         return okJson();
     };
 
@@ -235,8 +280,35 @@ test('confirms a signed newsletter subscription link', async () => {
     assert.equal(response.statusCode, 200);
     assert.match(response.headers['Content-Type'], /text\/html/);
     assert.match(response.body, /You are on the list/);
-    assert.equal(requests[0].url, 'https://api.resend.com/contacts/reader%40example.com');
-    assert.deepEqual(requests[0].body, { unsubscribed: false });
+    assert.equal(requests[0].url, 'https://api.resend.com/contacts/reader%40example.com/topics');
+    assert.deepEqual(requests[0].body, {
+        topics: [{ id: '22222222-2222-4222-8222-222222222222', subscription: 'opt_in' }]
+    });
+    assert.equal(requests[1].url, 'https://api.resend.com/contacts/reader%40example.com/segments/11111111-1111-4111-8111-111111111111');
+    assert.equal(requests[1].method, 'POST');
+    assert.equal(requests[2].url, 'https://api.resend.com/contacts/reader%40example.com');
+    assert.deepEqual(requests[2].body, { unsubscribed: false });
+});
+
+test('keeps a contact globally unsubscribed when targeting is not configured', async () => {
+    let confirmationEmail;
+    global.fetch = async (url, options) => {
+        const body = options.body ? JSON.parse(options.body) : undefined;
+        if (url.endsWith('/emails')) confirmationEmail = body;
+        return okJson();
+    };
+
+    await runPost({ type: 'newsletter', email: 'reader@example.com' });
+    const encodedUrl = confirmationEmail.html.match(/href="(https:\/\/www\.thelioncompany\.org\/api\/forms\?[^\"]+)"/)[1];
+    const confirmationUrl = encodedUrl.replaceAll('&amp;', '&');
+    delete process.env.LION_NEWSLETTER_SEGMENT_ID;
+    delete process.env.LION_NEWSLETTER_TOPIC_ID;
+
+    global.fetch = async () => { throw new Error('Resend should not be called'); };
+    const response = await runGet(confirmationUrl);
+
+    assert.equal(response.statusCode, 503);
+    assert.match(response.body, /not configured yet/);
 });
 
 test('rejects a tampered newsletter confirmation link', async () => {
@@ -259,12 +331,11 @@ test('validates prayer and newsletter inputs', async () => {
     assert.equal(missingPrayer.statusCode, 400);
 });
 
-test('rejects non-prayer and non-newsletter requests at the endpoint', async () => {
+test('validates contact requests at the endpoint', async () => {
     const response = await runPost({
         type: 'contact',
-        firstName: 'Grace',
         email: 'grace@example.com',
-        message: 'Hello.'
+        message: ''
     });
     assert.equal(response.statusCode, 400);
 });
