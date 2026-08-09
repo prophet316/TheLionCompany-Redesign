@@ -13,34 +13,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media Library | The Lion Company</title>
-    <meta name="description" content="Watch and listen to The Lion Company podcast, teachings, and media content. 211+ videos on faith, discipleship, and church reform.">
+    <meta name="description" content="Watch and listen to The Lion Company podcast, teachings, and conversations on faith, discipleship, relationships, and church reform.">
+    <link rel="canonical" href="https://www.thelioncompany.org/media">
+    <link rel="alternate" type="application/rss+xml" title="The Lion Company Podcast"
+        href="https://feed.podbean.com/thelioncompany/feed.xml">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Media Library | The Lion Company">
     <meta property="og:description" content="Watch and listen to The Lion Company podcast, teachings, and media content.">
-    <meta property="og:url" content="https://thelioncompany.org/media.html">
-    <meta property="og:image" content="https://thelioncompany.org/lion_bg.jpg">
+    <meta property="og:url" content="https://www.thelioncompany.org/media">
+    <meta property="og:image" content="https://www.thelioncompany.org/lion_bg.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Media Library | The Lion Company">
+    <meta name="twitter:description" content="Watch and listen to The Lion Company podcast, teachings, and conversations.">
+    <meta name="twitter:image" content="https://www.thelioncompany.org/lion_bg.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "The Lion Company Media Library",
+      "url": "https://www.thelioncompany.org/media",
+      "description": "Podcast episodes, teachings, and conversations from The Lion Company.",
+      "about": ["Christian discipleship", "church reform", "faith", "relationships"],
+      "isPartOf": { "@id": "https://www.thelioncompany.org/#website" },
+      "publisher": { "@id": "https://www.thelioncompany.org/#organization" }
+    }
+    </script>
     <!-- Google Fonts: Cinzel & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://img.youtube.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">THE LION COMPANY</a>
+            <a href="/" class="logo">THE LION COMPANY</a>
             <div class="nav-links">
-                <a href="index.html#mission">MISSION</a>
-                <a href="index.html#podcast">PODCAST</a>
-                <a href="media.html">MEDIA</a>
-                <a href="index.html#prayer">PRAYER</a>
-                <a href="index.html#store">STORE</a>
-                <a href="index.html#contact">CONTACT</a>
+                <a href="/#mission">MISSION</a>
+                <a href="/#podcast">PODCAST</a>
+                <a href="/media" aria-current="page">MEDIA</a>
+                <a href="/#prayer">PRAYER</a>
+                <a href="/#store">STORE</a>
+                <a href="/#contact">CONTACT</a>
                 <div class="nav-social flex items-center gap-4 ml-4 px-4 border-l border-[rgba(255,255,255,0.1)]">
-                    <a href="https://www.instagram.com/thelioncompanytx/" target="_blank" aria-label="Instagram">
+                    <a href="https://www.instagram.com/thelioncompanyglobal/" target="_blank"
+                        rel="noopener noreferrer" aria-label="Instagram">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -74,40 +99,68 @@
                     GIVE
                 </a>
             </div>
-            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+            <button class="mobile-menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"
+                aria-controls="mobile-menu">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <!-- Mobile Menu -->
-        <div class="mobile-menu">
-            <a href="index.html#mission">MISSION</a>
-            <a href="index.html#podcast">PODCAST</a>
-            <a href="media.html">MEDIA</a>
-            <a href="index.html#prayer">PRAYER</a>
-            <a href="index.html#store">STORE</a>
-            <a href="index.html#contact">CONTACT</a>
+        <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+            <a href="/#mission">MISSION</a>
+            <a href="/#podcast">PODCAST</a>
+            <a href="/media" aria-current="page">MEDIA</a>
+            <a href="/#prayer">PRAYER</a>
+            <a href="/#store">STORE</a>
+            <a href="/#contact">CONTACT</a>
             <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank">GIVE</a>
         </div>
     </nav>
 
-    <main style="padding-top: var(--nav-height);">
+    <main id="main-content" style="padding-top: var(--nav-height);">
         <!-- Title Section -->
         <section class="section-padding bg-darker pb-6">
             <div class="container text-center fade-up">
                 <span class="eyebrow text-gold">THE LION COMPANY</span>
                 <h2>MEDIA LIBRARY</h2>
+                <p class="body-text muted max-w-2xl mx-auto mt-4">Listen to the podcast on your preferred platform,
+                    or search the full teaching and conversation library below.</p>
+                <div class="podcast-platforms podcast-platforms-compact" aria-label="Listen to The Lion Company Podcast">
+                    <a class="platform-button platform-button-primary" data-platform="apple-podcasts"
+                        href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
+                        target="_blank" rel="noopener noreferrer">Apple Podcasts</a>
+                    <a class="platform-button platform-button-primary" data-platform="spotify"
+                        href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5"
+                        target="_blank" rel="noopener noreferrer">Spotify</a>
+                    <a class="platform-button" data-platform="podbean" href="https://thelioncompany.podbean.com/"
+                        target="_blank" rel="noopener noreferrer">Podbean</a>
+                </div>
             </div>
         </section>
 
         <!-- Media Library Section -->
         <section class="media section-padding pt-6 border-top">
             <div class="container fade-up">
+                <div class="media-tools" aria-label="Media library controls">
+                    <label class="media-search" for="media-search">
+                        <span>SEARCH THE LIBRARY</span>
+                        <input id="media-search" type="search" placeholder="Search by title or topic…" autocomplete="off">
+                    </label>
+                    <div class="media-filters" role="group" aria-label="Filter media by category">
+                        <button type="button" class="media-filter active" data-media-filter="all" aria-pressed="true">All</button>
+                        <button type="button" class="media-filter" data-media-filter="podcast" aria-pressed="false">Podcasts</button>
+                        <button type="button" class="media-filter" data-media-filter="teaching" aria-pressed="false">Teachings</button>
+                        <button type="button" class="media-filter" data-media-filter="series" aria-pressed="false">Series</button>
+                        <button type="button" class="media-filter" data-media-filter="conversation" aria-pressed="false">Conversations</button>
+                        <button type="button" class="media-filter" data-media-filter="relationships" aria-pressed="false">Relationships</button>
+                    </div>
+                    <p id="media-results" class="media-results muted" aria-live="polite"></p>
+                </div>
                 <h3 class="mb-6">FULL EPISODES</h3>
-                <div class="grid-3 mb-6">
+                <div class="grid-3 mb-6 media-grid" data-media-category="podcast">
                     <!-- EP 7 -->
-                    <a href="#" data-video-id="TOj6tefx3rI" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=TOj6tefx3rI" data-video-id="TOj6tefx3rI" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/TOj6tefx3rI/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/TOj6tefx3rI/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">PODCAST</span>
@@ -117,9 +170,9 @@
                     </a>
 
                     <!-- EP 6 -->
-                    <a href="#" data-video-id="x8s5DPF68kQ" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=x8s5DPF68kQ" data-video-id="x8s5DPF68kQ" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/x8s5DPF68kQ/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/x8s5DPF68kQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">PODCAST</span>
@@ -129,9 +182,9 @@
                     </a>
 
                     <!-- EP 5 -->
-                    <a href="#" data-video-id="Z0AtNFd13-A" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=Z0AtNFd13-A" data-video-id="Z0AtNFd13-A" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/Z0AtNFd13-A/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/Z0AtNFd13-A/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">PODCAST</span>
@@ -141,10 +194,10 @@
                 </div>
 
                 <h3 class="mb-6 mt-6 pt-6 border-top">TEACHINGS & CONVERSATIONS</h3>
-                <div class="grid-3">
-                    <a href="#" data-video-id="gfzoFvDlWTc" class="media-card bordered-card block video-trigger">
+                <div class="grid-3 media-grid" data-media-category="teaching">
+                    <a href="https://www.youtube.com/watch?v=gfzoFvDlWTc" data-video-id="gfzoFvDlWTc" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/gfzoFvDlWTc/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/gfzoFvDlWTc/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -153,9 +206,9 @@
                         </div>
                     </a>
 
-                    <a href="#" data-video-id="zP4ZiKek3Lg" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=zP4ZiKek3Lg" data-video-id="zP4ZiKek3Lg" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/zP4ZiKek3Lg/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/zP4ZiKek3Lg/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -163,9 +216,9 @@
                         </div>
                     </a>
 
-                    <a href="#" data-video-id="M1tQvPOg3vk" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=M1tQvPOg3vk" data-video-id="M1tQvPOg3vk" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/M1tQvPOg3vk/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/M1tQvPOg3vk/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -173,9 +226,9 @@
                         </div>
                     </a>
 
-                    <a href="#" data-video-id="p3UUJ5f6kEM" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=p3UUJ5f6kEM" data-video-id="p3UUJ5f6kEM" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/p3UUJ5f6kEM/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/p3UUJ5f6kEM/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -183,9 +236,9 @@
                         </div>
                     </a>
 
-                    <a href="#" data-video-id="L2HBzHQYrt8" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=L2HBzHQYrt8" data-video-id="L2HBzHQYrt8" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/L2HBzHQYrt8/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/L2HBzHQYrt8/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -193,9 +246,9 @@
                         </div>
                     </a>
 
-                    <a href="#" data-video-id="goD2b5TgBtE" class="media-card bordered-card block video-trigger">
+                    <a href="https://www.youtube.com/watch?v=goD2b5TgBtE" data-video-id="goD2b5TgBtE" class="media-card bordered-card block video-trigger">
                         <div class="media-image bg-darker"
-                            style="background-image: url('https://img.youtube.com/vi/goD2b5TgBtE/hqdefault.jpg'); background-size: cover; background-position: center;">
+                            data-bg-image="https://img.youtube.com/vi/goD2b5TgBtE/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -205,41 +258,41 @@
                 </div>
 
                 <h3 class="mb-6 mt-6 pt-6 border-top">GIDEON & GOD'S AGENDA</h3>
-                <div class="grid-3">
-                    <a href="#" data-video-id="tWKxz7YrnA0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/tWKxz7YrnA0/hqdefault.jpg'); background-size: cover; background-position: center;">
+                <div class="grid-3 media-grid" data-media-category="series">
+                    <a href="https://www.youtube.com/watch?v=tWKxz7YrnA0" data-video-id="tWKxz7YrnA0" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/tWKxz7YrnA0/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">GIDEON : God's Agenda Part 1</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="0jeOgbfl1vk" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/0jeOgbfl1vk/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=0jeOgbfl1vk" data-video-id="0jeOgbfl1vk" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/0jeOgbfl1vk/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Gideon : God's Agenda PT.2</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="njO21uBJxMM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/njO21uBJxMM/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=njO21uBJxMM" data-video-id="njO21uBJxMM" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/njO21uBJxMM/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Gideon : God's Agenda PT 3</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="CaV9NyMAfMY" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/CaV9NyMAfMY/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=CaV9NyMAfMY" data-video-id="CaV9NyMAfMY" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/CaV9NyMAfMY/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">GIDEON : God's Agenda Part 4</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="ru7dI3HSKIQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/ru7dI3HSKIQ/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=ru7dI3HSKIQ" data-video-id="ru7dI3HSKIQ" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/ru7dI3HSKIQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
@@ -249,177 +302,153 @@
                 </div>
 
                 <h3 class="mb-6 mt-6 pt-6 border-top">CONVERSATION</h3>
-                <div class="grid-3">
-                    <a href="#" data-video-id="lPRvDRofqkQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/lPRvDRofqkQ/hqdefault.jpg'); background-size: cover; background-position: center;">
+                <div class="grid-3 media-grid" data-media-category="conversation">
+                    <a href="https://www.youtube.com/watch?v=lPRvDRofqkQ" data-video-id="lPRvDRofqkQ" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/lPRvDRofqkQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Context, Perspective & Revival!</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="H3k4iw_6fj0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/H3k4iw_6fj0/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=H3k4iw_6fj0" data-video-id="H3k4iw_6fj0" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/H3k4iw_6fj0/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Obedience & Sacrifice</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="x2pT7uYkvlA" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/x2pT7uYkvlA/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=x2pT7uYkvlA" data-video-id="x2pT7uYkvlA" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/x2pT7uYkvlA/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Significance</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="s8FewMKaHSM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/s8FewMKaHSM/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=s8FewMKaHSM" data-video-id="s8FewMKaHSM" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/s8FewMKaHSM/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">THE BLAME GAME</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="PWU_VB0qfUU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/PWU_VB0qfUU/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=PWU_VB0qfUU" data-video-id="PWU_VB0qfUU" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/PWU_VB0qfUU/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Jesus & Memory Maps</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="jb0JRyF07Yk" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/jb0JRyF07Yk/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=jb0JRyF07Yk" data-video-id="jb0JRyF07Yk" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/jb0JRyF07Yk/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Loving Jesus, Loving People</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="PxlLRWjycZg" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/PxlLRWjycZg/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=PxlLRWjycZg" data-video-id="PxlLRWjycZg" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/PxlLRWjycZg/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">JESUS & THE 13th DISCIPLE</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="kD28pst1hpU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/kD28pst1hpU/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=kD28pst1hpU" data-video-id="kD28pst1hpU" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/kD28pst1hpU/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Presents: Prophet's Corner EP 1</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="Nl6JIlKUbQE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/Nl6JIlKUbQE/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=Nl6JIlKUbQE" data-video-id="Nl6JIlKUbQE" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/Nl6JIlKUbQE/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Cry Holy</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="xiLXewFUWAM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/xiLXewFUWAM/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=xiLXewFUWAM" data-video-id="xiLXewFUWAM" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/xiLXewFUWAM/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">BEHOLD</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="C8alBDDqBNw" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/C8alBDDqBNw/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=C8alBDDqBNw" data-video-id="C8alBDDqBNw" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/C8alBDDqBNw/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Revival Police</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="OiGtroG7uHE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/OiGtroG7uHE/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=OiGtroG7uHE" data-video-id="OiGtroG7uHE" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/OiGtroG7uHE/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Heart over Hand</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="yeAIXEAdvTU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/yeAIXEAdvTU/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=yeAIXEAdvTU" data-video-id="yeAIXEAdvTU" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/yeAIXEAdvTU/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">HEART</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="OfyCpxqYamE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/OfyCpxqYamE/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=OfyCpxqYamE" data-video-id="OfyCpxqYamE" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/OfyCpxqYamE/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Overcoming the Past, Redefining Success, and Finding God’s Purpose | Podcast EP 1</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="x8s5DPF68kQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/x8s5DPF68kQ/hqdefault.jpg'); background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Podcast EP 6 | Confessions of a truth Teller | The Dark Side of Being Light</h4>
-                        </div>
-                    </a>
-                    <a href="#" data-video-id="TOj6tefx3rI" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/TOj6tefx3rI/hqdefault.jpg'); background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Lion Company Podcast EP 7 When God's Will doesn't go your way</h4>
-                        </div>
-                    </a>
                 </div>
 
                 <h3 class="mb-6 mt-6 pt-6 border-top">RELATIONSHIPS</h3>
-                <div class="grid-3">
-                    <a href="#" data-video-id="ml1tCKumJNw" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/ml1tCKumJNw/hqdefault.jpg'); background-size: cover; background-position: center;">
+                <div class="grid-3 media-grid" data-media-category="relationships">
+                    <a href="https://www.youtube.com/watch?v=ml1tCKumJNw" data-video-id="ml1tCKumJNw" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/ml1tCKumJNw/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 1</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="lAn92FsttOM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/lAn92FsttOM/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=lAn92FsttOM" data-video-id="lAn92FsttOM" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/lAn92FsttOM/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 2</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="P7FnRJ0lq2E" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/P7FnRJ0lq2E/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=P7FnRJ0lq2E" data-video-id="P7FnRJ0lq2E" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/P7FnRJ0lq2E/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 3</h4>
                         </div>
                     </a>
-                    <a href="#" data-video-id="QhzS_keuuT4" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/QhzS_keuuT4/hqdefault.jpg'); background-size: cover; background-position: center;">
+                    <a href="https://www.youtube.com/watch?v=QhzS_keuuT4" data-video-id="QhzS_keuuT4" class="media-card bordered-card block video-trigger">
+                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/QhzS_keuuT4/hqdefault.jpg" style="background-size: cover; background-position: center;">
                         </div>
                         <div class="media-info">
                             <span class="text-gold text-sm tracking-wide">TEACHING</span>
                             <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 4</h4>
-                        </div>
-                    </a>
-                    <a href="#" data-video-id="zP4ZiKek3Lg" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" style="background-image: url('https://img.youtube.com/vi/zP4ZiKek3Lg/hqdefault.jpg'); background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Heart over Hammer</h4>
                         </div>
                     </a>
                 </div>
@@ -436,6 +465,10 @@
                 <p class="muted text-sm mt-2">© Copyright 2026 The Lion Company | All Rights Reserved.</p>
             </div>
             <div class="footer-right">
+                <a href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
+                    target="_blank" rel="noopener noreferrer" class="muted text-sm" data-platform="apple-podcasts">Apple Podcasts</a>
+                <a href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5" target="_blank"
+                    rel="noopener noreferrer" class="muted text-sm" data-platform="spotify">Spotify</a>
                 <a href="/privacy" class="muted text-sm">Privacy Policy</a>
                 <a href="/terms" class="muted text-sm ml-4">Terms & Conditions</a>
             </div>
@@ -443,19 +476,25 @@
     </footer>
 
     <!-- Video Modal -->
-    <div id="video-modal" class="video-modal" aria-hidden="true">
+    <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title"
+        aria-hidden="true">
         <div class="video-modal-overlay js-modal-close"></div>
         <div class="video-modal-content">
-            <button class="video-modal-close js-modal-close" aria-label="Close video">
+            <button class="video-modal-close js-modal-close" type="button" aria-label="Close video">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
+            <h2 id="video-modal-title" class="sr-only">The Lion Company video</h2>
             <div class="video-modal-body">
                 <iframe id="video-iframe" src="" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
+                    allowfullscreen title="The Lion Company video"></iframe>
+            </div>
+            <div class="video-modal-actions">
+                <a id="video-youtube-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+                <button id="video-copy-link" type="button">Copy share link</button>
             </div>
         </div>
     </div>

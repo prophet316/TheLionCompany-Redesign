@@ -54,9 +54,10 @@ test('terms preserve ministry boundaries and separate-publication consent', () =
     assert.match(terms, /does not give The\s+Lion Company permission to publish it/);
 });
 
-test('clean legal routes rewrite to the static review pages', () => {
+test('clean public routes rewrite to the static pages', () => {
     const config = JSON.parse(read('vercel.json'));
     assert.deepEqual(config.rewrites, [
+        { source: '/media', destination: '/media.html' },
         { source: '/privacy', destination: '/privacy.html' },
         { source: '/terms', destination: '/terms.html' }
     ]);

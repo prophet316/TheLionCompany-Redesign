@@ -6,33 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy | The Lion Company</title>
     <meta name="description" content="Privacy policy for the Company of Lions website, presented as The Lion Company.">
+    <link rel="canonical" href="https://www.thelioncompany.org/privacy">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">THE LION COMPANY</a>
+            <a href="/" class="logo">THE LION COMPANY</a>
             <div class="nav-links">
-                <a href="index.html">HOME</a>
-                <a href="media.html">MEDIA</a>
-                <a href="index.html#contact">CONTACT</a>
+                <a href="/">HOME</a>
+                <a href="/media">MEDIA</a>
+                <a href="/#contact">CONTACT</a>
             </div>
-            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+            <button class="mobile-menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"
+                aria-controls="mobile-menu">
                 <span></span><span></span><span></span>
             </button>
         </div>
-        <div class="mobile-menu">
-            <a href="index.html">HOME</a>
-            <a href="media.html">MEDIA</a>
-            <a href="index.html#contact">CONTACT</a>
+        <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+            <a href="/">HOME</a>
+            <a href="/media">MEDIA</a>
+            <a href="/#contact">CONTACT</a>
         </div>
     </nav>
 
-    <main style="padding-top: var(--nav-height);">
+    <main id="main-content" style="padding-top: var(--nav-height);">
         <section class="legal-hero bg-darker">
             <div class="container">
                 <span class="eyebrow text-gold">THE LION COMPANY</span>
@@ -170,7 +175,7 @@
                 <p class="muted text-sm mt-2">© Copyright 2026 The Lion Company | All Rights Reserved.</p>
             </div>
             <div class="footer-right">
-                <a href="index.html" class="muted text-sm">Home</a>
+                <a href="/" class="muted text-sm">Home</a>
                 <a href="/privacy" class="muted text-sm">Privacy Policy</a>
                 <a href="/terms" class="muted text-sm">Terms &amp; Conditions</a>
             </div>
