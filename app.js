@@ -4,12 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initForms();
     initNavbarScroll();
+    initLazyMediaImages();
+    initMediaLibrary();
     initVideoModal();
     initStoreLightbox();
+    initOutboundTracking();
 });
 
 // Intersection Observer for scroll reveal animations
 function initScrollAnimations() {
+    const revealElements = document.querySelectorAll('.fade-up');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        revealElements.forEach(el => el.classList.add('visible'));
+        return;
+    }
+
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -20,11 +29,11 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    const revealElements = document.querySelectorAll('.fade-up');
     revealElements.forEach(el => observer.observe(el));
 }
 // Mobile Menu Toggle
@@ -34,18 +43,30 @@ function initMobileMenu() {
     const mobileLinks = document.querySelectorAll('.mobile-menu a');
 
     if (menuBtn && mobileMenu) {
+        const setMenuState = (isOpen) => {
+            menuBtn.classList.toggle('active', isOpen);
+            mobileMenu.classList.toggle('active', isOpen);
+            menuBtn.setAttribute('aria-expanded', String(isOpen));
+            menuBtn.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+            mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        };
+
         menuBtn.addEventListener('click', () => {
-            menuBtn.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            setMenuState(!mobileMenu.classList.contains('active'));
         });
 
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                menuBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
+                setMenuState(false);
             });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                setMenuState(false);
+                menuBtn.focus();
+            }
         });
     }
 }
@@ -53,6 +74,7 @@ function initMobileMenu() {
 // Navbar Scroll Effect
 function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.style.background = 'rgba(10, 10, 10, 0.95)';
@@ -63,7 +85,7 @@ function initNavbarScroll() {
             navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
             navbar.style.padding = '0';
         }
-    });
+    }, { passive: true });
 }
 // Form handling — submits to the site's server-side email/list endpoint.
 function initForms() {
@@ -162,10 +184,12 @@ async function submitWebsiteForm(form, payload, successMessage) {
 
         form.reset();
         showFormFeedback(form, successMessage, 'success');
+        trackEvent('form_submission_success', { form_type: payload.type });
     } catch (error) {
         // Do not place submitted form fields or provider responses in browser logs.
         console.error('Website form submission failed.');
         showFormFeedback(form, 'We could not send that just now. Please email Jonathan@TheLionCompany.org.', 'error');
+        trackEvent('form_submission_error', { form_type: payload.type });
     } finally {
         if (button) {
             button.disabled = false;
@@ -179,6 +203,8 @@ function showFormFeedback(form, message, type) {
     if (existing) existing.remove();
     const feedback = document.createElement('div');
     feedback.className = 'form-feedback';
+    feedback.setAttribute('role', type === 'success' ? 'status' : 'alert');
+    feedback.setAttribute('aria-live', 'polite');
     feedback.style.cssText = 'padding:12px 16px;border-radius:8px;margin-top:12px;font-size:14px;text-align:center;';
     if (type === 'success') {
         feedback.style.background = 'rgba(16,185,129,0.15)';
@@ -191,44 +217,196 @@ function showFormFeedback(form, message, type) {
     }
     feedback.textContent = message;
     form.appendChild(feedback);
-    setTimeout(() => { if (feedback.parentNode) feedback.remove(); }, 5000);
+    setTimeout(() => { if (feedback.parentNode) feedback.remove(); }, 8000);
 }
+
+// Defer off-screen YouTube thumbnails so the media archive stays fast on mobile.
+function initLazyMediaImages() {
+    const images = document.querySelectorAll('[data-bg-image]');
+    const loadImage = (element) => {
+        element.style.backgroundImage = `url("${element.dataset.bgImage}")`;
+        element.removeAttribute('data-bg-image');
+    };
+
+    if (!('IntersectionObserver' in window)) {
+        images.forEach(loadImage);
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                loadImage(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { rootMargin: '500px 0px' });
+
+    images.forEach(image => observer.observe(image));
+}
+
+function initMediaLibrary() {
+    const search = document.getElementById('media-search');
+    const filters = [...document.querySelectorAll('[data-media-filter]')];
+    const grids = [...document.querySelectorAll('.media-grid')];
+    const cards = [...document.querySelectorAll('.media-grid .media-card')];
+    const result = document.getElementById('media-results');
+    if (!search || !filters.length || !cards.length) return;
+
+    const categoryLabels = {
+        podcast: 'PODCAST',
+        teaching: 'TEACHING',
+        series: 'SERIES',
+        conversation: 'CONVERSATION',
+        relationships: 'RELATIONSHIP'
+    };
+    let activeFilter = 'all';
+
+    grids.forEach((grid) => {
+        const category = grid.dataset.mediaCategory;
+        grid.querySelectorAll('.media-card').forEach((card) => {
+            card.dataset.mediaCategory = category;
+            const label = card.querySelector('.media-info span');
+            if (label && categoryLabels[category]) label.textContent = categoryLabels[category];
+        });
+    });
+
+    const updateResults = () => {
+        const query = search.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+            const matchesCategory = activeFilter === 'all' || card.dataset.mediaCategory === activeFilter;
+            const matchesQuery = !query || card.textContent.toLowerCase().includes(query);
+            const isVisible = matchesCategory && matchesQuery;
+            card.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+        });
+
+        grids.forEach((grid) => {
+            const hasVisibleCards = [...grid.querySelectorAll('.media-card')].some(card => !card.hidden);
+            grid.hidden = !hasVisibleCards;
+            const heading = grid.previousElementSibling;
+            if (heading?.matches('h3')) heading.hidden = !hasVisibleCards;
+        });
+
+        result.textContent = visibleCount === 1
+            ? '1 resource found.'
+            : `${visibleCount} resources found.`;
+    };
+
+    filters.forEach((filter) => {
+        filter.addEventListener('click', () => {
+            activeFilter = filter.dataset.mediaFilter;
+            filters.forEach((button) => {
+                const isActive = button === filter;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-pressed', String(isActive));
+            });
+            updateResults();
+            trackEvent('media_filter', { media_category: activeFilter });
+        });
+    });
+
+    search.addEventListener('input', updateResults);
+    updateResults();
+}
+
 // Video Modal Logic
 function initVideoModal() {
     const modal = document.getElementById('video-modal');
     if (!modal) return;
     const iframe = document.getElementById('video-iframe');
+    const youtubeLink = document.getElementById('video-youtube-link');
+    const copyLink = document.getElementById('video-copy-link');
     const closeTriggers = document.querySelectorAll('.js-modal-close');
     const openTriggers = document.querySelectorAll('.video-trigger');
+    const closeButton = modal.querySelector('.video-modal-close');
+    let returnFocus = null;
+
+    const shareUrlFor = (videoId) => {
+        const url = new URL(window.location.href);
+        url.hash = `watch-${videoId}`;
+        return url.toString();
+    };
+
+    const openVideo = (videoId, updateHistory = true) => {
+        if (!videoId) return;
+        returnFocus = document.activeElement;
+        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+        youtubeLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (updateHistory) history.replaceState(null, '', `#watch-${videoId}`);
+        closeButton?.focus();
+        trackEvent('video_play', { video_id: videoId });
+    };
+
+    const closeVideo = () => {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { iframe.src = ''; }, 300);
+        document.body.style.overflow = '';
+        if (window.location.hash.startsWith('#watch-')) {
+            history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+        }
+        returnFocus?.focus();
+    };
 
     openTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
             e.preventDefault();
             const videoId = trigger.getAttribute('data-video-id');
-            if (videoId) {
-                iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+            openVideo(videoId);
         });
     });
 
     closeTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.classList.remove('active');
-            setTimeout(() => { iframe.src = ''; }, 300);
-            document.body.style.overflow = '';
+            closeVideo();
         });
+    });
+
+    copyLink?.addEventListener('click', async () => {
+        const videoId = youtubeLink.href.match(/[?&]v=([^&]+)/)?.[1];
+        if (!videoId) return;
+        try {
+            await navigator.clipboard.writeText(shareUrlFor(videoId));
+            copyLink.textContent = 'Link copied';
+            setTimeout(() => { copyLink.textContent = 'Copy share link'; }, 2000);
+        } catch (_error) {
+            copyLink.textContent = 'Copy unavailable';
+        }
     });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
-            modal.classList.remove('active');
-            setTimeout(() => { iframe.src = ''; }, 300);
-            document.body.style.overflow = '';
+            closeVideo();
+            return;
+        }
+
+        if (e.key === 'Tab' && modal.classList.contains('active')) {
+            const focusable = [...modal.querySelectorAll('a[href], button:not([disabled])')];
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
         }
     });
+
+    const hashMatch = window.location.hash.match(/^#watch-([A-Za-z0-9_-]+)$/);
+    if (hashMatch && document.querySelector(`[data-video-id="${hashMatch[1]}"]`)) {
+        openVideo(hashMatch[1], false);
+    }
 }
 
 // Store Lightbox — only shows once per visit
@@ -236,28 +414,74 @@ function initStoreLightbox() {
     const modal = document.getElementById('store-modal');
     if (!modal) return;
     const closeTriggers = modal.querySelectorAll('.js-lightbox-close');
+    const closeButton = modal.querySelector('.lightbox-close');
+    const storageKey = 'lion-store-lightbox-shown';
     let hasShown = false;
+
+    try {
+        hasShown = sessionStorage.getItem(storageKey) === 'true';
+    } catch (_error) {
+        hasShown = false;
+    }
+
+    const closeLightbox = () => {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    };
 
     setTimeout(() => {
         if (!hasShown) {
             modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
             hasShown = true;
+            try { sessionStorage.setItem(storageKey, 'true'); } catch (_error) { /* storage may be unavailable */ }
+            closeButton?.focus();
         }
     }, 12000);
 
     closeTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
+            closeLightbox();
         });
     });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
+            closeLightbox();
+        }
+    });
+}
+
+function trackEvent(name, parameters = {}) {
+    if (typeof window.gtag === 'function') {
+        window.gtag('event', name, parameters);
+    }
+}
+
+function initOutboundTracking() {
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href]');
+        if (!link) return;
+        const destination = new URL(link.href, window.location.href);
+        const platform = link.dataset.platform;
+
+        if (platform) {
+            trackEvent('podcast_platform_click', {
+                platform,
+                link_url: destination.href
+            });
+            return;
+        }
+
+        if (destination.origin !== window.location.origin && !destination.href.startsWith('mailto:')) {
+            trackEvent('outbound_click', {
+                link_domain: destination.hostname,
+                link_url: destination.href,
+                link_text: link.textContent.trim().slice(0, 100)
+            });
         }
     });
 }

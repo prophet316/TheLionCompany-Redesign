@@ -49,6 +49,43 @@ body {
     letter-spacing: 0.02em;
 }
 
+[hidden] {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 12000;
+    padding: 0.75rem 1rem;
+    color: var(--text-dark);
+    background: var(--accent-gold);
+    font-weight: 600;
+    transform: translateY(-200%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent-gold-hover);
+    outline-offset: 4px;
+}
+
 /* Typography Utilities */
 h1,
 h2,
@@ -249,6 +286,76 @@ a {
     color: var(--text-dark) !important;
 }
 
+.podcast-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 900px;
+    margin: 2rem auto 0;
+}
+
+.platform-button {
+    min-width: 170px;
+    min-height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.1rem;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.platform-button-primary {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-hover);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.platform-button:hover {
+    border-color: var(--accent-gold-hover);
+    color: var(--text-dark);
+    background: var(--accent-gold-hover);
+    transform: translateY(-2px);
+}
+
+.platform-button svg {
+    width: 25px;
+    height: 25px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.platform-button small {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    opacity: 0.75;
+}
+
+.podcast-platforms-compact {
+    margin-top: 1.5rem;
+}
+
+.podcast-platforms-compact .platform-button {
+    min-width: 150px;
+    min-height: 48px;
+}
+
 /* Navigation - Floating Text */
 .navbar {
     position: fixed;
@@ -314,6 +421,7 @@ a {
     position: relative;
     height: 100vh;
     min-height: 700px;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -451,6 +559,16 @@ a {
 }
 
 /* Podcast / Video Placeholder */
+.video-container {
+    position: relative;
+    isolation: isolate;
+}
+
+.video-container iframe {
+    display: block;
+    border: 0;
+}
+
 .video-placeholder {
     width: 100%;
     max-width: 900px;
@@ -514,6 +632,8 @@ a {
 .media-card {
     padding: 0;
     cursor: pointer;
+    content-visibility: auto;
+    contain-intrinsic-size: 360px 390px;
 }
 
 .media-card:hover {
@@ -524,6 +644,9 @@ a {
     aspect-ratio: 4/3;
     border-bottom: 1px solid var(--border-subtle);
     transition: var(--transition-smooth);
+    background-color: #101010;
+    background-size: cover;
+    background-position: center;
 }
 
 /* Subtle image loads for grid via gradients */
@@ -541,6 +664,71 @@ a {
 
 .media-info {
     padding: 1.5rem;
+}
+
+.media-tools {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.media-search {
+    display: block;
+    max-width: 620px;
+}
+
+.media-search span {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: var(--accent-gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+}
+
+.media-search input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-white);
+    background: var(--bg-base);
+    font: inherit;
+}
+
+.media-search input:focus {
+    border-color: var(--accent-gold);
+}
+
+.media-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.media-filter {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.media-filter:hover,
+.media-filter.active {
+    border-color: var(--accent-gold);
+    color: var(--text-dark);
+    background: var(--accent-gold);
+}
+
+.media-results {
+    min-height: 1.7em;
+    margin-top: 1rem;
+    font-size: 0.78rem;
 }
 
 /* Minimal Forms */
@@ -1119,7 +1307,6 @@ a {
     position: relative;
     width: 90%;
     max-width: 1000px;
-    aspect-ratio: 16/9;
     background: var(--bg-base);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
@@ -1152,7 +1339,7 @@ a {
 
 .video-modal-body {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16/9;
     border-radius: 6px;
     overflow: hidden;
 }
@@ -1160,4 +1347,82 @@ a {
 .video-modal-body iframe {
     width: 100%;
     height: 100%;
+}
+
+.video-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.video-modal-actions a,
+.video-modal-actions button {
+    border: 0;
+    color: var(--text-muted);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.video-modal-actions a:hover,
+.video-modal-actions button:hover {
+    color: var(--accent-gold-hover);
+}
+
+@media (max-width: 768px) {
+    .hero-subtitle {
+        max-width: 28rem;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        letter-spacing: 0.18em;
+    }
+
+    .podcast-platforms,
+    .podcast-platforms-compact {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .platform-button,
+    .podcast-platforms-compact .platform-button {
+        width: 100%;
+    }
+
+    .media-tools {
+        padding: 1rem;
+    }
+
+    .media-filter {
+        flex: 1 1 calc(50% - 0.6rem);
+    }
+
+    .video-modal-actions {
+        justify-content: space-between;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .fade-up {
+        opacity: 1;
+        transform: none;
+    }
 }
