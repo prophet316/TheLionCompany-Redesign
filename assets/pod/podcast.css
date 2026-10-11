@@ -1,0 +1,53 @@
+/* Podcast section, round 3: bigger, full-color cover built from the real layers,
+   official full-color platform logos. Drop-in for particles.html (uses its
+   --orange, --display, --mono, --sans, --line, --glass, --ink, --muted tokens). */
+.pod{position:relative;width:min(1240px,100%);overflow:hidden;border-color:rgba(228,141,29,.35);
+  background:linear-gradient(135deg,rgba(228,141,29,.13),rgba(13,15,20,.7) 42%),var(--glass)}
+.pod::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:3px;background:var(--orange)}
+.pod-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,64px);align-items:center;margin-bottom:clamp(26px,3vw,40px)}
+@media (max-width:860px){.pod-grid{grid-template-columns:1fr}}
+
+/* The cover: every brand layer stacked in full color, drifting in depth with the pointer. */
+.pod-art{display:block;position:relative;text-decoration:none;perspective:1200px}
+.pod-cover{position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:#1a1a1a;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08),0 0 90px -10px rgba(228,141,29,.45);
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:box-shadow .4s}
+.pod-art:hover .pod-cover{box-shadow:0 40px 100px -20px rgba(0,0,0,.85),0 0 0 1px rgba(228,141,29,.6),0 0 140px -6px rgba(228,141,29,.7)}
+.pod-cover .ly{pointer-events:none;user-select:none;will-change:transform;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.pod-play{position:absolute;right:4%;bottom:4%;display:flex;align-items:center;gap:10px;padding:10px 16px 9px 12px;
+  background:var(--orange);color:#111;font:400 16px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);transform:translateZ(40px)}
+.pod-play svg{width:18px;height:18px;fill:#111}
+
+.pod-label{display:flex;align-items:center;gap:12px;font:700 13px/1.4 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin:0 0 16px}
+.pod-wave{display:inline-flex;align-items:flex-end;gap:3px;height:16px}
+.pod-wave i{display:block;width:3px;height:100%;background:var(--orange);transform-origin:bottom;animation:podwave .97s cubic-bezier(.3,0,.3,1) infinite paused}
+.pod-wave i:nth-child(2){animation-duration:1.23s;animation-delay:-.4s}.pod-wave i:nth-child(3){animation-duration:.81s;animation-delay:-.2s}.pod-wave i:nth-child(4){animation-duration:1.41s;animation-delay:-.9s}.pod-wave i:nth-child(5){animation-duration:1.07s;animation-delay:-.6s}
+.pod.live .pod-wave i,.pod-art:hover~.pod-copy .pod-wave i,.pod-copy:hover .pod-wave i{animation-play-state:running}
+@keyframes podwave{0%,100%{transform:scaleY(.25)}22%{transform:scaleY(1)}}
+.pod h2{margin:0 0 12px;font:400 clamp(58px,7vw,118px)/.88 var(--display);text-transform:uppercase;letter-spacing:.005em}
+.pod h2 em{font-style:normal;color:var(--orange)}
+.pod-new{margin:0 0 26px;font:400 clamp(20px,1.8vw,28px)/1.15 var(--display);text-transform:uppercase;letter-spacing:.03em;color:var(--ink)}
+.pod-new small{display:block;margin-bottom:6px;font:700 12px/1 var(--mono);letter-spacing:.2em;color:var(--muted)}
+
+/* Platform tiles: logos always in their own colors; hover lights the tile in that brand's color. */
+.pod-plat{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.pod-plat{grid-template-columns:1fr}}
+.pod-plat a{--b:255,255,255;position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:76px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);text-decoration:none;color:var(--ink);
+  transition:background .3s,border-color .3s,box-shadow .3s,transform .3s}
+.pod-plat a:hover,.pod-plat a:focus-visible{background:rgba(var(--b),.16);border-color:rgba(var(--b),.85);box-shadow:0 0 44px -6px rgba(var(--b),.6);transform:translateY(-2px)}
+.pod-plat img{width:44px;height:44px;flex:none;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+.pod-plat b{display:block;font:400 22px/1 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.pod-plat small{display:block;margin-top:5px;font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.pod-plat a:hover small{color:var(--ink)}
+.pod-plat .arr{margin-left:auto;font:700 16px/1 var(--mono);opacity:.5;transition:opacity .3s,transform .3s}
+.pod-plat a:hover .arr{opacity:1;transform:translate(2px,-2px)}
+
+/* Video cards reuse #watch and its existing .vc markup; just give them the orange edge. */
+.pod .watch{margin-top:0}
+.pod .vc{border-color:rgba(255,255,255,.14)}
+.pod .vc:hover{border-color:var(--orange);background:rgba(228,141,29,.1)}
+
+@media (prefers-reduced-motion:reduce){.pod-wave i{animation:none;transform:scaleY(.6)}.pod-cover,.pod-cover .ly{transition:none}}
+.pod-plat img[src*="podbean"]{border-radius:10px;box-shadow:0 0 0 1px rgba(255,255,255,.22)}

@@ -1,17 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNK2G065ES"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-MNK2G065ES');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
     <title>The Lion Company — Unity Through Christ</title>
     <meta name="description" content="The Lion Company is a 501(c)(3) nonprofit igniting bold church reform and authentic discipleship. Bringing unity among Christians worldwide through love, relationship, and education.">
     <meta name="keywords" content="church reform, Christian unity, discipleship, nonprofit, The Lion Company, Jesus, faith community">
@@ -75,488 +66,1026 @@
       ]
     }
     </script>
-    <!-- Google Fonts: Cinzel & Montserrat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.youtube-nocookie.com">
-    <link rel="preload" as="image" href="lion_bg.jpg" fetchpriority="high">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNK2G065ES"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MNK2G065ES');
+    </script>
+<script>
+/* the full motion is always on; phones and devices that ask for less motion get the calm version. Embers are the ambient effect. */
+(function(){ var A={mission:'risen',prayer:'pray',store:'shop',contact:'book'}, h=location.hash.slice(1); if(A[h]) try{ history.replaceState(null,'','#'+A[h]); }catch(e){} })(); // links to the old site's sections still land in the right place
+(function(){ var d=document.documentElement; d.setAttribute('data-amb','embers'); d.classList.add('moves');
+  if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) d.classList.add('rv'); setTimeout(function(){ d.classList.remove('rv'); },3500); })();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23ee8f1a%22/%3E%3Ctext x=%2216%22 y=%2224%22 font-size=%2220%22 text-anchor=%22middle%22 font-family=%22Impact,sans-serif%22 fill=%22%230c0c0d%22%3EL%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Anonymous+Pro:wght@400;700&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/pod/podcast.css">
+<style>
+/* Prototype 3: a glowing particle sculpture that becomes Christ, the risen Lord, every man, woman and family, then loops through a portal. */
+:root{
+  --bg:#050608; --ink:#eef1f6; --muted:#8f97a5; --line:rgba(255,255,255,.12); --glass:rgba(13,15,20,.62);
+  --orange:#e48d1d;
+  --display:"Anton", Impact, "Arial Narrow Bold", sans-serif;
+  --mono:"Anonymous Pro", ui-monospace, Menlo, monospace;
+  --sans:"Manrope", system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;background:radial-gradient(ellipse at 50% 60%,#0d1118 0%,#050608 62%)}
+#fallback{position:fixed;inset:0;z-index:0;display:none;background:#050608 url(assets/pt-lion.webp) center/min(70vh,90vw) no-repeat;filter:drop-shadow(0 0 30px rgba(200,220,255,.35));opacity:.75}
+.nogl #fallback{display:block}
+#flash{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:radial-gradient(ellipse at var(--fx,50%) var(--fy,50%),#fff 0%,rgba(225,235,255,.85) 35%,rgba(160,180,220,0) 75%)}
+#vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.55) 100%)}
+
+/* top band */
+.band{position:fixed;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;gap:10px;padding:0 clamp(16px,3vw,36px);background:#000;border-bottom:1px solid rgba(255,255,255,.08)} /* solid black, so nothing scrolling behind the logo and links runs into them */
+.brand{font:400 21px/1 var(--display);letter-spacing:.06em;text-decoration:none;white-space:nowrap;margin-right:auto}
+.brand b{font-weight:400;color:var(--orange)}
+.nav{display:flex;gap:clamp(14px,1.8vw,26px);margin-right:14px;font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+.nav a{text-decoration:none;opacity:.7;padding:8px 0}
+.nav a:hover{opacity:1}
+.nav a.bk{color:var(--orange);opacity:1}
+.sheet li a.bk{color:var(--orange)}
+.bbtn{appearance:none;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.04);color:var(--ink);font:700 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:12px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(8px)}
+.bbtn[aria-expanded="true"]{background:var(--ink);color:var(--bg)}
+.give{background:var(--orange);color:#111;font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 20px 11px;text-decoration:none;white-space:nowrap}
+.give:hover{background:var(--ink)}
+.menubtn{display:none;width:44px;height:42px;justify-content:center;padding:0}
+.menubtn i{display:block;width:18px;height:1.5px;background:currentColor;box-shadow:0 -6px 0 currentColor,0 6px 0 currentColor}
+@media (max-width:980px){.nav{display:none}.menubtn{display:inline-flex}}
+@media (max-width:420px){.brand .the{display:none}.brand{font-size:19px}.bbtn{padding:12px 10px;letter-spacing:.1em}.give{padding:12px 14px 11px}}
+.sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:39;width:min(380px,calc(100vw - 32px));background:rgba(16,18,24,.92);backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .4s cubic-bezier(.2,.8,.2,1),visibility .25s}
+.sheet.open{opacity:1;visibility:visible;transform:none}
+.sheet h4{margin:0 0 10px;font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.sheet ul{list-style:none;margin:0 0 18px;padding:0}
+.sheet li a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;font:400 24px/1.1 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.sheet li a:hover{color:var(--orange)}
+.sheet li a span{font:700 12px/1 var(--mono);opacity:.6}
+
+/* flow */
+main{position:relative;z-index:2}
+.sec{min-height:150vh;display:flex;align-items:center;padding:110px clamp(16px,6vw,96px)}
+.hero{height:100vh;min-height:0;align-items:flex-end;padding-bottom:76px}
+.hero{cursor:pointer} /* a click changes the figure */
+.heroin{width:100%;display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px}
+.htitle{margin:0;font:400 clamp(54px,7.2vw,118px)/.9 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.htitle>span:not(.w){display:block;color:transparent;-webkit-text-stroke:1px rgba(238,241,246,.7)}
+.hsub{margin:14px 0 0;font:700 12px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);max-width:46ch}
+.scrollhint{justify-self:end;text-align:right;font:700 12px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.scrollhint i{display:block;margin:10px 0 0 auto;width:1px;height:42px;background:linear-gradient(var(--ink),transparent);animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:860px){
+  .heroin{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .htitle{font-size:clamp(46px,13vw,64px)}
+  .hsub{margin-inline:auto}
+  .scrollhint{display:none}
+}
+
+.txt{width:min(560px,100%)}
+.txt.wide{width:min(720px,100%)}
+.kick{margin:0 0 20px;font:700 12px/1.4 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;gap:12px;align-items:center}
+.kick b{font:400 15px/1 var(--display);letter-spacing:.06em;color:var(--orange)}
+.big{margin:0;font:400 clamp(52px,6.4vw,104px)/.92 var(--display);text-transform:uppercase;letter-spacing:.005em;text-wrap:balance}
+.big em{font-style:normal;color:var(--orange)}
+.big.q{font-size:clamp(44px,5.2vw,86px);line-height:.96}
+/* headings set as separate lines (He is not here / Every man): one line each, all the same size, sized to the copy column */
+.fit{container-type:inline-size}
+.big.lines .ln{display:block;white-space:nowrap}
+#risen .big.lines{font-size:min(clamp(52px,6.4vw,104px),15.4cqi)}
+#made .big.lines{font-size:min(clamp(52px,6.4vw,104px),17.2cqi)}
+@supports not (width:1cqi){ #risen .big.lines,#made .big.lines{font-size:clamp(34px,5.2vw,82px)} }
+.verse{margin:24px 0 0;font:500 clamp(20px,1.7vw,26px)/1.4 var(--sans);color:#d6dbe4;max-width:34ch}
+.cite{margin:12px 0 0;font:700 12px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--orange)}
+.body{margin:22px 0 0;color:#b8bfcb;max-width:48ch}
+.body b{color:var(--ink);font-weight:600}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px}
+.pillars div{border-top:1px solid var(--line);padding-top:12px}
+.pillars b{display:block;font:400 22px/1 var(--display);letter-spacing:.05em;text-transform:uppercase}
+.pillars small{display:block;margin-top:6px;color:var(--muted);font-size:14px;line-height:1.45}
+
+.psec{padding:8vh clamp(16px,6vw,96px) 14vh}
+@media (max-width:760px){ .psec.lead{padding-top:58vh} } /* phones: a panel with its own figure opens with the figure in the clear, above the panel */
+/* podcast: the panel steps to the left like the others so Jonathan and Gina stand beside it */
+@media (min-width:761px){
+  .podsec .panel.pod{width:min(640px,100%)}
+  .podsec .pod h2{font-size:clamp(40px,4vw,58px)}
+  .podsec .vc{min-height:0;padding:14px 16px;gap:8px}
+  .podsec .watch{grid-template-columns:1fr;gap:6px}
+  .podsec .pod-plat b{font-size:20px}
+}
+@media (min-width:761px) and (max-width:1279px){ .podsec .panel.pod{width:min(600px,52vw)} .podsec .pod-plat img{width:38px;height:38px} .podsec .pod-plat a{padding:12px;gap:10px} .podsec .pod-plat b{font-size:17px} }
+@media (max-width:480px){ .pod .pod-plat{grid-template-columns:1fr} }
+@media (min-width:761px) and (max-width:900px){ .podsec .pod-plat{grid-template-columns:1fr} }
+@media (min-width:861px){
+  .podsec .pod-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);column-gap:24px;row-gap:0;align-items:end}
+  .podsec .pod-art{grid-column:1;grid-row:1/4}
+  .podsec .pod-copy{display:contents}
+  .podsec .pod-label{grid-column:2;grid-row:1}
+  .podsec .pod h2{grid-column:2;grid-row:2}
+  .podsec .pod-new{grid-column:2;grid-row:3;margin-bottom:0}
+  .podsec .pod-plat{grid-column:1/-1;grid-row:4;margin-top:22px}
+}
+.panel{width:min(600px,100%);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);padding:clamp(22px,3vw,40px)}
+.panel.wide{width:min(1180px,100%)}
+.panel h2{margin:0 0 10px;font:400 clamp(44px,4.8vw,76px)/.95 var(--display);text-transform:uppercase}
+.panel h3{margin:0 0 8px;font:400 28px/1.05 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.panel p{margin:0 0 16px;color:#c3c9d3}
+.label{font:700 12px/1.4 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;display:block}
+form{display:grid;gap:12px;align-content:start}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+label{font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+input,textarea{width:100%;font:400 17px/1.4 var(--sans);color:var(--ink);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:0}
+input:focus,textarea:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,.09)}
+textarea{min-height:110px;resize:vertical}
+button.sub{justify-self:start;appearance:none;border:0;background:var(--ink);color:var(--bg);font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:15px 22px 14px;cursor:pointer}
+button.sub:hover{background:var(--orange)}
+.form-note{font:400 15px/1.45 var(--sans);background:rgba(228,141,29,.12);border-left:3px solid var(--orange);padding:10px 12px;margin:4px 0 0;color:var(--ink)}
+.skip-link{position:fixed;left:12px;top:-60px;z-index:100;background:var(--orange);color:#0c0c0d;font:700 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:12px 14px;text-decoration:none}
+.skip-link:focus{top:12px}
+.form-note.err{background:rgba(220,60,40,.14);border-left-color:#e0533c}
+.sub:disabled{opacity:.6;cursor:progress}
+.fine{font-size:14px;color:var(--muted);margin:2px 0 0}
+
+.watch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:22px}
+@media (max-width:760px){.watch{grid-template-columns:1fr}}
+.vc{display:flex;flex-direction:column;gap:10px;min-height:160px;padding:18px;border:1px solid var(--line);background:rgba(255,255,255,.03);text-decoration:none;transition:border-color .25s,background .25s}
+.vc small{font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+.vc b{font:500 20px/1.25 var(--sans)}
+.vc span{margin-top:auto;font:700 12px/1 var(--mono);letter-spacing:.16em}
+.vc:hover{border-color:var(--ink);background:rgba(255,255,255,.08)}
+.more{display:inline-block;margin-top:18px;font:700 13px/1 var(--mono);letter-spacing:.18em;text-decoration:none;border-bottom:1px solid var(--orange);padding-bottom:6px}
+.funds{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:22px 0 10px}
+@media (max-width:560px){.funds{grid-template-columns:1fr}}
+.fund{display:flex;flex-direction:column;gap:10px;min-height:150px;padding:20px;border:1px solid var(--line);text-decoration:none;transition:background .25s,color .25s}
+.fund:hover{background:var(--orange);color:#111}
+.fund small{font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+.fund b{font:400 28px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.fund span{margin-top:auto;font:700 13px/1 var(--mono);letter-spacing:.16em}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 22px;margin:18px 0 0;scrollbar-width:thin;scrollbar-color:#555 transparent}
+.prod{flex:0 0 clamp(200px,21vw,240px);scroll-snap-align:start;text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:border-color .25s,transform .4s cubic-bezier(.2,.8,.2,1)}
+.prod:hover{border-color:var(--ink);transform:translateY(-4px)}
+.prod img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#fff}
+.prod b{display:block;padding:12px 12px 0;font:500 16px/1.3 var(--sans)}
+.prod span{display:block;padding:6px 12px 14px;font:700 12px/1 var(--mono);letter-spacing:.12em;color:var(--muted)}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:15px 22px 14px;text-decoration:none}
+.btn:hover{background:var(--orange)}
+.connect{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,56px);align-items:start}
+@media (max-width:860px){.connect{grid-template-columns:1fr}}
+.news .in{display:flex}
+.news .in input{flex:1;min-width:0}
+.soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.soc a{font:700 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:11px 13px;border:1px solid rgba(255,255,255,.3)}
+.soc a:hover{background:var(--ink);color:var(--bg)}
+.niv{margin:12px 0 0;font:400 12px/1.5 var(--sans);color:var(--muted);max-width:90ch}
+.copy{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font:700 12px/1.5 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.portal{justify-content:center;text-align:center}
+.portal .txt{width:min(760px,100%)}
+.portal .verse{margin-inline:auto}
+.portal .big{font-size:clamp(38px,4.6vw,76px);max-width:8em;margin-inline:auto}
+.tail{height:60vh}
+html{scroll-padding-top:84px}
+.give,.menubtn{flex:none}
+@media (min-width:761px) and (max-width:1279px){.txt{width:min(560px,44vw)}.txt.wide{width:min(720px,50vw)}.panel{width:min(600px,50vw)}.shophead{width:min(440px,42vw)}}
+@media (max-width:1199px){.map a span{display:none}}
+@media (max-width:360px){.band{gap:6px}.brand{font-size:17px}#socbtn{padding:12px 8px;letter-spacing:.06em}.give{padding:12px 10px 11px}}
+@media (min-width:761px) and (max-height:800px){.hero{padding-bottom:76px}}
+/* store: no glass panel, so the particle shirt stands in the open space to the right of the heading */
+.shopsec{min-height:110vh;display:flex;align-items:center}
+.shopwrap{width:min(1180px,100%);margin:0 auto}
+.shophead{width:min(440px,100%);min-height:44vh;display:flex;flex-direction:column;justify-content:center;gap:0}
+.shophead h2{margin:0 0 12px;font:400 clamp(48px,5.4vw,84px)/.92 var(--display);text-transform:uppercase}
+.shophead p{margin:0 0 22px;color:#c3c9d3;max-width:40ch}
+.shophead .btn{align-self:flex-start}
+@media (min-width:761px) and (max-height:860px){ /* short laptop screens: the whole store fits between the top band and the bottom of the screen */
+  .shophead{min-height:0}
+  .shophead p{margin-bottom:16px}
+  .shopsec .rail{margin-top:12px;padding-bottom:16px}
+  .shopsec .prod{flex-basis:max(150px,min(clamp(200px,21vw,240px),calc(100vh - 540px)))}
+}
+.shopsec .prod{background:rgba(10,12,16,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.shopsec .prod.on{border-color:var(--orange)}
+.mark{min-height:120vh}
+@media (max-width:760px){
+  .shopsec{min-height:0;display:block;padding-top:10vh}
+  .shophead{min-height:0;margin-bottom:46vh}
+  .shophead h2{font-size:clamp(44px,13vw,60px)}
+  .mark{min-height:100vh}
+}
+.map{position:fixed;right:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:6px}
+.map a{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none;font:700 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:5px 0}
+.map a span{opacity:0;transform:translateX(6px);transition:opacity .3s,transform .3s}
+.map a i{display:block;width:7px;height:7px;border:1px solid var(--muted);border-radius:50%;transition:background .3s,transform .3s,border-color .3s}
+.map a:hover span,.map a.on span{opacity:1;transform:none}
+.map a.on{color:var(--ink)}
+.map a.on i{background:var(--ink);border-color:var(--ink);transform:scale(1.4);box-shadow:0 0 12px #fff}
+@media (max-width:980px){.map{display:none}}
+.proto{position:fixed;left:16px;bottom:16px;z-index:41;font:700 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:10px 12px;text-decoration:none}
+@media (max-width:760px){
+  .sec{align-items:flex-end;padding:90px 16px 9vh;min-height:140vh}
+  .hero{height:100vh;min-height:0;padding-bottom:7vh}
+  .sec .txt{background:rgba(8,10,14,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px 18px;border:1px solid var(--line)}
+  .portal{align-items:center}
+  .portal .txt{background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .psec{padding:6vh 16px 12vh}
+  .proto{font-size:11px;padding:8px 10px;bottom:12px;left:12px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scrollhint i{animation:none}}
+
+/* hover on bold type: ink inverts on the big words, small headings warm to orange, labels open up, bold phrases get an orange underline.
+   Quick in, slow out, so a sweep across a headline leaves a short fading wake. */
+.w{display:inline-block;transform-origin:50% 70%;-webkit-text-stroke:1.5px transparent;-webkit-text-stroke-width:clamp(1px,.017em,2px);
+  transition:color .9s ease,-webkit-text-stroke-color .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.htitle>span:not(.w) .w{-webkit-text-stroke-color:rgba(238,241,246,.7);-webkit-text-stroke-width:1px}
+.sm .w{-webkit-text-stroke:0}
+.kick,.cite,.label,.pod-label{transition:letter-spacing .7s cubic-bezier(.2,.8,.2,1),color .5s}
+.hsub,.copy span{transition:color .5s}
+.body b{background:linear-gradient(var(--orange),var(--orange)) 0 96%/0 2px no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-size .7s cubic-bezier(.2,.8,.2,1)}
+.nav a{background:linear-gradient(var(--orange),var(--orange)) 0 calc(100% - 3px)/0 1px no-repeat;transition:opacity .3s,background-size .5s cubic-bezier(.2,.8,.2,1)}
+.brand,.brand b{transition:color .4s}
+.vc b,.prod b{transition:color .4s}
+.vc span,.fund span,.sheet li a{transition:letter-spacing .5s cubic-bezier(.2,.8,.2,1),color .25s}
+.bbtn{transition:background .25s,border-color .25s,color .25s}
+.lg .w.tap{color:transparent;-webkit-text-stroke-color:var(--orange);transform:scale(1.035)}
+.htitle>span:not(.w) .w.tap{color:var(--orange)}
+.sm .w.tap{color:var(--orange);transform:translateY(-.07em)}
+@media (hover:hover){
+  .lg .w:hover{color:transparent;-webkit-text-stroke-color:var(--orange);transform:scale(1.035);transition-duration:.2s,.2s,.4s}
+  .htitle>span:not(.w) .w:hover{color:var(--orange)}
+  .sm .w:hover,.pillars div:hover .w{color:var(--orange);transform:translateY(-.07em);transition-duration:.2s,.2s,.4s}
+  .kick:hover,.label:hover{color:var(--ink);letter-spacing:.3em;transition-duration:.45s,.25s}
+  .cite:hover{color:var(--ink);letter-spacing:.3em;transition-duration:.45s,.25s}
+  .pod-label:hover{letter-spacing:.28em;transition-duration:.45s,.25s}
+  .hsub:hover,.copy span:hover{color:var(--ink);transition-duration:.25s}
+  .body b:hover{background-size:100% 2px;transition-duration:.4s}
+  .nav a:hover{background-size:100% 1px}
+  .brand:hover{color:var(--orange)} .brand:hover b{color:var(--ink)}
+  .vc:hover b,.prod:hover b{color:var(--orange)}
+  .vc:hover span,.fund:hover span{letter-spacing:.24em}
+  .sheet li a:hover{letter-spacing:.07em}
+  .bbtn:not([aria-expanded="true"]):hover{background:rgba(255,255,255,.12);border-color:var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){
+  .lg .w:hover,.lg .w.tap,.sm .w:hover,.sm .w.tap,.pillars div:hover .w{transform:none}
+  .kick:hover{letter-spacing:.24em} .label:hover,.cite:hover,.pod-label:hover{letter-spacing:.22em}
+  .vc:hover span,.fund:hover span{letter-spacing:.16em} .sheet li a:hover{letter-spacing:.04em}
+}
+
+/* light UI timing: CTAs ease like their neighbours, press dips, sheets leave faster than they arrive, scroll hint rests */
+.give,.btn,button.sub,.soc a{transition:background-color .35s ease,color .35s ease,scale .4s cubic-bezier(.3,1.6,.5,1)}
+.give:hover,.btn:hover,button.sub:hover,.soc a:hover{transition-duration:.15s,.15s,.4s}
+.give:active,.btn:active,button.sub:active,.soc a:active{scale:.96;transition-duration:.15s,.15s,.06s}
+.bbtn{transition:background .25s,border-color .25s,color .25s,scale .4s cubic-bezier(.3,1.6,.5,1)}
+.bbtn:active{scale:.96;transition-duration:.25s,.25s,.25s,.06s}
+.fund{transition:background .25s,color .25s,scale .2s ease-out}
+.vc{transition:border-color .25s,background .25s,scale .2s ease-out}
+.prod{transition:border-color .25s,transform .4s cubic-bezier(.2,.8,.2,1),scale .2s ease-out}
+.fund:active,.vc:active,.prod:active,.pod-plat a:active{scale:.985}
+.give,.bbtn,button.sub,.btn,.soc a,.fund,.vc,.prod,.pod-plat a,.pod-art{-webkit-tap-highlight-color:transparent}
+.sheet{transition:opacity .16s ease-in,transform .22s cubic-bezier(.4,0,1,1),visibility 0s linear .22s}
+.sheet.open{transition:opacity .25s ease-out,transform .4s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.scrollhint i{animation-duration:2.6s}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}38%{transform:scaleY(1);transform-origin:top}39%{transform-origin:bottom}77%,100%{transform:scaleY(0);transform-origin:bottom}}
+@media (prefers-reduced-motion:reduce){.give:active,.btn:active,button.sub:active,.soc a:active,.bbtn:active,.fund:active,.vc:active,.prod:active,.pod-plat a:active{scale:none}}
+
+/* new motion (switchable): the hero words wait for the lion, story lines arrive a beat apart, menu rows cascade */
+html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
+@supports (animation-timeline: view()){ @media (prefers-reduced-motion:no-preference){
+  html.moves .sec:not(.hero) .txt{view-timeline:--txt block}
+  html.moves .sec:not(.hero) .txt>*{animation:lag linear both;animation-timeline:--txt;animation-range:entry 0% cover 30%}
+  html.moves .sec:not(.hero) .txt>:nth-child(2){animation-range:entry 5% cover 34%}
+  html.moves .sec:not(.hero) .txt>:nth-child(3){animation-range:entry 10% cover 38%}
+  html.moves .sec:not(.hero) .txt>:nth-child(n+4){animation-range:entry 15% cover 42%}
+  @keyframes lag{from{transform:translateY(22px);opacity:.3}to{transform:none;opacity:1}}
+  @media (max-width:760px){
+    html.moves .sec:not(.hero) .txt>*{animation-name:lagm;animation-range:entry 0% entry 70%}
+    html.moves .sec:not(.hero) .txt>:nth-child(2){animation-range:entry 8% entry 78%}
+    html.moves .sec:not(.hero) .txt>:nth-child(3){animation-range:entry 16% entry 86%}
+    html.moves .sec:not(.hero) .txt>:nth-child(n+4){animation-range:entry 24% entry 94%}
+    @keyframes lagm{from{transform:translateY(10px);opacity:.55}to{transform:none;opacity:1}}
+  }
+}}
+@media (prefers-reduced-motion:no-preference){
+  html.moves .sheet li{opacity:0;transform:translateY(6px);transition:opacity .15s,transform .2s}
+  html.moves .sheet.open li{opacity:1;transform:none;transition:opacity .3s ease-out,transform .45s cubic-bezier(.2,.8,.2,1)}
+  html.moves .sheet.open li:nth-child(2){transition-delay:.03s}html.moves .sheet.open li:nth-child(3){transition-delay:.06s}html.moves .sheet.open li:nth-child(4){transition-delay:.09s}
+  html.moves .sheet.open li:nth-child(5){transition-delay:.12s}html.moves .sheet.open li:nth-child(6){transition-delay:.15s}html.moves .sheet.open li:nth-child(7){transition-delay:.18s}html.moves .sheet.open li:nth-child(8){transition-delay:.21s}html.moves .sheet.open li:nth-child(9){transition-delay:.24s}
+}
+</style>
 </head>
-
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="band">
+  <a class="brand" href="#top"><span class="the">THE </span>LION <b>COMPANY</b></a>
+  <nav class="nav" aria-label="Main"><a href="#cross">Journey</a><a href="#pray">Pray</a><a href="#podcast">Podcast</a><a href="#shop">Shop</a><a href="#connect">Connect</a><a class="bk" href="#book" title="Book Jonathan and Gina to speak, teach or connect">Book us to speak</a></nav>
+  <button class="bbtn" id="socbtn" type="button" aria-expanded="false" aria-controls="socsheet">Socials</button>
+  <a class="give" data-href="give">Give</a>
+  <button class="bbtn menubtn" id="menubtn" type="button" aria-expanded="false" aria-controls="menusheet" aria-label="Menu"><i></i></button>
+</header>
+<div class="sheet" id="socsheet" role="dialog" aria-label="Socials">
+  <h4>Follow</h4>
+  <ul data-fill="social"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
+  <h4>Listen</h4>
+  <ul data-fill="podcast"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
+</div>
+<div class="sheet" id="menusheet" role="dialog" aria-label="Menu">
+  <h4>Worlds</h4>
+  <ul>
+    <li><a class="bk" href="#book">Book us to speak<span>→</span></a></li>
+    <li><a href="#cross">I · The cross<span>→</span></a></li>
+    <li><a href="#risen">II · He has risen<span>→</span></a></li>
+    <li><a href="#made">III · Lions are made<span>→</span></a></li>
+    <li><a href="#pray">Prayer<span>→</span></a></li>
+    <li><a href="#podcast">IV · Podcast<span>→</span></a></li>
+    <li><a href="#give">V · Give<span>→</span></a></li>
+    <li><a href="#shop">VI · Shop<span>→</span></a></li>
+    <li><a href="#connect">VII · Connect<span>→</span></a></li>
+  </ul>
+</div>
 
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="fallback" aria-hidden="true"></div>
+<div id="vig" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">THE LION COMPANY</a>
-            <div class="nav-links">
-                <a href="#mission">MISSION</a>
-                <a href="#podcast">PODCAST</a>
-                <a href="#media">MEDIA</a>
-                <a href="#prayer">PRAYER</a>
-                <a href="#store">STORE</a>
-                <a href="#contact">CONTACT</a>
-                <div class="nav-social flex items-center gap-4 ml-4 px-4 border-l border-[rgba(255,255,255,0.1)]">
-                    <a href="https://www.instagram.com/thelioncompanyglobal/" target="_blank"
-                        rel="noopener noreferrer" aria-label="Instagram">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                    </a>
-                    <a href="https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg" target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="YouTube">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z">
-                            </path>
-                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-                        </svg>
-                    </a>
-                    <a href="https://www.facebook.com/lioncompanytx" target="_blank" rel="noopener noreferrer"
-                        aria-label="Facebook">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                        </svg>
-                    </a>
-                    <a href="https://www.tiktok.com/@thelioncompanytx" target="_blank" rel="noopener noreferrer"
-                        aria-label="TikTok">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-                        </svg>
-                    </a>
-                </div>
-                <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank" class="btn btn-nav ml-2">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-                    GIVE
-                </a>
-            </div>
-            <button class="mobile-menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"
-                aria-controls="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
-            <a href="#mission">MISSION</a>
-            <a href="#podcast">PODCAST</a>
-            <a href="#media">MEDIA</a>
-            <a href="#prayer">PRAYER</a>
-            <a href="#store">STORE</a>
-            <a href="#contact">CONTACT</a>
-            <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank">GIVE</a>
-            <div class="mobile-social" style="display:flex; gap:16px; padding:16px 0; justify-content:center;">
-                <a href="https://www.instagram.com/thelioncompanyglobal/" target="_blank" rel="noopener noreferrer"
-                    aria-label="Instagram" style="color:#D4AF37;">IG</a>
-                <a href="https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg" target="_blank" style="color:#D4AF37;">YT</a>
-                <a href="https://www.facebook.com/lioncompanytx" target="_blank" style="color:#D4AF37;">FB</a>
-                <a href="https://www.tiktok.com/@thelioncompanytx" target="_blank" style="color:#D4AF37;">TT</a>
-            </div>
-        </div>
-    </nav>
-
-    <main id="main-content">
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
-            <div class="hero-bg" style="background-image: url('lion_bg.jpg');"></div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content fade-up">
-                <h3 class="hero-eyebrow">THE LION COMPANY</h3>
-                <h1 class="hero-title">“Whatever doesn't cause you to look<br>like <span class="text-gold">Jesus</span>
-                    isn't of Jesus.”</h1>
-                <p class="hero-subtitle">BOLD CHURCH REFORM • AUTHENTIC DISCIPLESHIP • UNITY THROUGH CHRIST</p>
-                <div class="hero-cta">
-                    <a href="#mission" class="btn btn-outline-gold">DISCOVER OUR MISSION</a>
-                    <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank"
-                        class="btn btn-outline-border">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
-                        SUPPORT OUR MISSION
-                    </a>
-                </div>
-            </div>
-            <a href="#mission" class="scroll-indicator">
-                SCROLL<br>↓
-            </a>
-        </section>
-
-        <!-- Mission Section -->
-        <section id="mission" class="mission section-padding">
-            <div class="container split-layout">
-                <!-- Left Content -->
-                <div class="mission-text fade-up">
-                    <span class="eyebrow muted">OUR MISSION</span>
-                    <h2>Bringing unity among<br>Christians worldwide</h2>
-                    <p class="body-text mt-4">The Lion Company was created to bring unity among Christians in various
-                        areas and all experience levels around the world. We believe unity begins and ends with common
-                        vision and goals.</p>
-
-                    <div class="accent-quote mt-4">
-                        <p class="quote-eyebrow text-gold">THE VISION AND GOAL BEING</p>
-                        <h3>JESUS HIMSELF.</h3>
-                    </div>
-
-                    <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank"
-                        class="btn btn-outline-gold mt-6 inline-flex">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
-                        GIVE TO SUPPORT OUR MISSION
-                    </a>
-                </div>
-
-                <!-- Right Content (Cards) -->
-                <div class="mission-cards fade-up" style="transition-delay: 200ms;">
-                    <div class="bordered-card">
-                        <h4 class="text-gold">LOVE</h4>
-                        <p class="muted">Building relationships through Christ-like love</p>
-                    </div>
-                    <div class="bordered-card">
-                        <h4 class="text-gold">RELATIONSHIP</h4>
-                        <p class="muted">Connecting believers across all backgrounds</p>
-                    </div>
-                    <div class="bordered-card">
-                        <h4 class="text-gold">DISCIPLESHIP</h4>
-                        <p class="muted">Growing together in faith and understanding</p>
-                    </div>
-                    <div class="bordered-card">
-                        <h4 class="text-gold">EDUCATION</h4>
-                        <p class="muted">Equipping believers for their God-intended purpose</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Podcast Section (Placeholder for multimedia) -->
-        <section id="podcast" class="podcast section-padding bg-darker">
-            <div class="container text-center fade-up">
-                <span class="eyebrow muted">WATCH & LISTEN</span>
-                <h2>THE LION COMPANY PODCAST</h2>
-                <p class="body-text muted max-w-2xl mx-auto mt-4">Conversations about faith, life, and pursuing Jesus
-                    together.</p>
-
-                <div class="podcast-platforms" aria-label="Listen to The Lion Company Podcast">
-                    <a class="platform-button platform-button-primary" data-platform="apple-podcasts"
-                        href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
-                        target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Podcasts">
-                        <svg aria-hidden="true" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="2.25"></circle>
-                            <path d="M8.3 17.4a6.9 6.9 0 1 1 7.4 0"></path>
-                            <path d="M9.7 14.8a4.2 4.2 0 1 1 4.6 0"></path>
-                            <path d="M10.1 16.3 9.4 21h5.2l-.7-4.7a1.9 1.9 0 0 0-3.8 0Z"></path>
-                        </svg>
-                        <span><small>LISTEN ON</small>APPLE PODCASTS</span>
-                    </a>
-                    <a class="platform-button platform-button-primary" data-platform="spotify"
-                        href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5"
-                        target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
-                        <svg aria-hidden="true" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <path d="M7.5 9.4c3.6-1 7.8-.7 10.7.9"></path>
-                            <path d="M8.2 12.6c3-0.8 6.5-.5 9 .8"></path>
-                            <path d="M9 15.6c2.4-.5 4.9-.3 7 .7"></path>
-                        </svg>
-                        <span><small>LISTEN ON</small>SPOTIFY</span>
-                    </a>
-                    <a class="platform-button" data-platform="youtube"
-                        href="https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg"
-                        target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                        <span><small>WATCH ON</small>YOUTUBE</span>
-                    </a>
-                    <a class="platform-button" data-platform="podbean"
-                        href="https://thelioncompany.podbean.com/" target="_blank" rel="noopener noreferrer"
-                        aria-label="Listen on Podbean">
-                        <span><small>MORE AUDIO</small>PODBEAN</span>
-                    </a>
-                </div>
-
-                <div class="video-container mt-6 relative w-full max-w-4xl mx-auto rounded overflow-hidden"
-                    style="aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.08);">
-                    <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/VT5XZH471c0"
-                        title="What Silence Costs: Confession, Forgiveness &amp; Real Connection | Ep. 08" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Media Library Section -->
-        <section id="media" class="media section-padding">
-            <div class="container fade-up">
-                <div class="section-header">
-                    <h2>MEDIA LIBRARY</h2>
-                    <a href="/media" class="btn btn-outline-border">VIEW
-                        ALL RESOURCES</a>
-                </div>
-
-                <div class="grid-3 mt-6">
-                    <a href="https://www.youtube.com/watch?v=VT5XZH471c0" data-video-id="VT5XZH471c0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/VT5XZH471c0/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">LATEST PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">What Silence Costs: Confession,
-                                Forgiveness &amp; Real Connection | Ep. 08</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=lCpA1olkGXA" data-video-id="lCpA1olkGXA" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/lCpA1olkGXA/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">When God's Will doesn't go your
-                                way</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=bq6jMHDQS84" data-video-id="bq6jMHDQS84" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/bq6jMHDQS84/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Confessions of a Truth Teller</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Store feature section -->
-        <section id="store" class="store-feature section-padding border-top"
-            style="background: radial-gradient(circle at right, rgba(212, 175, 55, 0.05) 0%, transparent 70%);">
-            <div class="container split-layout items-center">
-                <div class="store-feature-text fade-up">
-                    <span class="eyebrow text-gold">OFFICIAL MERCHANDISE</span>
-                    <h2>WEAR THE VISION</h2>
-                    <p class="body-text mt-4">Every purchase from our store directly supports The Lion Company's mission
-                        to bring unity among Christians worldwide. Represent the kingdom with our premium apparel.</p>
-
-                    <a href="https://the-lion-company.printify.me/" target="_blank"
-                        class="btn btn-outline-gold mt-6 inline-flex uppercase">
-                        SHOP THE COLLECTION
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" class="ml-3">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
-                </div>
-
-                <div class="store-feature-image fade-up relative" style="transition-delay: 200ms;">
-                    <a href="https://the-lion-company.printify.me/" target="_blank" class="block store-featured-card">
-                        <div class="bg-darker rounded overflow-hidden border border-[rgba(255,255,255,0.08)] relative flex items-center justify-center p-12 transition-colors duration-500 hover:border-[#D4AF37]"
-                            style="aspect-ratio: 1/1;">
-                            <!-- Generic placeholder with brand flair -->
-                            <div class="absolute inset-0 bg-cover bg-center"
-                                style="background-image: url('apparel_bg.jpg');">
-                            </div>
-                            <div class="text-box-overlay">
-                                <h3 class="text-gold tracking-widest text-2xl mb-2 uppercase">PREMIUM APPAREL</h3>
-                                <p class="text-white tracking-widest text-sm uppercase">Available Now</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Prayer & Contact Split Section -->
-        <section id="prayer" class="prayer-contact section-padding bg-darker border-top">
-            <div class="container split-layout">
-
-                <!-- Prayer Request Form -->
-                <div class="prayer-form-area fade-up">
-                    <span class="eyebrow text-gold">SUBMIT A PRAYER</span>
-                    <h2>PRAYER REQUEST</h2>
-                    <p class="body-text muted mt-2 mb-6">Your request will be kept private & prayed over. We are
-                        praying.</p>
-
-                    <form id="prayer-form" class="minimal-form" aria-describedby="prayer-privacy-note">
-                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-                        <div class="input-line grid-2">
-                            <input type="text" id="prayer-fname" required placeholder="First Name">
-                            <input type="text" id="prayer-lname" required placeholder="Last Name">
-                        </div>
-                        <div class="input-line grid-2 mt-4">
-                            <input type="email" id="prayer-email" required placeholder="Email">
-                            <input type="tel" id="prayer-phone" placeholder="Phone">
-                        </div>
-                        <div class="input-line mt-4">
-                            <textarea id="prayer-msg" rows="3" required
-                                placeholder="How can we be praying for you?"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-outline-gold mt-6 w-full">SUBMIT REQUEST</button>
-                    </form>
-                    <p id="prayer-privacy-note" class="form-privacy-note">We use these details to deliver your request
-                        privately to The Lion Company for prayer and, when appropriate, a response. See our
-                        <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.
-                    </p>
-                </div>
-
-                <!-- Contact & Store Info -->
-                <div class="store-info-area fade-up" style="transition-delay: 200ms;">
-                    <section id="store-contact-spacer" class="store-preview border-bottom pb-6 mb-6">
-                        <span class="eyebrow text-gold">SUPPORT US</span>
-                        <h2>OUR MISSION</h2>
-                        <p class="muted mt-4 text-sm">Thank you for standing with us in prayer and support.</p>
-                    </section>
-
-                    <section id="contact" class="contact-info mt-8">
-                        <span class="eyebrow text-gold">GET IN TOUCH</span>
-                        <h2>CONTACT US</h2>
-                        <form id="contact-form" class="minimal-form mt-4" aria-describedby="contact-privacy-note">
-                            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-                            <div class="input-line grid-2">
-                                <input type="text" id="contact-fname" required placeholder="First Name">
-                                <input type="text" id="contact-lname" required placeholder="Last Name">
-                            </div>
-                            <div class="input-line grid-2 mt-4">
-                                <input type="email" id="contact-email" required placeholder="Email">
-                                <input type="tel" id="contact-phone" placeholder="Phone">
-                            </div>
-                            <div class="input-line mt-4">
-                                <textarea id="contact-msg" rows="3" required
-                                    placeholder="Type your message here..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-outline-gold mt-6 w-full mb-6">SEND MESSAGE</button>
-                        </form>
-                        <p id="contact-privacy-note" class="form-privacy-note">We use these details to deliver your
-                            message to The Lion Company and respond when appropriate. See our
-                            <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.
-                        </p>
-                        <a href="mailto:JONATHAN@THELIONCOMPANY.ORG" class="contact-link text-white mt-4 block">
-                            JONATHAN@THELIONCOMPANY.ORG
-                        </a>
-                        <p class="muted mt-2">Based in Austin, TX<br>SERVING JESUS AROUND THE WORLD.</p>
-                    </section>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Newsletter Section -->
-        <section id="newsletter" class="newsletter section-padding text-center">
-            <div class="container fade-up">
-                <h3 class="hero-eyebrow text-gold">JOIN OUR MAILING LIST!</h3>
-                <h2 class="mt-2 text-white text-3xl">Stay connected with The Lion Company</h2>
-                <form id="newsletter-form" class="mt-6" aria-describedby="newsletter-privacy-note">
-                    <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-                    <input type="email" id="newsletter-email" required placeholder="Email *">
-                    <button type="submit" class="btn btn-outline-gold">JOIN</button>
-                </form>
-                <p id="newsletter-privacy-note" class="newsletter-consent form-privacy-note-centered">By joining, you
-                    agree to receive ministry updates from The Lion Company. Confirm by email; unsubscribe anytime.
-                    See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a>.</p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer border-top">
-        <div class="container footer-flex">
-            <div class="footer-left">
-                <span class="logo text-gold">THE LION COMPANY</span>
-                <p class="muted text-sm mt-2">© Copyright 2026 The Lion Company | All Rights Reserved.</p>
-            </div>
-            <div class="footer-right">
-                <a href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
-                    target="_blank" rel="noopener noreferrer" class="muted text-sm" data-platform="apple-podcasts">Apple Podcasts</a>
-                <a href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5" target="_blank"
-                    rel="noopener noreferrer" class="muted text-sm" data-platform="spotify">Spotify</a>
-                <a href="#contact" class="muted text-sm">Contact Us</a>
-                <a href="mailto:JONATHAN@THELIONCOMPANY.ORG" class="muted text-sm ml-4">Email Us</a>
-                <a href="/privacy" class="muted text-sm ml-4">Privacy Policy</a>
-                <a href="/terms" class="muted text-sm ml-4">Terms & Conditions</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Video Modal -->
-    <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title"
-        aria-hidden="true">
-        <div class="video-modal-overlay js-modal-close"></div>
-        <div class="video-modal-content">
-            <button class="video-modal-close js-modal-close" type="button" aria-label="Close video">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-            <h2 id="video-modal-title" class="sr-only">The Lion Company video</h2>
-            <div class="video-modal-body">
-                <iframe id="video-iframe" src="" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen title="The Lion Company video"></iframe>
-            </div>
-            <div class="video-modal-actions">
-                <a id="video-youtube-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-                <button id="video-copy-link" type="button">Copy share link</button>
-            </div>
-        </div>
+<main id="main" tabindex="-1">
+  <section class="sec hero" id="top" data-world="hero">
+    <div class="heroin">
+      <div>
+        <h1 class="htitle">Bold as<span>a lion.</span></h1>
+        <p class="hsub">The Lion Company · Bold church reform · Authentic discipleship · Unity through Christ</p>
+      </div>
+      <p class="scrollhint">Click to change<br>Move to stir<br>Scroll to travel<i></i></p>
     </div>
+  </section>
 
-    <!-- Store Lightbox Modal -->
-    <div id="store-modal" class="lightbox-modal" role="dialog" aria-modal="true"
-        aria-labelledby="store-modal-title" aria-hidden="true">
-        <div class="lightbox-overlay js-lightbox-close"></div>
-        <div class="lightbox-content bg-darker border border-[rgba(212,175,55,0.4)]">
-            <button class="lightbox-close js-lightbox-close" type="button" aria-label="Close store message">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-            <div class="lightbox-grid">
-                <div class="lightbox-image"
-                    style="background-image: url('apparel_bg.jpg'); background-color: rgba(0,0,0,0.2); background-blend-mode: overlay;">
-                    <div class="lightbox-image-inner" style="background: rgba(0,0,0,0.2);">
-                        <div
-                            class="lightbox-badge border border-white border-opacity-30 p-6 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
-                            <h3 class="text-gold text-xl uppercase tracking-widest">Lion Co.</h3>
-                            <p class="text-white tracking-widest text-xs mt-2 uppercase">APPAREL</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="lightbox-body">
-                    <span class="eyebrow text-gold mb-2">SUPPORT THE MISSION</span>
-                    <h2 id="store-modal-title" class="text-3xl mb-4 text-white uppercase">Wear The Vision</h2>
-                    <p class="body-text muted mb-8">Every purchase directly supports our mission to bring unity to
-                        believers worldwide. Check out our exclusive premium apparel.</p>
-                    <a href="https://the-lion-company.printify.me/" target="_blank"
-                        class="btn btn-outline-gold w-full text-center">SHOP THE STORE</a>
-                </div>
-            </div>
-        </div>
+  <section class="sec" id="cross" data-world="cross">
+    <div class="txt wide">
+      <p class="kick"><b>I</b> The cross</p>
+      <h2 class="big q">Whatever doesn't cause you to look like <em>Jesus</em> isn't of <em>Jesus.</em></h2>
     </div>
+  </section>
 
-    <script src="app.js"></script>
+  <section class="sec" id="risen" data-world="tomb">
+    <div class="txt fit">
+      <p class="kick"><b>II</b> He has risen</p>
+      <h2 class="big lines"><span class="ln">He is not here;</span> <span class="ln">he has risen,</span> <span class="ln">just as he said.</span></h2>
+      <p class="cite">Matthew 28:6</p>
+      <p class="body">The Lion Company was created to bring unity among Christians in various areas and all experience levels around the world. We believe unity begins and ends with common vision and goals. The vision and goal being: <b>Jesus Himself.</b></p>
+    </div>
+  </section>
+
+  <section class="sec" id="made" data-world="family">
+    <div class="txt fit">
+      <p class="kick"><b>III</b> Lions are made</p>
+      <h2 class="big lines"><span class="ln">Every man.</span> <span class="ln">Every woman.</span> <span class="ln">Every family.</span></h2>
+      <div class="pillars">
+        <div><b>Love</b><small>Building relationships through Christ-like love</small></div>
+        <div><b>Relationship</b><small>Connecting believers across all backgrounds</small></div>
+        <div><b>Discipleship</b><small>Growing together in faith and understanding</small></div>
+        <div><b>Education</b><small>Equipping believers for their God-intended purpose</small></div>
+      </div>
+    </div>
+  </section>
+  <section class="psec" data-world="family">
+    <div class="panel" id="pray">
+      <span class="label">Prayer</span>
+      <h2>We are praying.</h2>
+      <p>Your request will be kept private and prayed over.</p>
+      <form data-form="prayer">
+        <div class="row"><div><label for="q-pf">First name *</label><input id="q-pf" required autocomplete="given-name"></div><div><label for="q-pl">Last name</label><input id="q-pl" autocomplete="family-name"></div></div>
+        <div class="row"><div><label for="q-pe">Email *</label><input id="q-pe" type="email" required autocomplete="email"></div><div><label for="q-pp">Phone</label><input id="q-pp" type="tel" autocomplete="tel"></div></div>
+        <div><label for="q-pr">Your request *</label><textarea id="q-pr" required></textarea></div>
+        <button class="sub" type="submit">Submit request</button>
+        <p class="form-note" hidden></p>
+        <p class="fine" id="prayer-privacy-note">Delivered privately to The Lion Company for prayer and, when appropriate, a response. <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="sec" id="voice" data-world="listen">
+    <div class="txt">
+      <p class="kick"><b>IV</b> The podcast</p>
+      <h2 class="big">Faith comes from hearing.</h2>
+      <p class="verse">Consequently, faith comes from hearing the message, and the message is heard through the word about Christ.</p>
+      <p class="cite">Romans 10:17</p>
+    </div>
+  </section>
+  <section class="psec podsec lead" data-world="host">
+    <div class="panel wide pod" id="podcast">
+      <div class="pod-grid">
+        <a class="pod-art" id="podArt" target="_blank" rel="noopener" aria-label="Listen to The Lion Company Podcast">
+          <div class="pod-cover" id="podCover" role="img" aria-label="The Lion Company Podcast cover: LION COMPANY over newsprint collage with the roaring lion"></div>
+          <span class="pod-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>Play</span>
+        </a>
+        <div class="pod-copy">
+          <p class="pod-label"><span class="pod-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>The Lion Company Podcast</p>
+          <h2>Listen <em>anywhere</em></h2>
+          <p class="pod-new" id="podNew"><small>Newest episode</small>Ep 9 · Stop Trying to Win Her Back</p>
+          <ul class="pod-plat" id="plat"></ul>
+        </div>
+      </div>
+      <div class="watch" id="watch"></div>
+      <a class="more" data-href="media">All 33 videos in the media library ↗</a>
+    </div>
+  </section>
+
+  <section class="sec" id="bold" data-world="roar">
+    <div class="txt">
+      <p class="kick"><b>V</b> Give</p>
+      <h2 class="big">The righteous are bold.</h2>
+      <p class="verse">The wicked flee though no one pursues, but the righteous are as bold as a lion.</p>
+      <p class="cite">Proverbs 28:1</p>
+    </div>
+  </section>
+  <section class="psec lead" data-world="rest">
+    <div class="panel" id="give">
+      <span class="label">Give</span>
+      <h2>Give boldly.</h2>
+      <p>Giving runs through our Subsplash page: one-time or recurring, by card, bank, crypto or stock.</p>
+      <div class="funds">
+        <a class="fund" data-href="give"><small>Fund</small><b>General</b><span>GIVE ↗</span></a>
+        <a class="fund" data-href="give"><small>Fund</small><b>Lion Company: Social Media Expansion</b><span>GIVE ↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="psec shopsec" data-world="shop">
+    <div class="shopwrap" id="shop">
+      <div class="shophead">
+        <span class="label">VI · The store</span>
+        <h2>Wear the vision.</h2>
+        <p>Every purchase directly supports The Lion Company's mission to bring unity among Christians worldwide.</p>
+        <a class="btn" data-href="store">Shop the store ↗</a>
+      </div>
+      <div class="rail" id="rail"></div>
+    </div>
+  </section>
+  <section class="sec mark" data-world="word" aria-label="The Lion Company"></section>
+  <section class="psec" data-world="word">
+    <div class="panel wide" id="connect">
+      <div class="connect">
+        <form class="news" data-form="newsletter">
+          <span class="label">VII · Mailing list</span>
+          <h3>Stay connected with The Lion Company</h3>
+          <label for="q-ne">Email</label>
+          <div class="in"><input id="q-ne" type="email" required placeholder="you@example.com" autocomplete="email"><button class="sub" type="submit">Join</button></div>
+          <p class="form-note" hidden></p>
+          <p class="fine" id="newsletter-privacy-note">Confirm by email; unsubscribe anytime. <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>
+          <div class="soc" data-fill="social"><template><a href="{url}">{name} ↗</a></template></div>
+        </form>
+        <form data-form="contact" id="book">
+          <span class="label">Contact</span>
+          <h3>Based in Austin, TX. Serving Jesus around the world.</h3>
+          <div class="row"><div><label for="q-cf">First name *</label><input id="q-cf" required autocomplete="given-name"></div><div><label for="q-cl">Last name</label><input id="q-cl" autocomplete="family-name"></div></div>
+          <div><label for="q-ce">Email *</label><input id="q-ce" type="email" required autocomplete="email"></div>
+          <div><label for="q-cm">Message *</label><textarea id="q-cm" required></textarea></div>
+          <button class="sub" type="submit">Send message</button>
+          <p class="form-note" hidden></p>
+          <p class="fine" id="contact-privacy-note">Or write directly: <span data-email></span> · <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>
+        </form>
+      </div>
+      <div class="copy"><span>© 2026 The Lion Company · A 501(c)(3) nonprofit</span><span><a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></span></div>
+      <p class="niv">Scripture taken from the Holy Bible, NEW INTERNATIONAL VERSION®, NIV® Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.® Used by permission. All rights reserved worldwide. NEW INTERNATIONAL VERSION® and NIV® are registered trademarks of Biblica, Inc.</p>
+    </div>
+  </section>
+
+  <section class="sec portal" data-world="portal">
+    <div class="txt">
+      <h2 class="big">I am making everything new!</h2>
+      <p class="cite">Revelation 21:5</p>
+    </div>
+  </section>
+
+  <section class="sec hero clone" data-world="hero" aria-hidden="true">
+    <div class="heroin">
+      <div>
+        <p class="htitle">Bold as<span>a lion.</span></p>
+        <p class="hsub">The Lion Company · Bold church reform · Authentic discipleship · Unity through Christ</p>
+      </div>
+      <p class="scrollhint">Click to change<br>Move to stir<br>Scroll to travel<i></i></p>
+    </div>
+  </section>
+  <div class="tail" aria-hidden="true"></div>
+</main>
+
+<nav class="map" aria-label="Worlds">
+  <a href="#top" data-i="hero"><span>Home</span><i></i></a>
+  <a href="#cross" data-i="cross"><span>I Cross</span><i></i></a>
+  <a href="#risen" data-i="tomb"><span>II Risen</span><i></i></a>
+  <a href="#made" data-i="family"><span>III Made · Pray</span><i></i></a>
+  <a href="#voice" data-i="listen"><span>IV Podcast</span><i></i></a>
+  <a href="#bold" data-i="roar"><span>V Give</span><i></i></a>
+  <a href="#shop" data-i="shop"><span>VI Shop</span><i></i></a>
+  <a href="#connect" data-i="word"><span>VII Connect</span><i></i></a>
+</nav>
+
+<script src="assets/common.js"></script>
+<script src="assets/amb/embers.js"></script>
+<script>
+(function(){
+  var reduced=window.lionReduced, coarse=matchMedia('(hover:none)').matches;
+  document.querySelectorAll('.clone a,.clone button').forEach(function(el){ el.tabIndex=-1; });
+
+  /* ---------- hover type: wrap each word of the bold headings so it can react on its own ---------- */
+  function words(el,tier){
+    el.classList.add(tier);
+    (function walk(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(c){
+        if(c.nodeType===1){ if(c.tagName!=='SMALL') walk(c); return; }
+        if(c.nodeType!==3||!c.nodeValue.trim()) return;
+        var f=document.createDocumentFragment();
+        c.nodeValue.split(/(\s+)/).forEach(function(t){
+          if(!t) return;
+          if(/^\s+$/.test(t)){ f.appendChild(document.createTextNode(t)); return; }
+          var w=document.createElement('span'); w.className='w'; w.textContent=t; f.appendChild(w);
+        });
+        node.replaceChild(f,c);
+      });
+    })(el);
+  }
+  document.querySelectorAll('.htitle,.big,.panel h2,.shophead h2').forEach(function(el){ words(el,'lg'); });
+  document.querySelectorAll('.panel h3,.pod-new,.pillars b').forEach(function(el){ words(el,'sm'); });
+  // the newest episode comes from the live podcast feed (api/latest-episode.js), so this line updates itself
+  fetch('/api/latest-episode').then(function(r){ return r.ok?r.json():null; }).then(function(ep){
+    var el=document.getElementById('podNew'); if(!ep||!ep.title||!el) return;
+    el.innerHTML=''; var sm=document.createElement('small'); sm.textContent='Newest episode'; el.appendChild(sm);
+    el.appendChild(document.createTextNode((ep.number?'Ep '+ep.number+' · ':'')+ep.title)); words(el,'sm');
+  }).catch(function(){});
+  if(coarse) document.addEventListener('click',function(e){
+    var w=e.target.closest&&e.target.closest('.w'); if(!w) return;
+    w.classList.add('tap'); clearTimeout(w._tap); w._tap=setTimeout(function(){ w.classList.remove('tap'); },900);
+  });
+
+  /* ---------- real content ---------- */
+  document.getElementById('watch').innerHTML=LION.videos.map(function(v){ return '<a class="vc" href="'+v[3]+'" target="_blank" rel="noopener"><small>'+v[0]+(v[2]?' · '+v[2]:'')+'</small><b>'+v[1]+'</b><span>PLAY ON YOUTUBE ↗</span></a>'; }).join('');
+  var SHOP=[["Lion Co Hoodie, Minimal Logo (est. 2020)","$46.25","27083573"],["Cool Sunglasses Lion T-Shirt","$24.99","27083413"],["Lion Co. Est. 2020 T-Shirt","$24.99","27082936"],["Lion Face 'Unveiled' Graphic Tee","$24.99","27082601"],["Lion Portrait T-Shirt","$24.99","27082491"],["1 John 3:2 \"We do not know what we will become.\" Tee","$24.99","27079317"],["Vintage Lion Head Illustration Tee","$24.99","27069138"]];
+  document.getElementById('rail').innerHTML=SHOP.map(function(s,i){ return '<a class="prod" href="https://the-lion-company.printify.me/product/'+s[2]+'" target="_blank" rel="noopener"><img src="assets/hy-store-'+(i+1)+'.webp" alt="" loading="lazy"><b>'+s[0]+'</b><span>'+s[1]+' ↗</span></a>'; }).join('');
+
+  function sheet(btnId,id){ var b=document.getElementById(btnId), s=document.getElementById(id);
+    b.addEventListener('click',function(e){ e.stopPropagation(); var open=!s.classList.contains('open'); closeAll(); if(open){ s.classList.add('open'); b.setAttribute('aria-expanded','true'); } });
+    s.addEventListener('click',function(e){ if(e.target.closest('a')) closeAll(); e.stopPropagation(); }); }
+  function closeAll(){ document.querySelectorAll('.sheet.open').forEach(function(s){ s.classList.remove('open'); }); document.querySelectorAll('.bbtn[aria-expanded]').forEach(function(b){ b.setAttribute('aria-expanded','false'); }); }
+  sheet('socbtn','socsheet'); sheet('menubtn','menusheet');
+  // "Book us to speak" lands on the contact form, which then suggests what to tell us
+  document.querySelectorAll('a[href="#book"]').forEach(function(a){ a.addEventListener('click',function(){ var t=document.getElementById('q-cm'); if(t&&!t.value) t.placeholder='Tell us about your event: the date, the place and who will be there.'; }); });
+  document.addEventListener('click',closeAll); document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAll(); });
+
+  /* ---------- new motion switch, and the hero title waiting for the lion ---------- */
+  var root=document.documentElement, MOVES=root.classList.contains('moves'), revealed=!root.classList.contains('rv');
+  function reveal(){
+    if(revealed) return; revealed=true; root.classList.remove('rv');
+    var ws=[].slice.call(document.querySelectorAll('#top .htitle .w')), E='cubic-bezier(.2,.8,.2,1)', t=0;
+    ws.forEach(function(w,n){ t=n*90+(w.closest('.htitle>span:not(.w)')?140:0);
+      w.animate([{opacity:0,transform:'translateY(.32em)'},{opacity:1,transform:'none'}],{duration:900,delay:t,easing:E,fill:'backwards'}); });
+    document.querySelector('#top .hsub').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:700,delay:t+350,easing:E,fill:'backwards'});
+    var hint=document.querySelector('#top .scrollhint'); if(hint) hint.animate([{opacity:0},{opacity:1}],{duration:700,delay:t+700,fill:'backwards'});
+  }
+  setTimeout(reveal,2400); // never hold the title longer than this
+  // ambient: the embers (assets/amb/embers.js), drawn into the same scene as the particles
+  var ambName=root.getAttribute('data-amb')||'embers';
+
+  /* ---------- WebGL particles ---------- */
+  var canvas=document.getElementById('gl');
+  var gl=canvas.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false,powerPreference:'high-performance'});
+  if(!gl){ document.documentElement.classList.add('nogl'); reveal(); return; }
+  var small=innerWidth<760, N=small?15000:32000, NP=small?2600:4200, NB=small?160:320;
+
+  function rnd(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; var t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  var R=rnd(316);
+
+  // sample a point cloud from a grayscale image: weight = a*lum^g + b*edge
+  function sample(img,o){
+    var S=o.sw||320, SV=o.sh||320, c=document.createElement('canvas'); c.width=S; c.height=SV; var x=c.getContext('2d',{willReadFrequently:true}); // sw/sh: a wide picture keeps its proportions
+    x.fillStyle='#000'; x.fillRect(0,0,S,SV); if(o.draw) o.draw(x,S); else x.drawImage(img,0,0,S,SV);
+    var d=x.getImageData(0,0,S,SV).data, L=new Float32Array(S*SV), W=new Float32Array(S*SV), tot=0, minx=S,maxx=0,miny=SV,maxy=0;
+    for(var i=0;i<S*SV;i++) L[i]=d[i*4]/255;
+    for(var yy=1;yy<SV-1;yy++) for(var xx=1;xx<S-1;xx++){
+      var i2=yy*S+xx, l=L[i2]; if(l<(o.th||.06)) continue;
+      var gx=L[i2+1]-L[i2-1], gy=L[i2+S]-L[i2-S], e=Math.min(1,Math.sqrt(gx*gx+gy*gy)*3);
+      var w=(o.a==null?1:o.a)*Math.pow(l,o.g||1)+(o.b||0)*e; W[i2]=w; tot+=w;
+      if(w>.02){ if(xx<minx)minx=xx; if(xx>maxx)maxx=xx; if(yy<miny)miny=yy; if(yy>maxy)maxy=yy; }
+    }
+    var cdf=new Float32Array(S*SV), acc=0; for(i=0;i<S*SV;i++){ acc+=W[i]; cdf[i]=acc; }
+    if(o.box){ minx=o.box[0]; maxx=o.box[1]; miny=o.box[2]; maxy=o.box[3]; } // a fixed frame, so moving one person doesn't shift the others
+    var bw=maxx-minx+1, bh=maxy-miny+1, H=o.h||6.2, sc=Math.min(H/bh,(o.w||8)/bw), cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+    var P=new Float32Array(N*3), B=new Float32Array(N), keys=new Array(N);
+    for(var n=0;n<N;n++){
+      var r=R()*acc, lo=0, hi=S*SV-1; while(lo<hi){ var mid=(lo+hi)>>1; if(cdf[mid]<r) lo=mid+1; else hi=mid; }
+      var px=lo%S+R(), py=(lo/S|0)+R(), l2=L[lo];
+      var X=(px-cx)*sc, Y=-(py-cy)*sc+(o.y||0), Z=(l2-.42)*(o.depth||1.2)+(R()-.5)*(o.jit||.22);
+      keys[n]=[Y+(R()-.5)*.8,X,Y,Z,l2];
+    }
+    keys.sort(function(a,b){ return b[0]-a[0]; });
+    for(n=0;n<N;n++){ var k=keys[n]; P[n*3]=k[1]; P[n*3+1]=k[2]; P[n*3+2]=k[3]; B[n]=Math.min(1,.05+Math.pow(k[4],o.bp||1.35)*1.25*(o.gain||1)); }
+    return {p:P,b:B,f:[cx,cy,sc,S,SV,o.y||0]};
+  }
+  function at(sh,u,v){ var f=sh.f; return [(u*f[3]-f[0])*f[2],-(v*f[4]-f[1])*f[2]+f[5]]; } // a spot on the picture (fractions across and down) in figure space
+  function ring(){ // the portal
+    var P=new Float32Array(N*3), B=new Float32Array(N), keys=[];
+    for(var n=0;n<N;n++){ var a=R()*6.2832, rr=3.05+(R()+R()+R()-1.5)*.32, sp=(R()<.18)?(R()*2.6):0;
+      var X=Math.cos(a)*(rr-sp), Y=Math.sin(a)*(rr-sp)+.25, Z=(R()-.5)*.5; keys.push([Y+(R()-.5)*.8,X,Y,Z,.55+R()*.45]); }
+    keys.sort(function(a,b){ return b[0]-a[0]; });
+    for(n=0;n<N;n++){ var k=keys[n]; P[n*3]=k[1]; P[n*3+1]=k[2]; P[n*3+2]=k[3]; B[n]=k[4]; }
+    return {p:P,b:B};
+  }
+  function load(src){ return new Promise(function(res){ var i=new Image(); i.onload=function(){ res(i); }; i.onerror=function(){ res(null); }; i.src=src; }); }
+
+  var SH={}, ready=false;
+  var fontReady=(document.fonts&&document.fonts.load)?Promise.race([document.fonts.load('200px Anton'),new Promise(function(r){ setTimeout(r,1800); })]):Promise.resolve();
+  Promise.all(['lion','host','gina','family','cross','tomb','couple','voice','listen','roar','rest'].map(function(n){ return load('assets/pt-'+n+'.webp'); }).concat([fontReady])).then(function(im){
+    // a picture that fails to load borrows another one, so one missing file never blanks every figure
+    var any=im.slice(0,11).filter(Boolean)[0];
+    if(!any){ any=document.createElement('canvas'); any.width=any.height=320; var fx=any.getContext('2d'); fx.fillStyle='#000'; fx.fillRect(0,0,320,320); fx.fillStyle='#fff'; fx.font='150px Anton, Impact, sans-serif'; fx.textAlign='center'; fx.textBaseline='middle'; fx.fillText('LION',160,170); }
+    [0,1,3,4,5].forEach(function(k){ if(!im[k]) im[k]=im[0]||any; });
+    SH.lion=sample(im[0],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.4,y:.35,gain:1.05});
+    SH.man=sample(im[1],{g:2.4,b:0,bp:2.6,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3});
+    if(im[2]) SH.woman=sample(im[2],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3,box:[26,287,18,313]}); // Gina, chest up in a high-necked champagne satin blouse (v17), cut about where Jonathan's portrait ends; box keeps her head exactly where and as big as it was
+    if(im[6]) SH.couple=sample(im[6],{g:2.1,b:.2,bp:2.4,depth:1.2,h:6.6,w:8.8,y:.25,th:.07,gain:1.3});
+    if(im[7]){ var R0=R; R=rnd(4242); SH.duo=sample(im[7],{g:2.3,b:.06,bp:2.5,depth:1.3,h:6.2,w:7.9,y:.15,th:.07,gain:1.3,sw:450,sh:320,box:[8,392,16,307]}); R=R0; } // the podcast: Jonathan (his own portrait) with Gina beside him, on its own random stream so the other figures don't change
+    SH.family=sample(im[3],{g:1.8,b:.45,bp:2.2,depth:1.1,h:6.6,w:8.8,y:.05,th:.07,gain:1.3,box:[7,311,60,300]}); // Jonathan, Gina and Prophet, framed as in v9 so Jonathan and Gina hold their places
+    SH.cross=sample(im[4],{g:.85,b:1.2,depth:.8,h:6.2,w:8.6,y:.2,th:.05,gain:1.2});
+    SH.tomb=sample(im[5],{g:2.2,b:1.4,depth:1,h:6.4,y:.3,gain:.9});
+    // the wordmark is measured so every letter of THE LION and COMPANY lands inside the sampling canvas
+    SH.word=sample(null,{draw:function(x,S){ x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+      function fit(t,px){ x.font=px+'px Anton, Impact, sans-serif'; var w=x.measureText(t).width; if(w>S*.86){ px=Math.floor(px*S*.86/w); x.font=px+'px Anton, Impact, sans-serif'; } return px; }
+      var p1=fit('THE LION',120); x.fillText('THE LION',S/2,S*.38); fit('COMPANY',Math.round(p1*.8)); x.fillText('COMPANY',S/2,S*.38+p1*.86); },depth:.3,jit:.35,h:4.6,w:8.8,y:.3,th:.3});
+    SH.ring=ring();
+    // final revisions: the listener (Faith comes from hearing), the roaring lion (The righteous are bold) and the lion at rest (Give boldly), each on its own random stream so the figures above don't change
+    var R1=R;
+    if(im[8]){ R=rnd(5151); SH.listen=sample(im[8],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.5,y:.2,th:.07,gain:1.3}); SH.listen.ear=at(SH.listen,.61,.38); SH.listen.neck=at(SH.listen,.47,.62); }
+    if(im[9]){ R=rnd(6262); SH.roar=sample(im[9],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.5,y:.3,gain:1.05}); }
+    if(im[10]){ R=rnd(7373); SH.rest=sample(im[10],{g:1.35,b:.3,bp:1.7,depth:1.6,h:5.3,w:8.4,y:-.75,gain:1.05,sw:420,sh:315}); }
+    R=R1;
+    ready=true; fitBeside();
+    // store shirts are sampled after first paint, one per tick, so the hero is never held up
+    var si=1; (function next(){ if(si>7) return; var n=si++; load('assets/pt-shop-'+n+'.webp').then(function(img){ if(img) SH['shop'+n]=sample(img,{g:1.9,b:.4,depth:1.1,h:6.2,y:.25}); setTimeout(next,40); }); })();
+  });
+
+  /* GL setup */
+  function sh(type,src){ var s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s)); return s; }
+  var vs='attribute vec4 aP;attribute vec2 aI;uniform mat4 uPV;uniform vec3 uEye;uniform float uT,uFocus,uPx,uDpr,uKind,uAlpha,uBreath;varying float vA;'+
+    'void main(){vec3 p=aP.xyz;float b=aP.w;'+
+    'if(uKind>1.5){p+=vec3(sin(uT*.07+aI.x*31.),cos(uT*.05+aI.x*17.),0.)*1.6;}'+
+    'if(uKind>.5&&uKind<1.5){float r=length(p.xz);p.xz*=1.+uBreath*.045;b*=.25+.75*pow(.5+.5*cos(r*5.2-uT*1.9),5.)+.25*uBreath;}'+
+    'vec4 c=uPV*vec4(p,1.);gl_Position=c;float dist=length(p-uEye);float coc=abs(dist-uFocus)*(uKind<.5?.45:1.);'+
+    'float s=(uPx*aI.y+(uKind>1.5?coc*coc*.35+coc*2.:coc*coc*.6+coc*1.6))*uDpr*(10./max(dist,.6));gl_PointSize=clamp(s,1.,uKind>1.5?140.:70.);'+
+    'float tw=uKind>1.5?.9+.1*sin(uT*(.3+.35*aI.x)+aI.x*60.):.78+.22*sin(uT*(1.1+1.2*fract(aI.x*7.31))+aI.x*60.);float att=uKind>1.5?1./(1.+coc*.22):1./(1.+coc*coc*.7);vA=b*tw*uAlpha*att*min(1.,dist*.6);}';
+  var fs='precision mediump float;varying float vA;uniform vec3 uCol;void main(){vec2 c=gl_PointCoord-.5;float r2=dot(c,c)*4.;if(r2>1.)discard;float a=exp(-r2*3.4)*vA;gl_FragColor=vec4(uCol*a,1.);}';
+  var prog=gl.createProgram(); gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs)); gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(prog); gl.useProgram(prog);
+  var U={}; ['uPV','uEye','uT','uFocus','uPx','uDpr','uKind','uAlpha','uBreath','uCol'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+  var aP=gl.getAttribLocation(prog,'aP'), aI=gl.getAttribLocation(prog,'aI');
+  function buf(data,dyn){ var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,data,dyn?gl.DYNAMIC_DRAW:gl.STATIC_DRAW); return b; }
+  // figure
+  var FP=new Float32Array(N*4), FI=new Float32Array(N*2);
+  for(var i=0;i<N;i++){ FI[i*2]=R(); FI[i*2+1]=R()<.035?2.4:.55+R()*.8; }
+  var fpB=buf(FP,true), fiB=buf(FI), KN=new Float32Array(N); for(i=0;i<N;i++) KN[i]=.8+.55*FI[i*2];
+  // platform
+  var PP=new Float32Array(NP*4), PI=new Float32Array(NP*2);
+  for(i=0;i<NP;i++){ var a=R()*6.2832, rr=Math.sqrt(R())*4.6; PP[i*4]=Math.cos(a)*rr; PP[i*4+1]=-3.55+(R()-.5)*.05; PP[i*4+2]=Math.sin(a)*rr; PP[i*4+3]=1.1*(1-rr/5.4); PI[i*2]=R(); PI[i*2+1]=.5+R()*.6; }
+  var ppB=buf(PP), piB=buf(PI);
+  // depth-of-field background
+  var BP=new Float32Array(NB*4), BI=new Float32Array(NB*2);
+  for(i=0;i<NB;i++){ var z=R()<.82?-8-R()*26:4+R()*4; BP[i*4]=(R()-.5)*(z<0?60:16); BP[i*4+1]=(R()-.5)*(z<0?34:10); BP[i*4+2]=z; BP[i*4+3]=.25+R()*.55; BI[i*2]=R(); BI[i*2+1]=1+R()*2; }
+  var bpB=buf(BP), biB=buf(BI);
+  function bind(pb,ib){ gl.bindBuffer(gl.ARRAY_BUFFER,pb); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP,4,gl.FLOAT,false,0,0); gl.bindBuffer(gl.ARRAY_BUFFER,ib); gl.enableVertexAttribArray(aI); gl.vertexAttribPointer(aI,2,gl.FLOAT,false,0,0); }
+  gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE);
+  // ambient modules (assets/amb/*.js): each registers LionAmbient[name]={init(gl,env),back(s),front(s)} and leaves GL as it found it
+  var AMB=window.LionAmbient||{}, ambOk={}, lastSY=scrollY, vY=0;
+  function ambMod(){ var m=AMB[ambName]; if(!m||ambOk[ambName]===false) return null;
+    if(!ambOk[ambName]){ try{ m.init(gl,{small:small,coarse:coarse,reduced:reduced}); ambOk[ambName]=true; }catch(e){ console.error('ambient '+ambName,e); ambOk[ambName]=false; return null; } }
+    return m; }
+  function ambCall(m,fn,st){ if(!m||!m[fn]) return; try{ m[fn](st); }catch(e){ console.error('ambient '+ambName+'.'+fn,e); ambOk[ambName]=false; }
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null); gl.viewport(0,0,canvas.width,canvas.height); gl.useProgram(prog); gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE); }
+
+  var dpr=1; function resize(){ dpr=Math.min(small?1.6:1.75,devicePixelRatio||1); canvas.width=Math.round(innerWidth*dpr); canvas.height=Math.round(innerHeight*dpr); gl.viewport(0,0,canvas.width,canvas.height); }
+  resize(); addEventListener('resize',function(){ resize(); anchors(); });
+
+  /* math */
+  function persp(fy,as,n,f){ var t=1/Math.tan(fy/2), nf=1/(n-f); return [t/as,0,0,0, 0,t,0,0, 0,0,(f+n)*nf,-1, 0,0,2*f*n*nf,0]; }
+  function look(e,c){ var zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2],zl=Math.hypot(zx,zy,zz); zx/=zl;zy/=zl;zz/=zl;
+    var xx=zz,xy=0,xz=-zx,xl=Math.hypot(xx,xz)||1; xx/=xl;xz/=xl; var yx=zy*xz-zz*xy, yy=zz*xx-zx*xz, yz=zx*xy-zy*xx;
+    return [xx,yx,zx,0, xy,yy,zy,0, xz,yz,zz,0, -(xx*e[0]+xy*e[1]+xz*e[2]), -(yx*e[0]+yy*e[1]+yz*e[2]), -(zx*e[0]+zy*e[1]+zz*e[2]), 1]; }
+  function mul(a,b){ var o=new Float32Array(16); for(var c=0;c<4;c++) for(var r=0;r<4;r++){ o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3]; } return o; }
+  function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+  function sstep(a,b,t){ t=clamp((t-a)/(b-a),0,1); return t*t*(3-2*t); }
+
+  /* worlds: shapes, camera, light */
+  var heroMix={lion:1};
+  var DUO={duo:1}, MAN={man:1}, LSN={listen:1}, ROAR={roar:1}, REST={rest:1}, LIONF={lion:1};
+  var W={
+    hero:{sh:function(){ return heroMix; },d:13,az:0,el:5,plat:1},
+    cross:{sh:{cross:1},d:10.8,az:-16,el:3,plat:.35,off:1},
+    tomb:{sh:{tomb:1},d:10.4,az:12,el:2,plat:.25,off:1,glow:1},
+    family:{sh:{family:1},d:11.2,az:-8,el:4,plat:.8,off:1},
+    listen:{sh:function(){ return SH.listen?LSN:MAN; },d:11.4,az:-12,el:3,plat:.45,off:1,ox:.36,listen:1},
+    host:{sh:function(){ return SH.duo?DUO:MAN; },d:11.6,az:10,el:3,plat:.5,off:1,ox:.4,hw:small?3.4:4.3},
+    roar:{sh:function(){ return SH.roar?ROAR:LIONF; },d:11.2,az:-18,el:6,plat:.6,off:1,pulse:1},
+    rest:{sh:function(){ return SH.rest?REST:LIONF; },d:11.6,az:12,el:5,plat:.75,off:1,ox:.44,hw:small?4.3:3.4,breathe:1},
+    shop:{sh:function(){ return shopMix; },d:17.5,dM:12.5,az:-10,el:3,plat:.3,off:1,ox:.32,oy:.4,oyM:.08},
+    word:{sh:{word:1},d:12,az:6,el:2,plat:.3,off:0,hw:5.6},
+    portal:{sh:{ring:1},d:12.5,az:0,el:0,plat:0,oyM:0}
+  };
+  var secs=[].slice.call(document.querySelectorAll('main > section[data-world]')).map(function(el){ return {el:el,k:el.getAttribute('data-world'),a:0}; });
+  function anchors(){ secs.forEach(function(s){ s.a=(innerWidth<=760&&s.el.classList.contains('lead'))?s.el.offsetTop:s.el.offsetTop+s.el.offsetHeight/2-innerHeight/2;
+    if(innerWidth>760&&s.el.classList.contains('shopsec')){ var h=s.el.querySelector('.shophead .label')||s.el.querySelector('.shophead'), c1=s.el.querySelector('.prod')||h, h2=s.el.querySelector('.shophead h2')||h, lt=h.getBoundingClientRect().top+scrollY, hi=lt-82, lo=c1.getBoundingClientRect().bottom+scrollY-innerHeight+16; s.a=lo<=hi?clamp(s.a,lo,hi):lo-16<=lt-66?Math.min(lo,lt-66):Math.max(Math.min(lo,h2.getBoundingClientRect().top+scrollY-70),lo-16); } }); secs[0].a=0; fitBeside(); } // the store: label clear of the top band, cards clear of the bottom // phones: a panel that brings its own figure is anchored where it opens, with the figure in the clear above it // figures sit on the section's middle, so they answer the thumb right where they used to (menu links still land with the copy in view)
+  function clr(){ return innerWidth<=760?56:24; } // phones: keep the card clear of the prototype switch
+  anchors(); addEventListener('load',anchors); setInterval(anchors,1500);
+  function fIndex(y){ if(y<=secs[0].a) return 0; for(var i=0;i<secs.length-1;i++){ if(y<secs[i+1].a) return i+(y-secs[i].a)/Math.max(1,secs[i+1].a-secs[i].a); } return secs.length-1; }
+  function shapes(w){ return typeof w.sh==='function'?w.sh():w.sh; }
+  // where a world's figure sits on screen (NDC lens shift): beside the text on desktop, above it on phones
+  function offs(w){ if(small) return [0,w.oyM!=null?w.oyM:.2+(w.off?.14:0)]; return [w.oxF!=null?w.oxF:(w.ox!=null?w.ox:(w.off?.34:0)),w.oyF!=null?w.oyF:(w.oy||0)]; }
+  // desktop and tablet: a figure that stands beside a glass panel is measured where it settles (over the camera's slow sway) and moved right
+  // until its left edge clears the panel; if it would then run off the right edge it is made a little smaller. The store figure is kept below the top band.
+  function ext(w,sh,dk){
+    var asp=innerWidth/innerHeight, fov=.72, mid=clamp((1280-innerWidth)/300,0,1), d=w.d*Math.max(1,(w.hw||3.4)/(Math.tan(fov/2)*asp)/11)*(1+.22*mid)*dk, P=persp(fov,asp,.1,200), xs=[], ys=[];
+    [-8,8].forEach(function(sw){ var ar=(w.az+sw)*Math.PI/180, er=w.el*Math.PI/180, M=mul(P,look([Math.sin(ar)*Math.cos(er)*d,.3+Math.sin(er)*d,Math.cos(ar)*Math.cos(er)*d],[0,.2,0])), p=sh.p, st=Math.max(1,(N/700)|0)*3;
+      for(var j=0;j<p.length;j+=st){ var x=p[j],y=p[j+1],z=p[j+2], cw=M[3]*x+M[7]*y+M[11]*z+M[15]; xs.push((M[0]*x+M[4]*y+M[8]*z+M[12])/cw); ys.push((M[1]*x+M[5]*y+M[9]*z+M[13])/cw); } });
+    xs.sort(function(a,b){ return a-b; }); ys.sort(function(a,b){ return a-b; });
+    return {l:xs[(xs.length*.02)|0], r:xs[(xs.length*.98)|0], t:ys[(ys.length*.985)|0], mid:mid};
+  }
+  function fitBeside(){
+    if(small||!ready) return;
+    secs.forEach(function(s){
+      var w=W[s.k], pn=s.el.querySelector('.panel'); if(!pn||w.off!==1) return;
+      var m=shapes(w), k, sh=null; for(k in m) if(SH[k]){ sh=SH[k]; break; } if(!sh) return;
+      var r=pn.getBoundingClientRect(), L=(r.right+44)/innerWidth*2-1, RE=1-40/innerWidth*2, base=w.ox!=null?w.ox:.34, dk=1, e, lo, hi;
+      for(var it=0;it<4;it++){ e=ext(w,sh,dk); lo=L-e.l-.1*e.mid; hi=RE-e.r-.1*e.mid; if(lo<=hi||dk>=1.7) break; dk=Math.min(1.7,dk*(e.r-e.l)/(RE-L)*1.03); }
+      w.oxF=Math.max(lo,Math.min(base,hi)); w.dk=dk;
+    });
+    var ws=W.shop, top=-9, e2; for(var i=1;i<=7;i++) if(SH['shop'+i]){ e2=ext(ws,SH['shop'+i],1); if(e2.t>top) top=e2.t; }
+    if(top>-9) ws.oyF=Math.min(ws.oy,1-(64+14)/innerHeight*2-top);
+  }
+
+  /* pointer */
+  var pnx=0,pny=0,tnx=0,tny=0,pIn=false,lastMove=-1e9,pvx=0,pvy=0,ppx=0,ppy=0, cnx=0,cny=0,pushS=0;
+  addEventListener('pointermove',function(e){ var nx=e.clientX/innerWidth*2-1, ny=-(e.clientY/innerHeight*2-1); pvx=nx-tnx; pvy=ny-tny; tnx=nx; tny=ny; pIn=true; lastMove=performance.now(); },{passive:true});
+  addEventListener('pointerdown',function(e){ tnx=e.clientX/innerWidth*2-1; tny=-(e.clientY/innerHeight*2-1); pIn=true; lastMove=performance.now(); },{passive:true});
+  document.addEventListener('pointerleave',function(){ pIn=false; });
+  document.documentElement.addEventListener('mouseleave',function(){ pIn=false; });
+  addEventListener('blur',function(){ pIn=false; });
+  addEventListener('touchend',function(){ setTimeout(function(){ pIn=false; },600); },{passive:true});
+
+  /* hero: lion, Jonathan, Gina, then the lion again, every 10 seconds, or at once on a click or tap. Nobody steers it,
+     so a figure is only ever between shapes while it disperses and comes back together; the pointer just pushes the light around. */
+  var heroCycle=['lion','man','woman'], heroHold=[10000,10000,10000], HDUR=1400, cyc=0, hFrom=0, cycAt=performance.now(), hAt=-1e9, heroScat=0, heroSw=0, hq=0;
+  var mixT={lion:1,man:0,woman:0,couple:0}, mixV={man:0,woman:0,couple:0}, PEOPLE=['man','woman','couple'];
+  function heroName(i){ var k=heroCycle[i]; return SH[k]?k:'lion'; }
+  function heroNext(i){ for(var g=1;g<heroCycle.length;g++){ var j=(i+g)%heroCycle.length; if(SH[heroCycle[j]]&&heroCycle[j]!==heroName(i)) return j; } return i; } // a figure whose picture didn't load is skipped
+  function heroGo(now){ var nx=heroNext(cyc); if(nx!==cyc){ hFrom=cyc; cyc=nx; hAt=now; } else cycAt=now; }
+  var heroOn=0; // how much of the hero figure is on screen (set each frame)
+  function heroClick(e){ var t=e.target; if(!t||!t.closest) t=t&&t.parentElement; if(!t) return;
+    if(heroOn<.5||e.detail>1||document.querySelector('.sheet.open')||t.closest('a,button,input,textarea,select,label,summary,.sheet,.panel,header,nav')||!ready||intro<1) return; // a tap that closes a menu, or the second click of a double-click, leaves the face alone
+    var now=performance.now(); if(now-hAt<HDUR) hq=1; else heroGo(now); } // a click during a change waits for it to finish, then starts the next
+  document.addEventListener('click',heroClick,true); // capture: runs before the menu-closing handler, so it can tell a tap that closes a menu
+  function updateHero(now,dt,gap){
+    if(gap>1000){ var tg=now-gap; if(hAt<=tg) hAt+=gap; if(cycAt<=tg) cycAt+=gap; } // the tab was hidden: carry on from the same point, hold or change (a click made since then still counts)
+    if(hAt>cycAt&&now-hAt>=HDUR) cycAt=hAt+HDUR; // the hold starts once the new figure has formed
+    var away=fs2>.7&&fs2<secs.length-1.7; // no part of the hero left on screen
+    if(!ready||intro<1||away){ cycAt=now; cyc=hFrom=0; hAt=-1e9; hq=0; } // start again on the lion
+    else if(hq&&now-hAt>=HDUR+300){ hq=0; heroGo(now); } // a queued click, once the face has landed
+    else if(now-hAt>=HDUR&&now-cycAt>=heroHold[cyc]) heroGo(now); // a change always runs to the end
+    var p=clamp((now-hAt)/HDUR,0,1), u=sstep(0,1,p), sn=Math.sin(Math.PI*u), w=p<1?sstep(.4,.6,u):1; // disperse, swap inside the cloud, come back together
+    heroScat=p<1?.55*sn*sn:0; heroSw=p<1?(u-.5)*1.1*sn:0;
+    var from=heroName(hFrom), to=heroName(cyc), m={lion:0,man:0,woman:0,couple:0}, k;
+    m[from]+=1-w; m[to]+=w;
+    for(var i=0;i<3;i++){ k=PEOPLE[i]; mixV[k]=dt>0?(m[k]-mixT[k])/dt:0; mixT[k]=m[k]; }
+    mixT.lion=m.lion; heroMix=mixT;
+  }
+
+  /* store: the particles become whichever shirt you are looking at in the rail */
+  var rail=document.getElementById('rail'), cards=[].slice.call(rail.children), shopAct=0, shopT=[1,0,0,0,0,0,0], shopMix={lion:1};
+  function railActive(){ if(rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-2) return cards.length-1; var r=rail.getBoundingClientRect(), best=0, bd=1e9; cards.forEach(function(c,i){ var d=Math.abs(c.getBoundingClientRect().left-r.left); if(d<bd){ bd=d; best=i; } }); return best; }
+  rail.addEventListener('scroll',function(){ var a=railActive(); if(a!==shopAct) setShop(a,true); },{passive:true});
+  var aim=0, shopV=[0,0,0,0,0,0,0];
+  function setShop(i,now){ cards.forEach(function(c,j){ c.classList.toggle('on',j===i); }); clearTimeout(aim); if(now) shopAct=i; else aim=setTimeout(function(){ shopAct=i; },140); }
+  cards.forEach(function(c,i){ c.addEventListener('pointerenter',function(e){ setShop(i,e.pointerType!=='mouse'); }); c.addEventListener('focus',function(){ setShop(i,true); }); });
+  setShop(0,true);
+  function updateShop(dt){
+    var sum=0, i, m={};
+    var e7=ez(.07);
+    for(i=0;i<7;i++){ var have=!!SH['shop'+(i+1)], goal=(i===shopAct&&have)?1:0; if(!have) shopT[i]=shopV[i]=0;
+      if(coarse){ var o=shopT[i]; shopT[i]+=(goal-o)*e7; shopV[i]=dt>0?(shopT[i]-o)/dt:0; } // touch: the shirt answers the thumb at once
+      else { shopV[i]+=(42*(goal-shopT[i])-13*shopV[i])*dt; shopT[i]=clamp(shopT[i]+shopV[i]*dt,0,1); }
+      if(Math.abs(goal-shopT[i])<1e-4&&Math.abs(shopV[i])<1e-3){ shopT[i]=goal; shopV[i]=0; } sum+=shopT[i]; }
+    if(sum<.01){ shopMix=SH.shop1?{shop1:1}:{lion:1}; return; }
+    for(i=0;i<7;i++) if(shopT[i]>.002) m['shop'+(i+1)]=shopT[i]/sum;
+    shopMix=m;
+  }
+
+  /* simulation state */
+  var OX=new Float32Array(N*3), VX=new Float32Array(N*3), RS=new Float32Array(N*3);
+  for(i=0;i<N;i++){ var u=R()*2-1, th=R()*6.2832, s2=Math.sqrt(1-u*u), rad=2+R()*7; RS[i*3]=s2*Math.cos(th)*rad; RS[i*3+1]=u*rad; RS[i*3+2]=s2*Math.sin(th)*rad; }
+  var intro=0;
+  var f60=1; function ez(k){ return 1-Math.pow(1-k,f60); }
+  // new motion: a stagger rank per particle (0 = base leads, 1 = crown trails), from its own seed so the sampled clouds don't change
+  var R2=rnd(911), STG=new Float32Array(N); for(i=0;i<N;i++) STG[i]=clamp(1-i/N+(R2()-.5)*.18,0,1);
+  function scatAt(t){ var w=Math.sin(Math.PI*sstep(.08,.92,t)); return 4.2*w*w; } // starts to let go as soon as you scroll
+  function wAt(t){ return sstep(.38,.62,sstep(.08,.92,t)); }
+  var RK=[[0,0],[.28,-.3],[.4,1],[.95,-.12],[1.5,0]], roarAt=0, roarIn=false;
+  var flAt=-1e9, flG=0, setT=-1e9, setSeg=-1, setTau=0;
+  function roarK(u){ for(var i=1;i<RK.length;i++) if(u<RK[i][0]){ var a=RK[i-1],b=RK[i]; return a[1]+(b[1]-a[1])*sstep(a[0],b[0],u); } return 0; }
+
+  var lastNow=0, fs2=0, scY=scrollY, lastSc=-1e9, dirS=0, scD=scrollY, restL=false, restOn=true, fLat=null, holdV=0, hK=1, hKv=0, fRp=0, burst=0, t0=performance.now(), mapA=[].slice.call(document.querySelectorAll('.map a')), flash=document.getElementById('flash');
+  function frame(now){
+    requestAnimationFrame(frame);
+    var T=(now-t0)/1000, gap=now-(lastNow||now), dtS=Math.min(.1,gap/1000); lastNow=now;
+    f60=Math.min(3,dtS*60)||1;
+    pnx+=(tnx-pnx)*ez(.12); pny+=(tny-pny)*ez(.12);
+    var kc=coarse?1:ez(.06); cnx+=(pnx-cnx)*kc; cny+=(pny-cny)*kc; // touch: no extra weight, the camera answers the thumb
+    // once the page rests between two worlds, the figure finishes forming the nearer one, so it is never left half dispersed.
+    // That figure is then held: it never runs back against the scroll, and with a wheel or trackpad it waits until the scroll crosses half way.
+    if(scrollY!==scY){ // direction only flips after 8 px of travel back, so a finger wobble doesn't count
+      if(dirS&&(scrollY-scD)*dirS>0) scD=scrollY; else if(Math.abs(scrollY-scD)>8){ dirS=scrollY>scD?1:-1; scD=scrollY; }
+      scY=scrollY; lastSc=now; restL=false; }
+    var fR=fIndex(scrollY), fN=Math.round(fR), rest=now-lastSc>(coarse?300:450), hold=rest;
+    if(rest){ if(!restL||fLat===null||Math.abs(fR-fLat)>=.75) fLat=fN; restL=true; dirS=0; scD=scrollY; restOn=Math.abs(fR-fLat)<=.01; } // one choice per rest, so a resize doesn't flip the figure
+    else if(fLat!==null){ if(!dirS||dirS*(fLat-fR)>0||(!coarse&&!restOn&&fN===fLat&&Math.abs(fR-fLat)>.08)) hold=true; else fLat=null; } // a figure that rested right on its anchor lets go at the first scroll
+    if(hold&&fLat!==holdV){ var fo=fR+(holdV-fR)*hK; holdV=fLat; hK=fLat!==fR?clamp((fo-fR)/(fLat-fR),0,1):1; hKv=0; } // change what is held without a jump
+    if(!hold&&Math.abs(holdV-fRp)<.08){ hK=0; hKv=0; } // leaving a figure that sat on its anchor: follow the scroll at once, nothing visible can jump there
+    else { var hw8=coarse?20:9, hx=hK-(hold?1:0), he=Math.exp(-hw8*dtS), hk2=hKv+hw8*hx; // otherwise ease into and out of the hold from rest, so the cloud never lurches:
+      hK=(hold?1:0)+(hx+hk2*dtS)*he; hKv=(hKv-hw8*hk2*dtS)*he; // an exact critically damped step, steady at any frame rate (a slow phone can't make it flicker)
+      if(hK<0||hK>1){ hK=clamp(hK,0,1); hKv=0; } }
+    fRp=fR;
+    var f=fR+(holdV-fR)*hK;
+    var fsP=fs2; fs2+=(f-fs2)*ez(.12); if(Math.abs(f-fs2)<.0005) fs2=f;
+    var lag=Math.abs(f-fs2), trav=sstep(.35,.9,lag);
+    // a quick scroll still reads as a transition: the figure bursts into dust as it passes and settles back within about half a second
+    var vF=Math.abs(fs2-fsP)/Math.max(dtS,1/240), bT=coarse?sstep(1.8,5,vF):sstep(1.1,3.6,vF); burst+=(bT-burst)*ez(bT>burst?.3:.07); if(burst<1e-3) burst=0;
+    var ii=Math.floor(fs2), tt=fs2-ii, A=W[secs[ii].k], B=W[secs[Math.min(ii+1,secs.length-1)].k];
+    var same=A===B, tau=same?0:sstep(.08,.92,tt), wB=same?0:sstep(.38,.62,tau), wave=same?0:Math.sin(Math.PI*tau);
+    if(trav>0) wave=Math.max(wave,trav);
+    updateHero(now,dtS,gap); updateShop(dtS);
+    // camera
+    var dA=(small&&A.dM)||A.d, dB=(small&&B.dM)||B.d, d=dA+(dB-dA)*tau, az=(A.az+(B.az-A.az)*tau)*(1-.75*trav), el=A.el+(B.el-A.el)*tau;
+    var portalPass=(A===W.portal&&B===W.hero)&&!reduced;
+    var mv=MOVES&&!reduced, ant=0, setl=0;
+    if(portalPass){ d = tau<.5 ? dA-(dA+1.5)*sstep(0,.5,tau)*1.05 : dB+ (1-sstep(.5,1,tau))*6; }
+    else if(mv&&!same&&!coarse) d-=Math.max(Math.sin(Math.PI*sstep(.12,1,tau)),trav)*d*.72; // new motion: the dive waits for the gather
+    else d-=wave*d*(reduced?.15:.72);
+    if(mv&&!same&&!portalPass){
+      // anticipation: the figure draws in (and the camera eases back) before it lets go
+      var tg=1-sstep(.08,.25,lag); ant=coarse?0:Math.sin(Math.PI*clamp(tau/.2,0,1))*tg; // reading speed only, never on a fast jump
+      // follow-through: a small overshoot when a figure lands, on the clock rather than the scroll
+      if(ii===setSeg&&tg>.5&&((setTau<.97&&tau>=.97)||(setTau>.03&&tau<=.03))) setT=now;
+    }
+    setSeg=ii; setTau=tau;
+    var ss=now-setT; if(mv&&ss<700) setl=Math.exp(-ss/180)*Math.sin(ss*.0138);
+    if(ant) d*=1+.06*ant;
+    var asp=innerWidth/innerHeight, fov=small?.9:.72, hw=(A.hw||3.4)*(1-tau)+(B.hw||3.4)*tau; d*=Math.max(1,hw/(Math.tan(fov/2)*asp)/11);
+    var mid=small?0:clamp((1280-innerWidth)/300,0,1); d*=1+.22*mid; // narrower desktops: smaller figure, pushed further right of the copy
+    if(!small) d*=(A.dk||1)*(1-tau)+(B.dk||1)*tau; // beside a panel on a narrow screen: as small as it needs to be to fit
+    if(!reduced){ az+=Math.sin(T*.12)*7+cnx*7; el+=cny*4; }
+    var ar=az*Math.PI/180, er=el*Math.PI/180;
+    var eye=[Math.sin(ar)*Math.cos(er)*d, .3+Math.sin(er)*d, Math.cos(ar)*Math.cos(er)*d];
+    var P=persp(fov,asp,.1,200);
+    var oA=offs(A), oB=offs(B), offX=oA[0]+(oB[0]-oA[0])*tau, offY=oA[1]+(oB[1]-oA[1])*tau; if(offX>0) offX+=.1*mid;
+    P[8]=-offX; P[9]=-offY;
+    var PV=mul(P,look(eye,[0,.2,0]));
+    // flash for the empty tomb and the portal
+    var fl=0;
+    if(B===W.tomb&&!same){ if(lag*30>.15&&!rest) flAt=now; var flTo=now-flAt<900?1:0; flG+=(flTo-flG)*ez(flTo>flG?.25:.06); fl=.65*sstep(.45,.62,tau)*(1-sstep(.62,.95,tau))*flG; }
+    else flG=0;
+    if(portalPass) fl=Math.max(fl,.92*sstep(.3,.5,tau)*(1-sstep(.5,.85,tau)));
+    if(reduced) fl=Math.min(fl,.2);
+    fl*=1-trav;
+    flash.style.opacity=fl.toFixed(3);
+    if(fl>0){ flash.style.setProperty('--fx',(50+offX*50).toFixed(1)+'%'); flash.style.setProperty('--fy',(50-offY*50).toFixed(1)+'%'); }
+    // weights
+    // with the new motion, each transition is read at a lead point (the base) and a trail point (the crown), blended per particle
+    var a1=shapes(A), b1=shapes(B), k, LAG=(mv&&!same&&!portalPass)?.14:0;
+    var tL=LAG?clamp(tt/(1-LAG),0,1):tt, tT=LAG?clamp((tt-LAG)/(1-LAG),0,1):tt, wL=same?0:wAt(tL), wR=same?0:wAt(tT), mL={}, mR={};
+    for(k in a1){ mL[k]=(mL[k]||0)+a1[k]*(1-wL); mR[k]=(mR[k]||0)+a1[k]*(1-wR); }
+    for(k in b1){ mL[k]=(mL[k]||0)+b1[k]*wL; mR[k]=(mR[k]||0)+b1[k]*wR; }
+    var plat=(A.plat*(1-tau)+B.plat*tau)*(1-wave*.8);
+    var scat, scatT;
+    if(portalPass) scat=scatT=(tau>.5?(1-sstep(.5,.9,tau))*3.5:0);
+    else if(same) scat=scatT=0;
+    else { scat=scatAt(tL); scatT=scatAt(tT); }
+    if(scat<.004) scat=0; if(scatT<.004) scatT=0;
+    var trs=Math.max(4.2*trav*trav,1.4*burst); scat=Math.max(scat,trs); scatT=Math.max(scatT,trs);
+    var hW=(A===W.hero?1-wB:0)+(B===W.hero?wB:0); heroOn=hW; // how much of the hero is on screen
+    if(heroScat>0){ scat+=heroScat*hW; scatT+=heroScat*hW; } // a hero figure changing: the light disperses and gathers again
+    if(reduced){ scat*=.6; scatT*=.6; } // less motion asked: the same dispersals, softer
+    if(ready){
+      intro=Math.min(1,intro+(reduced?dtS*1.4:Math.min(.05,dtS*.75)));
+      var act=[],wts=[],dws=[]; for(k in mL){ var vl=mL[k], vr=mR[k]||0; if((vl>.002||vr>.002)&&SH[k]){ act.push(SH[k]); wts.push(vl); dws.push(vr-vl); } }
+      if(!reduced){ var IL=mv?.2:0, iL=IL?clamp(intro/(1-IL),0,1):intro, iT=IL?clamp((intro-IL)/(1-IL),0,1):intro;
+        scat+=(1-sstep(0,1,iL))*6; scatT+=(1-sstep(0,1,iT))*6; }
+      if(!revealed&&(intro>.8||fs2>.05)) reveal();
+      var swA=0, wind=0, wc=1, wsn=0, bow=0;
+      if(mv){
+        // hero faces and store shirts bow outward as they change, so each point travels on an arc rather than a straight line
+        var sW=(A===W.shop?1-wB:0)+(B===W.shop?wB:0), vH=0, vS=0, bH=0, bS=0, i7;
+        for(i7=0;i7<3;i7++){ var m7=mixT[PEOPLE[i7]]; vH+=Math.abs(mixV[PEOPLE[i7]]); bH=Math.max(bH,4*m7*(1-m7)); }
+        for(i7=0;i7<7;i7++){ vS+=Math.abs(shopV[i7]); bS=Math.max(bS,4*shopT[i7]*(1-shopT[i7])); }
+        var mH=hW*bH*Math.min(1,vH/1.5), mS=sW*bS*Math.min(1,vS/3), puff=(coarse?.1:.07)*mH+.07*mS;
+        if(puff<.004) puff=0; else { scat+=puff; scatT+=puff; }
+        bow=.035*Math.max(mH,mS); if(bow<.001) bow=0;
+        // the fly-through turns: points leave on one bearing and return on another
+        swA=portalPass?(tau>.5?(1-sstep(.5,.9,tau))*1.2:0):(same?0:(tau-.5)*1.1*((B.az-A.az)>=0?-1:1)*(1-sstep(.1,.4,lag))*sstep(0,.12,tau)*(1-sstep(.88,1,tau))); // no swirl on fast jumps
+        swA+=(1-sstep(0,1,intro))+heroSw*hW; // hero changes leave on one bearing and come back on another
+        // the ring winds up before the portal flash
+        if(portalPass&&tau<.5){ var th=1.1*Math.pow(sstep(.1,.5,tau),2); wind=th>.001; wc=Math.cos(th); wsn=Math.sin(th); }
+      }
+      var swc=Math.cos(swA), sws=Math.sin(swA), dsc=scatT-scat, stag=Math.abs(dsc)>1e-4;
+      for(i7=0;i7<dws.length;i7++) if(Math.abs(dws[i7])>1e-4) stag=true;
+      // the roar starts once the lion has formed, and keeps its rhythm until the lion has let go
+      var inR=roarIn?((A===W.roar&&tau<.5)||(B===W.roar&&tau>.5)):((A===W.roar&&tau<.1)||(B===W.roar&&tau>.9)); if(inR&&!roarIn) roarAt=now+350; roarIn=inR;
+      var pulse=(A.pulse?1-tau:0)+(B.pulse?tau:0), ru=(now-roarAt)/1000, pa=(reduced||!roarIn||ru<0)?0:pulse*roarK(ru%4.2), gs=1-.05*ant+.035*setl, sx=(1+.05*pa)*gs*(1+bow), sy=(1+.03*pa)*gs, scl=pa!==0||gs!==1||bow!==0;
+      var glow=(1+((A.glow?1-tau:0)+(B.glow?tau:0))*.25)*(1+.15*Math.max(0,pa));
+      // the listener: rings of light keep spreading out from the headphones and his head nods gently, as if to the music
+      var lw=SH.listen?(A.listen?1-tau:0)+(B.listen?tau:0):0, lsn=lw>.01, LX=0,LY=0,NX=0,NY=0,nc=1,ns=0,LT=0;
+      if(lsn){ LX=SH.listen.ear[0]; LY=SH.listen.ear[1]; NX=SH.listen.neck[0]; NY=SH.listen.neck[1]; LT=T*(reduced?.35:.8);
+        var na2=reduced?0:lw*.03*Math.sin(T*5.03); nc=Math.cos(na2); ns=Math.sin(na2); }
+      // the lion at rest breathes: a slow rise and fall from the ground up
+      var brW=(A.breathe?1-tau:0)+(B.breathe?tau:0), br=reduced?0:brW*.018*Math.sin(T*1.05), brOn=br!==0;
+      // pointer in the figure plane
+      var half=Math.tan(fov/2)*d, pwx=(pnx-offX)*half*asp, pwy=(pny-offY)*half+.2;
+      var pT=(pIn&&now-lastMove<2500)?1:0; pushS+=(pT-pushS)*ez(pT>pushS?.6:.05); var pushOn=pushS>.01, RR=1.25*1.25, spd=Math.min(1,Math.hypot(pvx,pvy)*30/f60), damp=Math.pow(.9,f60), kS=.035*f60, pk=pushS*f60*(reduced?.5:1); pvx*=damp; pvy*=damp;
+      var na=act.length, p0=act[0]?act[0].p:null;
+      var full=stag||scl||wind||scat>0, rot=swA!==0, k6=scat*.6, d6=dsc*.6;
+      for(var n=0;n<N;n++){
+        var j=n*3, x=0,y=0,z=0,b=0, q, S, w, sp;
+        if(stag){ var sg=STG[n]; for(q=0;q<na;q++){ S=act[q]; w=wts[q]+dws[q]*sg; sp=S.p; x+=w*sp[j]; y+=w*sp[j+1]; z+=w*sp[j+2]; b+=w*S.b[n]; } }
+        else for(q=0;q<na;q++){ S=act[q]; w=wts[q]; sp=S.p; x+=w*sp[j]; y+=w*sp[j+1]; z+=w*sp[j+2]; b+=w*S.b[n]; }
+        if(full){
+          if(scl){ x*=sx; y=(y-.2)*sy+.2; z*=sx; }
+          if(wind){ var yy=y-.25, xr=x*wc-yy*wsn; y=x*wsn+yy*wc+.25; x=xr; }
+          var kk=stag?k6+d6*sg:k6;
+          if(kk>0){ var rx=RS[j], rz=RS[j+2]; if(rot){ x+=(rx*swc-rz*sws)*kk; z+=(rx*sws+rz*swc)*kk; } else { x+=rx*kk; z+=rz*kk; } y+=RS[j+1]*kk; }
+        }
+        if(lsn){ var nx2=x-NX, ny2=y-NY; x=NX+nx2*nc-ny2*ns; y=NY+nx2*ns+ny2*nc;
+          var ex2=x-LX, ey2=y-LY, dl=Math.sqrt(ex2*ex2+ey2*ey2)+1e-4, ph=dl*.5-LT, fr=ph-Math.floor(ph), qq=1-Math.abs(fr*2-1), q2=qq*qq, q4=q2*q2, rg=q4*q4*Math.exp(-dl*.3)*lw;
+          b*=1+1.9*rg; if(!reduced){ x+=ex2/dl*rg*.09; y+=ey2/dl*rg*.09; } }
+        if(brOn){ y=(y+3.45)*(1+br)-3.45; x*=1+br*.3; z*=1+br*.3; }
+        var ox=OX[j],oy=OX[j+1],oz=OX[j+2];
+        if(pushOn){ var dx=x+ox-pwx, dy=y+oy-pwy, d2=dx*dx+dy*dy; if(d2<RR){ var dd=Math.sqrt(d2)+1e-4, ff=1-dd/1.25; ff=ff*ff*(.07+spd*.12)*pk; VX[j]+=dx/dd*ff; VX[j+1]+=dy/dd*ff; VX[j+2]+=ff*.9; } }
+        var kn=kS*KN[n]; VX[j]=(VX[j]-ox*kn)*damp; VX[j+1]=(VX[j+1]-oy*kn)*damp; VX[j+2]=(VX[j+2]-oz*kn)*damp;
+        ox+=VX[j]*f60; oy+=VX[j+1]*f60; oz+=VX[j+2]*f60; OX[j]=ox; OX[j+1]=oy; OX[j+2]=oz;
+        var k4=n*4; FP[k4]=x+ox; FP[k4+1]=y+oy; FP[k4+2]=z+oz; FP[k4+3]=b*glow;
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER,fpB); gl.bufferSubData(gl.ARRAY_BUFFER,0,FP);
+    }
+    // draw
+    gl.clearColor(.02,.024,.032,1); gl.clear(gl.COLOR_BUFFER_BIT);
+    var sdy=scrollY-lastSY; lastSY=scrollY; if(Math.abs(sdy)>innerHeight*2) sdy=0; // the loop jump is not a scroll
+    vY+=(Math.max(-6000,Math.min(6000,sdy/Math.max(dtS,1/240)))-vY)*ez(.25);
+    var am=ambMod(), ast=am?{gl:gl,PV:PV,eye:eye,T:T,dt:dtS,f60:f60,W:canvas.width,H:canvas.height,dpr:dpr,small:small,coarse:coarse,reduced:reduced,
+      A:secs[ii].k,B:secs[Math.min(ii+1,secs.length-1)].k,tau:tau,wave:wave,lag:lag,trav:trav,scat:scat,fl:fl,pa:pa||0,plat:plat,intro:intro,offX:offX,offY:offY,vY:vY,px:pnx,py:pny,pIn:pIn}:null;
+    if(am) ambCall(am,'back',ast);
+    gl.uniformMatrix4fv(U.uPV,false,PV); gl.uniform3f(U.uEye,eye[0],eye[1],eye[2]); gl.uniform1f(U.uT,reduced?T*.5:T);
+    gl.uniform1f(U.uFocus,Math.hypot(eye[0],eye[1]-.2,eye[2])-.5); gl.uniform1f(U.uDpr,dpr); gl.uniform1f(U.uBreath,reduced?0:Math.sin(T*1.15));
+    gl.uniform3f(U.uCol,.86,.91,1);
+    gl.uniform1f(U.uKind,2); gl.uniform1f(U.uPx,3); gl.uniform1f(U.uAlpha,.9); bind(bpB,biB); gl.drawArrays(gl.POINTS,0,NB);
+    if(plat>.01){ gl.uniform1f(U.uKind,1); gl.uniform1f(U.uPx,2.3); gl.uniform1f(U.uAlpha,plat*2.1); bind(ppB,piB); gl.drawArrays(gl.POINTS,0,NP); }
+    if(ready){ var ia=Math.min(1,intro*1.5); bind(fpB,fiB); gl.uniform1f(U.uKind,0);
+      gl.uniform3f(U.uCol,.55,.66,.95); gl.uniform1f(U.uPx,small?11:13); gl.uniform1f(U.uAlpha,.035*ia); gl.drawArrays(gl.POINTS,0,N);
+      gl.uniform3f(U.uCol,.92,.95,1); gl.uniform1f(U.uPx,small?3:2.9); gl.uniform1f(U.uAlpha,(small?1:.92)*ia); gl.drawArrays(gl.POINTS,0,N); }
+    if(am) ambCall(am,'front',ast);
+    // map
+    var cur=secs[Math.round(fs2)].k; if(cur==='portal') cur='word'; else if(cur==='host') cur='listen'; else if(cur==='rest') cur='roar'; mapA.forEach(function(a){ a.classList.toggle('on',a.getAttribute('data-i')===cur); });
+    loop();
+  }
+  function jump(to){ var L1=secs.length-1, down=to<scrollY, left=L1-fs2; document.documentElement.style.scrollBehavior='auto'; scrollTo(0,to); fLat=null; hK=hKv=0;
+    if(down){ fs2=0; burst=sstep(0,.35,left); } else { fs2=fIndex(to); burst=0; } // the wrap to the top: the lion carries over and moves on from there; one still forming arrives as dust and settles
+    requestAnimationFrame(function(){ document.documentElement.style.scrollBehavior=''; }); }
+  function loop(){ var a0=secs[0].a, aN=secs[secs.length-1].a; if(scrollY>=aN+1&&(fs2>secs.length-1.02||scrollY>=document.documentElement.scrollHeight-innerHeight-2)) jump(scrollY-(aN-a0)); } // wrap once the lion has formed
+  addEventListener('scroll',loop,{passive:true});
+  addEventListener('wheel',function(e){ if(e.deltaY<0&&scrollY<=0) jump(secs[secs.length-1].a); },{passive:true});
+  // the loop upward also works by pulling down at the top on a phone, and with the up arrow or Page Up on a keyboard
+  var ty0=null; addEventListener('touchstart',function(e){ ty0=scrollY<=0&&e.touches.length===1?e.touches[0].clientY:null; },{passive:true});
+  addEventListener('touchmove',function(e){ if(ty0!==null&&scrollY<=0&&e.touches[0].clientY-ty0>70){ ty0=null; jump(secs[secs.length-1].a); } },{passive:true});
+  addEventListener('touchend',function(){ ty0=null; },{passive:true});
+  addEventListener('keydown',function(e){ if(scrollY<=0&&(e.key==='ArrowUp'||e.key==='PageUp')&&!(e.target.closest&&e.target.closest('input,textarea,select'))) jump(secs[secs.length-1].a); });
+  // in-page links land where each world is composed: story sections on their camera anchor (with the copy in view), panels just below the top band
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href'), el=id.length>1&&document.querySelector(id); if(!el) return;
+    var sec=el.closest('main > section'), y;
+    if(id==='#top') y=0;
+    else if(sec&&sec.classList.contains('shopsec')&&innerWidth>760){ var ss2=secs.filter(function(q){ return q.el===sec; })[0]; y=ss2?ss2.a:sec.offsetTop; } // the store: where it is composed
+    else if(sec&&(sec.classList.contains('shopsec')||el===sec&&sec.classList.contains('sec'))){
+      y=sec.offsetTop+sec.offsetHeight/2-innerHeight/2;
+      var t=sec.querySelector('.txt,.shophead'); if(t){ var tb=t.offsetTop+t.offsetHeight, top=t.offsetTop; for(var o=t.offsetParent;o&&o!==document.body;o=o.offsetParent){ tb+=o.offsetTop; top+=o.offsetTop; } y=Math.min(Math.max(y,tb-innerHeight+clr()),top-84); }
+    } else if(innerWidth<=760&&sec&&sec.classList.contains('lead')&&el.tagName!=='FORM') y=sec.offsetTop;
+    else y=el.getBoundingClientRect().top+scrollY-84;
+    e.preventDefault(); scrollTo({top:Math.max(0,y),behavior:reduced?'auto':'smooth'});
+  },true); // capture, so links inside the menu sheet (which stops propagation) land the same way
+  document.addEventListener('touchstart',function(){},{passive:true});
+  requestAnimationFrame(frame);
+})();
+</script>
+<script src="assets/layers.js"></script>
+<script src="assets/pod/podcast.js"></script>
 </body>
-
 </html>
