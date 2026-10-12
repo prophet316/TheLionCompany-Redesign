@@ -168,10 +168,11 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+main [tabindex="-1"]:focus,main[tabindex="-1"]:focus{outline:none}
 #gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;background:radial-gradient(ellipse at 50% 60%,#0d1118 0%,#050608 62%)}
 #fallback{position:fixed;inset:0;z-index:0;display:none;background:#050608 url(assets/pt-lion.webp) center/min(70vh,90vw) no-repeat;filter:drop-shadow(0 0 30px rgba(200,220,255,.35));opacity:.75}
 .nogl #fallback{display:block}
@@ -187,7 +188,7 @@ a{color:inherit}
 .nav a:hover{opacity:1}
 .nav a.bk{color:var(--orange);opacity:1}
 .sheet li a.bk{color:var(--orange)}
-.bbtn{appearance:none;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.04);color:var(--ink);font:700 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:12px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(8px)}
+.bbtn{appearance:none;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.04);color:var(--ink);font:700 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:12px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .bbtn[aria-expanded="true"]{background:var(--ink);color:var(--bg)}
 .give{background:var(--orange);color:#111;font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 20px 11px;text-decoration:none;white-space:nowrap}
 .give:hover{background:var(--ink)}
@@ -195,7 +196,7 @@ a{color:inherit}
 .menubtn i{display:block;width:18px;height:1.5px;background:currentColor;box-shadow:0 -6px 0 currentColor,0 6px 0 currentColor}
 @media (max-width:980px){.nav{display:none}}
 @media (max-width:420px){.brand .the{display:none}.brand{font-size:19px}.bbtn{padding:12px 10px;letter-spacing:.1em}.give{padding:12px 14px 11px}}
-.sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:39;width:min(380px,calc(100vw - 32px));background:rgba(16,18,24,.92);backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .4s cubic-bezier(.2,.8,.2,1),visibility .25s}
+.sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:39;width:min(380px,calc(100vw - 32px));background:rgba(16,18,24,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .4s cubic-bezier(.2,.8,.2,1),visibility .25s}
 .sheet.open{opacity:1;visibility:visible;transform:none}
 .sheet h4{margin:0 0 10px;font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .sheet ul{list-style:none;margin:0 0 18px;padding:0}
@@ -277,7 +278,7 @@ form{display:grid;gap:12px;align-content:start}
 @media (max-width:520px){.row{grid-template-columns:1fr}}
 label{font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 input,textarea{width:100%;font:400 17px/1.4 var(--sans);color:var(--ink);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:0}
-input:focus,textarea:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,.09)}
+input:focus,textarea:focus{outline:2px solid transparent;border-color:var(--orange);background:rgba(255,255,255,.09)}
 textarea{min-height:110px;resize:vertical}
 button.sub{justify-self:start;appearance:none;border:0;background:var(--ink);color:var(--bg);font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:15px 22px 14px;cursor:pointer}
 button.sub:hover{background:var(--orange)}
@@ -285,7 +286,7 @@ button.sub:hover{background:var(--orange)}
 .skip-link{position:fixed;left:12px;top:-60px;z-index:100;background:var(--orange);color:#0c0c0d;font:700 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:12px 14px;text-decoration:none}
 .skip-link:focus{top:12px}
 .form-note.err{background:rgba(220,60,40,.14);border-left-color:#e0533c}
-.sub:disabled{opacity:.6;cursor:progress}
+.sub:disabled,.sub[aria-disabled="true"]{opacity:.6;cursor:progress}
 .fine{font-size:14px;color:var(--muted);margin:2px 0 0}
 
 .watch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:22px}
@@ -328,7 +329,7 @@ button.sub:hover{background:var(--orange)}
 html{scroll-padding-top:84px}
 .give,.menubtn{flex:none}
 @media (min-width:761px) and (max-width:1279px){.txt{width:min(560px,44vw)}.txt.wide{width:min(720px,50vw)}.panel{width:min(600px,50vw)}.shophead{width:min(440px,42vw)}}
-@media (max-width:1199px){.map a span{display:none}}
+@media (max-width:1199px){.map a span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 @media (max-width:360px){.band{gap:6px}.brand{font-size:17px}#socbtn{padding:12px 8px;letter-spacing:.06em}.give{padding:12px 10px 11px}}
 @media (min-width:761px) and (max-height:800px){.hero{padding-bottom:76px}}
 /* store: no glass panel, so the particle shirt stands in the open space to the right of the heading */
@@ -377,6 +378,7 @@ html{scroll-padding-top:84px}
 .map a span{opacity:0;transform:translateX(6px);transition:opacity .3s,transform .3s}
 .map a i{display:block;width:7px;height:7px;border:1px solid var(--muted);border-radius:50%;transition:background .3s,transform .3s,border-color .3s}
 .map a:hover span,.map a.on span{opacity:1;transform:none}
+.map a:focus-visible span{opacity:1;transform:none}
 .map a.on{color:var(--ink)}
 .map a.on i{background:var(--ink);border-color:var(--ink);transform:scale(1.4);box-shadow:0 0 12px #fff}
 @media (max-width:980px){.map{display:none}}
@@ -471,6 +473,10 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   html.moves .sheet.open li:nth-child(2){transition-delay:.03s}html.moves .sheet.open li:nth-child(3){transition-delay:.06s}html.moves .sheet.open li:nth-child(4){transition-delay:.09s}
   html.moves .sheet.open li:nth-child(5){transition-delay:.12s}html.moves .sheet.open li:nth-child(6){transition-delay:.15s}html.moves .sheet.open li:nth-child(7){transition-delay:.18s}html.moves .sheet.open li:nth-child(8){transition-delay:.21s}html.moves .sheet.open li:nth-child(9){transition-delay:.24s}
 }
+/* text only screen readers hear (form results, which links open a new tab) */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* high-contrast mode: the menu icon's three bars stay visible */
+@media (forced-colors:active){.menubtn i{forced-color-adjust:none;background:ButtonText;box-shadow:0 -6px 0 ButtonText,0 6px 0 ButtonText}}
 </style>
 </head>
 <body>
@@ -482,26 +488,26 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   <a class="give" data-href="give">Give</a>
   <button class="bbtn menubtn" id="menubtn" type="button" aria-expanded="false" aria-controls="menusheet" aria-label="Menu"><i></i></button>
 </header>
-<div class="sheet" id="socsheet" role="dialog" aria-label="Socials">
+<nav class="sheet" id="socsheet" aria-label="Socials and podcast">
   <h4>Follow</h4>
-  <ul data-fill="social"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
+  <ul data-fill="social"><template><li><a href="{url}">{name}<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li></template></ul>
   <h4>Listen</h4>
-  <ul data-fill="podcast"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
-</div>
-<div class="sheet" id="menusheet" role="dialog" aria-label="Menu">
+  <ul data-fill="podcast"><template><li><a href="{url}">{name}<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li></template></ul>
+</nav>
+<nav class="sheet" id="menusheet" aria-label="Menu">
   <h4>Worlds</h4>
   <ul>
-    <li><a class="bk" href="#book">Book us to speak<span>→</span></a></li>
-    <li><a href="#cross">I · The cross<span>→</span></a></li>
-    <li><a href="#risen">II · He has risen<span>→</span></a></li>
-    <li><a href="#made">III · Lions are made<span>→</span></a></li>
-    <li><a href="#pray">Prayer<span>→</span></a></li>
-    <li><a href="#podcast">IV · Podcast<span>→</span></a></li>
-    <li><a href="#give">V · Give<span>→</span></a></li>
-    <li><a href="#shop">VI · Shop<span>→</span></a></li>
-    <li><a href="#connect">VII · Connect<span>→</span></a></li>
+    <li><a class="bk" href="#book">Book us to speak<span aria-hidden="true">→</span></a></li>
+    <li><a href="#cross">I · The cross<span aria-hidden="true">→</span></a></li>
+    <li><a href="#risen">II · He has risen<span aria-hidden="true">→</span></a></li>
+    <li><a href="#made">III · Lions are made<span aria-hidden="true">→</span></a></li>
+    <li><a href="#pray">Prayer<span aria-hidden="true">→</span></a></li>
+    <li><a href="#podcast">IV · Podcast<span aria-hidden="true">→</span></a></li>
+    <li><a href="#give">V · Give<span aria-hidden="true">→</span></a></li>
+    <li><a href="#shop">VI · Shop<span aria-hidden="true">→</span></a></li>
+    <li><a href="#connect">VII · Connect<span aria-hidden="true">→</span></a></li>
   </ul>
-</div>
+</nav>
 
 <canvas id="gl" aria-hidden="true"></canvas>
 <div id="fallback" aria-hidden="true"></div>
@@ -574,7 +580,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   <section class="psec podsec lead" data-world="host">
     <div class="panel wide pod" id="podcast">
       <div class="pod-grid">
-        <a class="pod-art" id="podArt" target="_blank" rel="noopener" aria-label="Listen to The Lion Company Podcast">
+        <a class="pod-art" id="podArt" target="_blank" rel="noopener" aria-label="Play The Lion Company Podcast on Apple Podcasts">
           <div class="pod-cover" id="podCover" role="img" aria-label="The Lion Company Podcast cover: LION COMPANY over newsprint collage with the roaring lion"></div>
           <span class="pod-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>Play</span>
         </a>
@@ -623,7 +629,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
       <div class="railnav"><span class="rcount" id="railcount" aria-live="polite"><b>01</b> / 24</span><span class="rbtns"><button class="rbtn" id="railprev" type="button" aria-label="Previous products" aria-controls="rail" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></button><button class="rbtn" id="railnext" type="button" aria-label="Next products" aria-controls="rail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></span></div>
     </div>
   </section>
-  <section class="sec mark" data-world="word" aria-label="The Lion Company"></section>
+  <section class="sec mark" data-world="word" aria-hidden="true"></section>
   <section class="psec" data-world="word">
     <div class="panel wide" id="connect">
       <div class="connect">
@@ -634,7 +640,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
           <div class="in"><input id="q-ne" type="email" required placeholder="you@example.com" autocomplete="email"><button class="sub" type="submit">Join</button></div>
           <p class="form-note" hidden></p>
           <p class="fine" id="newsletter-privacy-note">Confirm by email; unsubscribe anytime. <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>
-          <div class="soc" data-fill="social"><template><a href="{url}">{name} ↗</a></template></div>
+          <div class="soc" data-fill="social"><template><a href="{url}">{name} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></template></div>
         </form>
         <form data-form="contact" id="book">
           <span class="label">Contact</span>
@@ -747,7 +753,8 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   sheet('socbtn','socsheet'); sheet('menubtn','menusheet');
   // "Book us to speak" lands on the contact form, which then suggests what to tell us
   document.querySelectorAll('a[href="#book"]').forEach(function(a){ a.addEventListener('click',function(){ var t=document.getElementById('q-cm'); if(t&&!t.value) t.placeholder='Tell us about your event: the date, the place and who will be there.'; }); });
-  document.addEventListener('click',closeAll); document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAll(); });
+  document.addEventListener('click',closeAll); document.addEventListener('keydown',function(e){ if(e.key!=='Escape') return; var o=document.querySelector('.sheet.open'), b=o&&document.querySelector('[aria-controls="'+o.id+'"]'), inside=o&&o.contains(document.activeElement); closeAll(); if(inside&&b) b.focus(); }); // Escape from inside a sheet hands focus back to its button
+  ['socsheet','menusheet'].forEach(function(id){ var s=document.getElementById(id), b=document.querySelector('[aria-controls="'+id+'"]'); s.addEventListener('focusout',function(e){ var t=e.relatedTarget; if(s.classList.contains('open')&&t&&!s.contains(t)&&t!==b) closeAll(); }); }); // tabbing out of an open sheet closes it
 
   /* ---------- new motion switch, and the hero title waiting for the lion ---------- */
   var root=document.documentElement, MOVES=root.classList.contains('moves'), revealed=!root.classList.contains('rv');
@@ -767,6 +774,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   var canvas=document.getElementById('gl');
   var gl=canvas.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false,powerPreference:'high-performance'});
   if(!gl){ document.documentElement.classList.add('nogl'); reveal(); return; }
+  canvas.addEventListener('webglcontextlost',function(e){ e.preventDefault(); root.classList.add('nogl'); canvas.style.visibility='hidden'; },false); // a lost GPU context shows the still lion, not a black page
   var small=innerWidth<760, N=small?15000:32000, NP=small?2600:4200, NB=small?160:320;
 
   function rnd(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; var t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
@@ -909,7 +917,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   function anchors(){ secs.forEach(function(s){ s.a=(innerWidth<=760&&s.el.classList.contains('lead'))?s.el.offsetTop:s.el.offsetTop+s.el.offsetHeight/2-innerHeight/2;
     if(innerWidth>760&&s.el.classList.contains('shopsec')){ var h=s.el.querySelector('.shophead .label')||s.el.querySelector('.shophead'), c1=s.el.querySelector('.railnav')||s.el.querySelector('.prod')||h, h2=s.el.querySelector('.shophead h2')||h, lt=h.getBoundingClientRect().top+scrollY, hi=lt-82, lo=c1.getBoundingClientRect().bottom+scrollY-innerHeight+16; s.a=lo<=hi?clamp(s.a,lo,hi):lo-16<=lt-66?Math.min(lo,lt-66):Math.max(Math.min(lo,h2.getBoundingClientRect().top+scrollY-70),lo-16); } }); secs[0].a=0; fitBeside(); } // the store: label clear of the top band, cards and the arrows under them clear of the bottom // phones: a panel that brings its own figure is anchored where it opens, with the figure in the clear above it // figures sit on the section's middle, so they answer the thumb right where they used to (menu links still land with the copy in view)
   function clr(){ return innerWidth<=760?56:24; } // phones: keep the card clear of the prototype switch
-  anchors(); addEventListener('load',anchors); setInterval(anchors,1500);
+  anchors(); addEventListener('load',anchors); setInterval(function(){ if(!document.hidden) anchors(); },1500);
   function fIndex(y){ if(y<=secs[0].a) return 0; for(var i=0;i<secs.length-1;i++){ if(y<secs[i+1].a) return i+(y-secs[i].a)/Math.max(1,secs[i+1].a-secs[i].a); } return secs.length-1; }
   function shapes(w){ return typeof w.sh==='function'?w.sh():w.sh; }
   // where a world's figure sits on screen (NDC lens shift): beside the text on desktop, above it on phones
@@ -1007,6 +1015,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   var lastNow=0, fs2=0, scY=scrollY, lastSc=-1e9, dirS=0, scD=scrollY, restL=false, restOn=true, fLat=null, holdV=0, hK=1, hKv=0, fRp=0, burst=0, t0=performance.now(), mapA=[].slice.call(document.querySelectorAll('.map a')), flash=document.getElementById('flash');
   function frame(now){
     requestAnimationFrame(frame);
+    if(gl.isContextLost()) return;
     var T=(now-t0)/1000, gap=now-(lastNow||now), dtS=Math.min(.1,gap/1000); lastNow=now;
     f60=Math.min(3,dtS*60)||1;
     pnx+=(tnx-pnx)*ez(.12); pny+=(tny-pny)*ez(.12);
@@ -1189,6 +1198,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
     } else if(innerWidth<=760&&sec&&sec.classList.contains('lead')&&el.tagName!=='FORM') y=sec.offsetTop;
     else y=el.getBoundingClientRect().top+scrollY-84;
     e.preventDefault(); scrollTo({top:Math.max(0,y),behavior:reduced?'auto':'smooth'});
+    if(!/^(A|BUTTON|INPUT|TEXTAREA|SELECT)$/.test(el.tagName)&&!el.hasAttribute('tabindex')) el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); // keyboard focus follows the view, so the skip link and menu links really move you
   },true); // capture, so links inside the menu sheet (which stops propagation) land the same way
   document.addEventListener('touchstart',function(){},{passive:true});
   requestAnimationFrame(frame);

@@ -71,15 +71,22 @@ function lionForms(root) {
     trap.setAttribute('aria-hidden', 'true');
     trap.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0';
     f.appendChild(trap);
+    // screen readers hear the result: a live region that is always in the page (the visible note starts hidden, so it can't announce itself)
+    var live = document.createElement('p'); live.className = 'sr-only'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true'); f.appendChild(live);
     // time trap: the server quietly drops a form sent faster than a person could fill it
     var startedAt = Date.now();
     f.addEventListener('submit', function (e) {
       e.preventDefault();
+      var blank = [].slice.call(f.querySelectorAll('[required]')).filter(function (el) { return !el.value.trim(); })[0];
+      if (blank) { blank.value = ''; blank.reportValidity(); return; } // spaces alone don't count as an answer
+      if (f.dataset.busy) return; // one request at a time, so a double click sends once
       var map = ids[kind] || {}, payload = { type: kind, lion_hp_x: trap.value, elapsed: Date.now() - startedAt };
       Object.keys(map).forEach(function (k) { var el = document.getElementById(map[k]); payload[k] = el ? el.value.trim() : ''; });
       var out = f.querySelector('.form-note'), btn = f.querySelector('button[type="submit"]'), label = btn ? btn.textContent : '';
-      function note(msg, bad) { if (out) { out.textContent = msg; out.hidden = false; out.classList.toggle('err', !!bad); } }
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      function note(msg, bad) { if (out) { out.textContent = msg; out.hidden = false; out.classList.toggle('err', !!bad); } live.setAttribute('role', bad ? 'alert' : 'status'); live.textContent = ''; setTimeout(function () { live.textContent = msg; }, 60); }
+      // busy, not disabled: a disabled button would drop keyboard focus to the top of the page
+      f.dataset.busy = '1';
+      if (btn) { btn.setAttribute('aria-disabled', 'true'); btn.textContent = 'Sending…'; }
       var send = payload.lion_hp_x ? Promise.resolve({ ok: true, json: function () { return {}; } })
         : fetch('/api/forms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       send.then(function (r) {
@@ -91,7 +98,7 @@ function lionForms(root) {
       }).catch(function () {
         note('We could not send that just now. Please email Jonathan@TheLionCompany.org.', true);
         lionTrack('form_submission_error', { form_type: kind });
-      }).then(function () { if (btn) { btn.disabled = false; btn.textContent = label; } });
+      }).then(function () { delete f.dataset.busy; if (btn) { btn.removeAttribute('aria-disabled'); btn.textContent = label; } });
     });
   });
 }
