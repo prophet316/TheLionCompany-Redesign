@@ -937,7 +937,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
       var w=W[s.k], pn=s.el.querySelector('.panel'); if(w.off!==1) return;
       var m=shapes(w), k, sh=null; for(k in m) if(SH[k]){ sh=SH[k]; break; } if(!sh) return;
       if(!pn){ // tablets: a figure beside plain text keeps its place but is made a little smaller if it would run off the right edge
-        if(innerWidth>=1024||!s.el.classList.contains('sec')) return;
+        if(innerWidth>=1024||!s.el.classList.contains('sec')){ w.dk=1; return; } // a turned tablet goes back to full size
         var bx=w.ox!=null?w.ox:.34, REx=1-40/innerWidth*2, dx=1, ex;
         for(var jt=0;jt<4;jt++){ ex=ext(w,sh,dx); var room=REx-bx-.1*ex.mid; if(ex.r<=room||dx>=1.5||room<=0) break; dx=Math.min(1.5,dx*ex.r/room*1.03); }
         w.dk=dx; return;
