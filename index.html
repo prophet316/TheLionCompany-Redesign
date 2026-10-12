@@ -182,9 +182,9 @@ a{color:inherit}
 .bbtn[aria-expanded="true"]{background:var(--ink);color:var(--bg)}
 .give{background:var(--orange);color:#111;font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 20px 11px;text-decoration:none;white-space:nowrap}
 .give:hover{background:var(--ink)}
-.menubtn{display:none;width:44px;height:42px;justify-content:center;padding:0}
+.menubtn{display:inline-flex;width:44px;height:42px;justify-content:center;padding:0} /* always there, at every window size, alongside the links and the side map */
 .menubtn i{display:block;width:18px;height:1.5px;background:currentColor;box-shadow:0 -6px 0 currentColor,0 6px 0 currentColor}
-@media (max-width:980px){.nav{display:none}.menubtn{display:inline-flex}}
+@media (max-width:980px){.nav{display:none}}
 @media (max-width:420px){.brand .the{display:none}.brand{font-size:19px}.bbtn{padding:12px 10px;letter-spacing:.1em}.give{padding:12px 14px 11px}}
 .sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:39;width:min(380px,calc(100vw - 32px));background:rgba(16,18,24,.92);backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .4s cubic-bezier(.2,.8,.2,1),visibility .25s}
 .sheet.open{opacity:1;visibility:visible;transform:none}
@@ -574,7 +574,8 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
     <div class="panel" id="give">
       <span class="label">Give</span>
       <h2>Give boldly.</h2>
-      <p>Giving runs through our Subsplash page: one-time or recurring, by card, bank, crypto or stock.</p>
+      <p>Partner with us to make disciples, raise up leaders, build healthy families and bring renewal to the church around the world.</p>
+      <p class="fine">Every gift keeps this work moving. Give once or monthly through Subsplash: card, bank, crypto or stock.</p>
       <div class="funds">
         <a class="fund" data-href="give"><small>Fund</small><b>General</b><span>GIVE ↗</span></a>
         <a class="fund" data-href="give"><small>Fund</small><b>Lion Company: Social Media Expansion</b><span>GIVE ↗</span></a>
