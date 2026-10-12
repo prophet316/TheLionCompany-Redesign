@@ -11,10 +11,10 @@ function read(file) {
     return fs.readFileSync(path.join(root, file), 'utf8');
 }
 
-// The homepage keeps its links in shared scripts, so its checks read the page and those scripts together.
+// The homepage and media library keep their links in shared scripts, so their checks read the page and those scripts together.
 function readPage(file) {
-    if (file !== 'index.html') return read(file);
-    return [read('index.html'), read('assets/common.js'), read('assets/pod/podcast.js')].join('\n');
+    if (file !== 'index.html' && file !== 'media.html') return read(file);
+    return [read(file), read('assets/common.js'), read('assets/pod/podcast.js')].join('\n');
 }
 
 test('homepage and media library expose the official podcast platforms', () => {
@@ -88,10 +88,17 @@ test('media library has searchable categories, unique cards, and direct YouTube 
 test('accessibility and performance enhancements remain wired', () => {
     for (const file of ['media.html', 'privacy.html', 'terms.html']) {
         const page = read(file);
-        assert.match(page, /class="skip-link"/);
+        assert.match(page, /class="skip-link" href="#main"/);
+        assert.match(page, /<main id="main"/);
         assert.match(page, /aria-expanded="false"/);
-        assert.match(page, /aria-controls="mobile-menu"/);
+        assert.match(page, /aria-controls="menusheet"/);
+        assert.match(page, /assets\/media\.js/);
+        assert.doesNotMatch(page, /styles\.css|Cinzel/);
     }
+    const mediaScript = read('assets/media.js');
+    assert.match(mediaScript, /data-bg-image/);
+    assert.match(mediaScript, /youtube-nocookie\.com\/embed/);
+    assert.match(read('assets/media.css'), /prefers-reduced-motion:reduce/);
     const home = read('index.html');
     assert.match(home, /class="skip-link" href="#main"/);
     assert.match(home, /<main id="main"/);

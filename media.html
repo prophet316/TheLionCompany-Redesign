@@ -41,486 +41,304 @@
       "publisher": { "@id": "https://www.thelioncompany.org/#organization" }
     }
     </script>
-    <!-- Google Fonts: Cinzel & Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://img.youtube.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Anonymous+Pro:wght@400;700&family=Manrope:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="assets/pod/podcast.css">
+    <link rel="stylesheet" href="assets/media.css">
+    <meta name="theme-color" content="#050608">
 </head>
 
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="band">
+  <a class="brand" href="/"><span class="the">THE </span>LION <b>COMPANY</b></a>
+  <nav class="nav" aria-label="Main"><a href="/#cross">Journey</a><a href="/#pray">Pray</a><a href="/#podcast">Podcast</a><a href="/media" aria-current="page">Media</a><a href="/#shop">Shop</a><a href="/#connect">Connect</a><a class="bk" href="/#book" title="Book Jonathan and Gina to speak, teach or connect">Book us to speak</a></nav>
+  <button class="bbtn" id="socbtn" type="button" aria-expanded="false" aria-controls="socsheet">Socials</button>
+  <a class="give" data-href="give">Give</a>
+  <button class="bbtn menubtn" id="menubtn" type="button" aria-expanded="false" aria-controls="menusheet" aria-label="Menu"><i></i></button>
+</header>
+<div class="sheet" id="socsheet" role="dialog" aria-label="Socials">
+  <h4>Follow</h4>
+  <ul data-fill="social"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
+  <h4>Listen</h4>
+  <ul data-fill="podcast"><template><li><a href="{url}">{name}<span>↗</span></a></li></template></ul>
+</div>
+<div class="sheet" id="menusheet" role="dialog" aria-label="Menu">
+  <h4>The Lion Company</h4>
+  <ul>
+    <li><a class="bk" href="/#book">Book us to speak<span>→</span></a></li>
+    <li><a href="/">Home<span>→</span></a></li>
+    <li><a href="/#pray">Prayer<span>→</span></a></li>
+    <li><a href="/#podcast">Podcast<span>→</span></a></li>
+    <li><a href="/media" aria-current="page">Media library<span>●</span></a></li>
+    <li><a href="/#give">Give<span>→</span></a></li>
+    <li><a href="/#shop">Shop<span>→</span></a></li>
+    <li><a href="/#connect">Connect<span>→</span></a></li>
+  </ul>
+</div>
 
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+<canvas id="embers" aria-hidden="true"></canvas>
+<div id="vig" aria-hidden="true"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">THE LION COMPANY</a>
-            <div class="nav-links">
-                <a href="/#risen">MISSION</a>
-                <a href="/#podcast">PODCAST</a>
-                <a href="/media" aria-current="page">MEDIA</a>
-                <a href="/#pray">PRAYER</a>
-                <a href="/#shop">STORE</a>
-                <a href="/#book">CONTACT</a>
-                <div class="nav-social flex items-center gap-4 ml-4 px-4 border-l border-[rgba(255,255,255,0.1)]">
-                    <a href="https://www.instagram.com/thelioncompanyglobal/" target="_blank"
-                        rel="noopener noreferrer" aria-label="Instagram">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                    </a>
-                    <a href="https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg" target="_blank"
-                        aria-label="YouTube">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z">
-                            </path>
-                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-                        </svg>
-                    </a>
-                    <a href="https://www.facebook.com/lioncompanytx" target="_blank" aria-label="Facebook">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                        </svg>
-                    </a>
-                    <a href="https://www.tiktok.com/@thelioncompanytx" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M9 12a4 4 0 1 0 4 4V2c.4 2.8 2.4 4.8 5 5"></path>
-                        </svg>
-                    </a>
-                </div>
-                <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank" class="btn btn-nav ml-2">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-                    GIVE
-                </a>
-            </div>
-            <button class="mobile-menu-btn" type="button" aria-label="Open navigation" aria-expanded="false"
-                aria-controls="mobile-menu">
-                <span></span><span></span><span></span>
-            </button>
+<main id="main" tabindex="-1">
+  <div class="wrap">
+    <section class="opener">
+      <div class="face" id="face" aria-hidden="true"><img class="fs" src="assets/03-lion-sketch-half-large-faded.webp" alt="" width="464" height="1092"><img class="fg" src="assets/04-lion-geometric-half-large-faded.webp" alt="" width="442" height="1078"></div>
+      <p class="kick">The Lion Company · Media library</p>
+      <h1 class="htitle">Watch and<span>listen.</span></h1>
+      <p class="hsub"><b>33 videos</b> · Podcast episodes, teachings and conversations · Free to watch</p>
+      <nav class="jump" aria-label="Go to a shelf"><a href="#shelf-podcast" data-jump="podcast">I · Podcast</a><a href="#shelf-teaching" data-jump="teaching">II · Teachings</a><a href="#shelf-series" data-jump="series">III · Series</a><a href="#shelf-conversation" data-jump="conversation">IV · Conversations</a><a href="#shelf-relationships" data-jump="relationships">V · Relationships</a></nav>
+    </section>
+
+    <section class="feature" aria-label="The Lion Company Podcast">
+      <div class="panel pod" id="podcast">
+        <div class="pod-grid">
+          <a class="pod-art" id="podArt" target="_blank" rel="noopener" aria-label="Listen to The Lion Company Podcast">
+            <div class="pod-cover" id="podCover" role="img" aria-label="The Lion Company Podcast cover: LION COMPANY over newsprint collage with the roaring lion"></div>
+            <span class="pod-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>Play</span>
+          </a>
+          <div class="pod-copy">
+            <p class="pod-label"><span class="pod-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>The Lion Company Podcast</p>
+            <h2>Listen <em>anywhere</em></h2>
+            <p class="pod-new" id="podNew"><small>Newest episode</small>Ep 9 · Stop Trying to Win Her Back</p>
+            <ul class="pod-plat" id="plat">
+              <li><a href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612" data-platform="apple-podcasts" target="_blank" rel="noopener"><span><b>Apple Podcasts</b><small>Listen now</small></span></a></li>
+              <li><a href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5" data-platform="spotify" target="_blank" rel="noopener"><span><b>Spotify</b><small>Listen now</small></span></a></li>
+              <li><a href="https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg" data-platform="youtube" target="_blank" rel="noopener"><span><b>YouTube</b><small>Listen now</small></span></a></li>
+              <li><a href="https://thelioncompany.podbean.com/" data-platform="podbean" target="_blank" rel="noopener"><span><b>Podbean</b><small>Listen now</small></span></a></li>
+            </ul>
+          </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
-            <a href="/#risen">MISSION</a>
-            <a href="/#podcast">PODCAST</a>
-            <a href="/media" aria-current="page">MEDIA</a>
-            <a href="/#pray">PRAYER</a>
-            <a href="/#shop">STORE</a>
-            <a href="/#book">CONTACT</a>
-            <a href="https://secure.subsplash.com/ui/access/RM87PQ/" target="_blank">GIVE</a>
-        </div>
-    </nav>
+      </div>
+    </section>
+  </div>
 
-    <main id="main-content" style="padding-top: var(--nav-height);">
-        <!-- Title Section -->
-        <section class="section-padding bg-darker pb-6">
-            <div class="container text-center fade-up">
-                <span class="eyebrow text-gold">THE LION COMPANY</span>
-                <h2>MEDIA LIBRARY</h2>
-                <p class="body-text muted max-w-2xl mx-auto mt-4">Listen to the podcast on your preferred platform,
-                    or search the full teaching and conversation library below.</p>
-                <div class="podcast-platforms podcast-platforms-compact" aria-label="Listen to The Lion Company Podcast">
-                    <a class="platform-button platform-button-primary" data-platform="apple-podcasts"
-                        href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
-                        target="_blank" rel="noopener noreferrer">Apple Podcasts</a>
-                    <a class="platform-button platform-button-primary" data-platform="spotify"
-                        href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5"
-                        target="_blank" rel="noopener noreferrer">Spotify</a>
-                    <a class="platform-button" data-platform="podbean" href="https://thelioncompany.podbean.com/"
-                        target="_blank" rel="noopener noreferrer">Podbean</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Media Library Section -->
-        <section class="media section-padding pt-6 border-top">
-            <div class="container">
-                <div class="media-tools" aria-label="Media library controls">
-                    <label class="media-search" for="media-search">
-                        <span>SEARCH THE LIBRARY</span>
-                        <input id="media-search" type="search" placeholder="Search by title or topic…" autocomplete="off">
-                    </label>
-                    <div class="media-filters" role="group" aria-label="Filter media by category">
-                        <button type="button" class="media-filter active" data-media-filter="all" aria-pressed="true">All</button>
-                        <button type="button" class="media-filter" data-media-filter="podcast" aria-pressed="false">Podcasts</button>
-                        <button type="button" class="media-filter" data-media-filter="teaching" aria-pressed="false">Teachings</button>
-                        <button type="button" class="media-filter" data-media-filter="series" aria-pressed="false">Series</button>
-                        <button type="button" class="media-filter" data-media-filter="conversation" aria-pressed="false">Conversations</button>
-                        <button type="button" class="media-filter" data-media-filter="relationships" aria-pressed="false">Relationships</button>
-                    </div>
-                    <p id="media-results" class="media-results muted" aria-live="polite"></p>
-                </div>
-                <h3 class="mb-6">FULL EPISODES</h3>
-                <div class="grid-3 mb-6 media-grid" data-media-category="podcast">
-                    <!-- EP 8 -->
-                    <a href="https://www.youtube.com/watch?v=VT5XZH471c0" data-video-id="VT5XZH471c0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/VT5XZH471c0/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">What Silence Costs: Confession,
-                                Forgiveness &amp; Real Connection | Ep. 08</h4>
-                        </div>
-                    </a>
-
-                    <!-- EP 7 -->
-                    <a href="https://www.youtube.com/watch?v=TOj6tefx3rI" data-video-id="TOj6tefx3rI" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/TOj6tefx3rI/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">EP 7: When God's Will Doesn't Go
-                                Your Way</h4>
-                        </div>
-                    </a>
-
-                    <!-- EP 6 -->
-                    <a href="https://www.youtube.com/watch?v=x8s5DPF68kQ" data-video-id="x8s5DPF68kQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/x8s5DPF68kQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">EP 6: Confessions of a Truth
-                                Teller</h4>
-                        </div>
-                    </a>
-
-                    <!-- EP 5 -->
-                    <a href="https://www.youtube.com/watch?v=Z0AtNFd13-A" data-video-id="Z0AtNFd13-A" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/Z0AtNFd13-A/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">PODCAST</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">EP 5: Miracle or Madness?</h4>
-                        </div>
-                    </a>
-                </div>
-
-                <h3 class="mb-6 mt-6 pt-6 border-top">TEACHINGS & CONVERSATIONS</h3>
-                <div class="grid-3 media-grid" data-media-category="teaching">
-                    <a href="https://www.youtube.com/watch?v=gfzoFvDlWTc" data-video-id="gfzoFvDlWTc" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/gfzoFvDlWTc/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Unlocking the Dream Realm: What’s
-                                Really Possible?</h4>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/watch?v=zP4ZiKek3Lg" data-video-id="zP4ZiKek3Lg" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/zP4ZiKek3Lg/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Heart over Hammer</h4>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/watch?v=M1tQvPOg3vk" data-video-id="M1tQvPOg3vk" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/M1tQvPOg3vk/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Fathers of Faith Vol 4</h4>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/watch?v=p3UUJ5f6kEM" data-video-id="p3UUJ5f6kEM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/p3UUJ5f6kEM/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Mothers</h4>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/watch?v=L2HBzHQYrt8" data-video-id="L2HBzHQYrt8" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/L2HBzHQYrt8/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Family = Reform</h4>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/watch?v=goD2b5TgBtE" data-video-id="goD2b5TgBtE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker"
-                            data-bg-image="https://img.youtube.com/vi/goD2b5TgBtE/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Jesus Stories Ep. 1</h4>
-                        </div>
-                    </a>
-                </div>
-
-                <h3 class="mb-6 mt-6 pt-6 border-top">GIDEON & GOD'S AGENDA</h3>
-                <div class="grid-3 media-grid" data-media-category="series">
-                    <a href="https://www.youtube.com/watch?v=tWKxz7YrnA0" data-video-id="tWKxz7YrnA0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/tWKxz7YrnA0/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">GIDEON : God's Agenda Part 1</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=0jeOgbfl1vk" data-video-id="0jeOgbfl1vk" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/0jeOgbfl1vk/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Gideon : God's Agenda PT.2</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=njO21uBJxMM" data-video-id="njO21uBJxMM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/njO21uBJxMM/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Gideon : God's Agenda PT 3</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=CaV9NyMAfMY" data-video-id="CaV9NyMAfMY" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/CaV9NyMAfMY/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">GIDEON : God's Agenda Part 4</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=ru7dI3HSKIQ" data-video-id="ru7dI3HSKIQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/ru7dI3HSKIQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Gideon : God's Agenda Part 5</h4>
-                        </div>
-                    </a>
-                </div>
-
-                <h3 class="mb-6 mt-6 pt-6 border-top">CONVERSATION</h3>
-                <div class="grid-3 media-grid" data-media-category="conversation">
-                    <a href="https://www.youtube.com/watch?v=lPRvDRofqkQ" data-video-id="lPRvDRofqkQ" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/lPRvDRofqkQ/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Context, Perspective & Revival!</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=H3k4iw_6fj0" data-video-id="H3k4iw_6fj0" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/H3k4iw_6fj0/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Obedience & Sacrifice</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=x2pT7uYkvlA" data-video-id="x2pT7uYkvlA" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/x2pT7uYkvlA/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Significance</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=s8FewMKaHSM" data-video-id="s8FewMKaHSM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/s8FewMKaHSM/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">THE BLAME GAME</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=PWU_VB0qfUU" data-video-id="PWU_VB0qfUU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/PWU_VB0qfUU/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Jesus & Memory Maps</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=jb0JRyF07Yk" data-video-id="jb0JRyF07Yk" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/jb0JRyF07Yk/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Loving Jesus, Loving People</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=PxlLRWjycZg" data-video-id="PxlLRWjycZg" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/PxlLRWjycZg/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">JESUS & THE 13th DISCIPLE</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=kD28pst1hpU" data-video-id="kD28pst1hpU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/kD28pst1hpU/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Presents: Prophet's Corner EP 1</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=Nl6JIlKUbQE" data-video-id="Nl6JIlKUbQE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/Nl6JIlKUbQE/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Cry Holy</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=xiLXewFUWAM" data-video-id="xiLXewFUWAM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/xiLXewFUWAM/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">BEHOLD</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=C8alBDDqBNw" data-video-id="C8alBDDqBNw" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/C8alBDDqBNw/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Revival Police</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=OiGtroG7uHE" data-video-id="OiGtroG7uHE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/OiGtroG7uHE/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Heart over Hand</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=yeAIXEAdvTU" data-video-id="yeAIXEAdvTU" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/yeAIXEAdvTU/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">HEART</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=OfyCpxqYamE" data-video-id="OfyCpxqYamE" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/OfyCpxqYamE/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Overcoming the Past, Redefining Success, and Finding God’s Purpose | Podcast EP 1</h4>
-                        </div>
-                    </a>
-                </div>
-
-                <h3 class="mb-6 mt-6 pt-6 border-top">RELATIONSHIPS</h3>
-                <div class="grid-3 media-grid" data-media-category="relationships">
-                    <a href="https://www.youtube.com/watch?v=ml1tCKumJNw" data-video-id="ml1tCKumJNw" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/ml1tCKumJNw/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 1</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=lAn92FsttOM" data-video-id="lAn92FsttOM" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/lAn92FsttOM/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 2</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=P7FnRJ0lq2E" data-video-id="P7FnRJ0lq2E" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/P7FnRJ0lq2E/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 3</h4>
-                        </div>
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=QhzS_keuuT4" data-video-id="QhzS_keuuT4" class="media-card bordered-card block video-trigger">
-                        <div class="media-image bg-darker" data-bg-image="https://img.youtube.com/vi/QhzS_keuuT4/hqdefault.jpg" style="background-size: cover; background-position: center;">
-                        </div>
-                        <div class="media-info">
-                            <span class="text-gold text-sm tracking-wide">TEACHING</span>
-                            <h4 class="mt-2 text-white" style="text-transform: none;">Relationships: Part 4</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer border-top mt-6 pt-6">
-        <div class="container footer-flex">
-            <div class="footer-left">
-                <span class="logo text-gold">THE LION COMPANY</span>
-                <p class="muted text-sm mt-2">© Copyright 2026 The Lion Company | All Rights Reserved.</p>
-            </div>
-            <div class="footer-right">
-                <a href="https://podcasts.apple.com/us/podcast/the-lion-company-podcast/id1783214612"
-                    target="_blank" rel="noopener noreferrer" class="muted text-sm" data-platform="apple-podcasts">Apple Podcasts</a>
-                <a href="https://open.spotify.com/show/2zvyq6wVX8sAf7qXd9KQg5" target="_blank"
-                    rel="noopener noreferrer" class="muted text-sm" data-platform="spotify">Spotify</a>
-                <a href="/privacy" class="muted text-sm">Privacy Policy</a>
-                <a href="/terms" class="muted text-sm ml-4">Terms & Conditions</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Video Modal -->
-    <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title"
-        aria-hidden="true">
-        <div class="video-modal-overlay js-modal-close"></div>
-        <div class="video-modal-content">
-            <button class="video-modal-close js-modal-close" type="button" aria-label="Close video">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-            <h2 id="video-modal-title" class="sr-only">The Lion Company video</h2>
-            <div class="video-modal-body">
-                <iframe id="video-iframe" src="" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen title="The Lion Company video"></iframe>
-            </div>
-            <div class="video-modal-actions">
-                <a id="video-youtube-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-                <button id="video-copy-link" type="button">Copy share link</button>
-            </div>
-        </div>
+  <div class="tools" id="library">
+    <div class="wrap">
+      <label class="search" for="media-search"><span>Search the library</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="media-search" type="search" placeholder="Search by title or topic" autocomplete="off"></label>
+      <div class="filters" role="group" aria-label="Filter the library"><button type="button" class="chip media-filter active" data-media-filter="all" aria-pressed="true">All</button><button type="button" class="chip media-filter" data-media-filter="podcast" aria-pressed="false">Podcast</button><button type="button" class="chip media-filter" data-media-filter="teaching" aria-pressed="false">Teachings</button><button type="button" class="chip media-filter" data-media-filter="series" aria-pressed="false">Series</button><button type="button" class="chip media-filter" data-media-filter="conversation" aria-pressed="false">Conversations</button><button type="button" class="chip media-filter" data-media-filter="relationships" aria-pressed="false">Relationships</button></div>
+      <p id="media-results" class="count" aria-live="polite">33 videos</p>
     </div>
+  </div>
 
-    <script src="app.js"></script>
+  <div class="wrap">
+    <section class="shelf" id="shelf-podcast" data-media-category="podcast" aria-labelledby="podcast-h">
+      <div class="shelf-head rise">
+        <div><p class="kick"><b>I</b> Podcast</p><h2 id="podcast-h">The <em>podcast.</em></h2></div>
+        <p>Full episodes of The Lion Company Podcast: honest conversations on faith, marriage, family and following Jesus.</p>
+      </div>
+      <div class="grid media-grid" data-media-category="podcast">
+        <a href="https://www.youtube.com/watch?v=VT5XZH471c0" data-video-id="VT5XZH471c0" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/VT5XZH471c0/hqdefault.jpg"></span><span class="no">01</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Podcast · Ep 08</small><b>What Silence Costs: Confession, Forgiveness &amp; Real Connection</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=TOj6tefx3rI" data-video-id="TOj6tefx3rI" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/TOj6tefx3rI/hqdefault.jpg"></span><span class="no">02</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Podcast · Ep 07</small><b>When God's Will Doesn't Go Your Way</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=x8s5DPF68kQ" data-video-id="x8s5DPF68kQ" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/x8s5DPF68kQ/hqdefault.jpg"></span><span class="no">03</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Podcast · Ep 06</small><b>Confessions of a Truth Teller</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=Z0AtNFd13-A" data-video-id="Z0AtNFd13-A" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/Z0AtNFd13-A/hqdefault.jpg"></span><span class="no">04</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Podcast · Ep 05</small><b>Miracle or Madness?</b></span>
+        </a>
+      </div>
+    </section>
+    <section class="shelf" id="shelf-teaching" data-media-category="teaching" aria-labelledby="teaching-h">
+      <div class="shelf-head rise">
+        <div><p class="kick"><b>II</b> Teachings</p><h2 id="teaching-h">Teachings.</h2></div>
+        <p>Messages on the heart, the family and the life of faith.</p>
+      </div>
+      <div class="grid media-grid" data-media-category="teaching">
+        <a href="https://www.youtube.com/watch?v=gfzoFvDlWTc" data-video-id="gfzoFvDlWTc" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/gfzoFvDlWTc/hqdefault.jpg"></span><span class="no">01</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Unlocking the Dream Realm: What’s Really Possible?</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=zP4ZiKek3Lg" data-video-id="zP4ZiKek3Lg" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/zP4ZiKek3Lg/hqdefault.jpg"></span><span class="no">02</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Heart over Hammer</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=M1tQvPOg3vk" data-video-id="M1tQvPOg3vk" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/M1tQvPOg3vk/hqdefault.jpg"></span><span class="no">03</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Fathers of Faith Vol 4</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=p3UUJ5f6kEM" data-video-id="p3UUJ5f6kEM" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/p3UUJ5f6kEM/hqdefault.jpg"></span><span class="no">04</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Mothers</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=L2HBzHQYrt8" data-video-id="L2HBzHQYrt8" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/L2HBzHQYrt8/hqdefault.jpg"></span><span class="no">05</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Family = Reform</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=goD2b5TgBtE" data-video-id="goD2b5TgBtE" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/goD2b5TgBtE/hqdefault.jpg"></span><span class="no">06</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Teachings</small><b>Jesus Stories Ep. 1</b></span>
+        </a>
+      </div>
+    </section>
+    <section class="shelf" id="shelf-series" data-media-category="series" aria-labelledby="series-h">
+      <div class="shelf-head rise">
+        <div><p class="kick"><b>III</b> Series</p><h2 id="series-h">Gideon &amp; God&#39;s <em>agenda.</em></h2></div>
+        <p>A five-part walk through the story of Gideon.</p>
+      </div>
+      <div class="grid media-grid" data-media-category="series">
+        <a href="https://www.youtube.com/watch?v=tWKxz7YrnA0" data-video-id="tWKxz7YrnA0" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/tWKxz7YrnA0/hqdefault.jpg"></span><span class="no">01</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Series</small><b>GIDEON : God's Agenda Part 1</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=0jeOgbfl1vk" data-video-id="0jeOgbfl1vk" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/0jeOgbfl1vk/hqdefault.jpg"></span><span class="no">02</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Series</small><b>Gideon : God's Agenda PT.2</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=njO21uBJxMM" data-video-id="njO21uBJxMM" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/njO21uBJxMM/hqdefault.jpg"></span><span class="no">03</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Series</small><b>Gideon : God's Agenda PT 3</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=CaV9NyMAfMY" data-video-id="CaV9NyMAfMY" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/CaV9NyMAfMY/hqdefault.jpg"></span><span class="no">04</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Series</small><b>GIDEON : God's Agenda Part 4</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=ru7dI3HSKIQ" data-video-id="ru7dI3HSKIQ" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/ru7dI3HSKIQ/hqdefault.jpg"></span><span class="no">05</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Series</small><b>Gideon : God's Agenda Part 5</b></span>
+        </a>
+      </div>
+    </section>
+    <section class="shelf" id="shelf-conversation" data-media-category="conversation" aria-labelledby="conversation-h">
+      <div class="shelf-head rise">
+        <div><p class="kick"><b>IV</b> Conversations</p><h2 id="conversation-h">Conversations.</h2></div>
+        <p>Revival, obedience, significance and what it means to love Jesus and love people.</p>
+      </div>
+      <div class="grid media-grid" data-media-category="conversation">
+        <a href="https://www.youtube.com/watch?v=lPRvDRofqkQ" data-video-id="lPRvDRofqkQ" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/lPRvDRofqkQ/hqdefault.jpg"></span><span class="no">01</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Context, Perspective &amp; Revival!</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=H3k4iw_6fj0" data-video-id="H3k4iw_6fj0" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/H3k4iw_6fj0/hqdefault.jpg"></span><span class="no">02</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Obedience &amp; Sacrifice</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=x2pT7uYkvlA" data-video-id="x2pT7uYkvlA" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/x2pT7uYkvlA/hqdefault.jpg"></span><span class="no">03</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Significance</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=s8FewMKaHSM" data-video-id="s8FewMKaHSM" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/s8FewMKaHSM/hqdefault.jpg"></span><span class="no">04</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>THE BLAME GAME</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PWU_VB0qfUU" data-video-id="PWU_VB0qfUU" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/PWU_VB0qfUU/hqdefault.jpg"></span><span class="no">05</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Jesus &amp; Memory Maps</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=jb0JRyF07Yk" data-video-id="jb0JRyF07Yk" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/jb0JRyF07Yk/hqdefault.jpg"></span><span class="no">06</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Loving Jesus, Loving People</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PxlLRWjycZg" data-video-id="PxlLRWjycZg" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/PxlLRWjycZg/hqdefault.jpg"></span><span class="no">07</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>JESUS &amp; THE 13th DISCIPLE</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=kD28pst1hpU" data-video-id="kD28pst1hpU" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/kD28pst1hpU/hqdefault.jpg"></span><span class="no">08</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Presents: Prophet's Corner EP 1</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=Nl6JIlKUbQE" data-video-id="Nl6JIlKUbQE" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/Nl6JIlKUbQE/hqdefault.jpg"></span><span class="no">09</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Cry Holy</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=xiLXewFUWAM" data-video-id="xiLXewFUWAM" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/xiLXewFUWAM/hqdefault.jpg"></span><span class="no">10</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>BEHOLD</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=C8alBDDqBNw" data-video-id="C8alBDDqBNw" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/C8alBDDqBNw/hqdefault.jpg"></span><span class="no">11</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Revival Police</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OiGtroG7uHE" data-video-id="OiGtroG7uHE" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/OiGtroG7uHE/hqdefault.jpg"></span><span class="no">12</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Heart over Hand</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=yeAIXEAdvTU" data-video-id="yeAIXEAdvTU" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/yeAIXEAdvTU/hqdefault.jpg"></span><span class="no">13</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>HEART</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OfyCpxqYamE" data-video-id="OfyCpxqYamE" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/OfyCpxqYamE/hqdefault.jpg"></span><span class="no">14</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Conversations</small><b>Overcoming the Past, Redefining Success, and Finding God’s Purpose | Podcast EP 1</b></span>
+        </a>
+      </div>
+    </section>
+    <section class="shelf" id="shelf-relationships" data-media-category="relationships" aria-labelledby="relationships-h">
+      <div class="shelf-head rise">
+        <div><p class="kick"><b>V</b> Relationships</p><h2 id="relationships-h">Relationships.</h2></div>
+        <p>A four-part series on the relationships God made us for.</p>
+      </div>
+      <div class="grid media-grid" data-media-category="relationships">
+        <a href="https://www.youtube.com/watch?v=ml1tCKumJNw" data-video-id="ml1tCKumJNw" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/ml1tCKumJNw/hqdefault.jpg"></span><span class="no">01</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Relationships</small><b>Relationships: Part 1</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=lAn92FsttOM" data-video-id="lAn92FsttOM" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/lAn92FsttOM/hqdefault.jpg"></span><span class="no">02</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Relationships</small><b>Relationships: Part 2</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=P7FnRJ0lq2E" data-video-id="P7FnRJ0lq2E" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/P7FnRJ0lq2E/hqdefault.jpg"></span><span class="no">03</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Relationships</small><b>Relationships: Part 3</b></span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=QhzS_keuuT4" data-video-id="QhzS_keuuT4" class="card media-card video-trigger rise">
+          <span class="thumb"><span class="img" data-bg-image="https://img.youtube.com/vi/QhzS_keuuT4/hqdefault.jpg"></span><span class="no">04</span><span class="play"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></i>Play</span></span>
+          <span class="meta"><small>Relationships</small><b>Relationships: Part 4</b></span>
+        </a>
+      </div>
+    </section>
+
+    <div class="empty" id="media-empty" hidden><b>Nothing by that name yet.</b>Try another word, or see everything in the library.<br><button type="button" class="btn ghost" data-clear>Show all videos</button></div>
+
+    <section class="close" aria-label="Stay connected">
+      <div class="panel">
+        <div>
+          <span class="label">Keep going</span>
+          <h2>Never miss <em>an episode.</em></h2>
+          <p>Follow on your podcast app, join the mailing list, or send us a prayer request. We read every one.</p>
+          <div class="soc" data-fill="social"><template><a href="{url}">{name} ↗</a></template></div>
+        </div>
+        <div class="acts">
+          <a class="btn" href="/#connect">Join the mailing list</a>
+          <a class="btn ghost" href="/#pray">Send a prayer request</a>
+          <a class="btn ghost" href="/#book">Book us to speak</a>
+        </div>
+      </div>
+      <div class="copy"><span>© 2026 The Lion Company · A 501(c)(3) nonprofit</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span></div>
+    </section>
+  </div>
+</main>
+
+<div id="video-modal" class="player" role="dialog" aria-modal="true" aria-labelledby="video-modal-title" aria-hidden="true">
+  <div class="player-overlay js-modal-close"></div>
+  <div class="player-box">
+    <div class="player-top">
+      <p><small id="video-modal-kind">The Lion Company</small><span id="video-modal-title">The Lion Company video</span></p>
+      <button class="player-x js-modal-close" type="button" aria-label="Close video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="player-screen">
+      <iframe id="video-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="The Lion Company video"></iframe>
+    </div>
+    <div class="player-acts">
+      <a id="video-youtube-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
+      <button id="video-copy-link" type="button">Copy share link</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/common.js"></script>
+<script src="assets/layers.js"></script>
+<script src="assets/pod/podcast.js"></script>
+<script src="assets/media.js"></script>
 </body>
 
 </html>
