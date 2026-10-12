@@ -217,3 +217,19 @@ test('CSP reports are accepted with 204 and logged without query strings or form
         console.warn = warn;
     }
 });
+
+test('every public page loads Google Analytics and the main actions are counted', () => {
+    for (const page of ['index.html', 'media.html', 'privacy.html', 'terms.html']) {
+        const html = fs.readFileSync(path.join(root, page), 'utf8');
+        assert.match(html, /googletagmanager\.com\/gtag\/js\?id=G-MNK2G065ES/, `${page} loads gtag.js`);
+        assert.match(html, /gtag\('config', 'G-MNK2G065ES'\)/, `${page} configures the GA4 property`);
+    }
+    const common = fs.readFileSync(path.join(root, 'assets/common.js'), 'utf8');
+    for (const name of ['form_submission_success', 'give_click', 'store_click', 'podcast_platform_click', 'video_play']) {
+        assert.match(common, new RegExp(`lionTrack\\('${name}'`), `common.js sends ${name}`);
+    }
+    const policy = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8')).headers[0].headers
+        .find((h) => /Content-Security-Policy/.test(h.key)).value;
+    assert.match(policy, /script-src[^;]*https:\/\/www\.googletagmanager\.com/);
+    assert.match(policy, /connect-src[^;]*https:\/\/\*\.google-analytics\.com[^;]*https:\/\/\*\.analytics\.google\.com/);
+});
