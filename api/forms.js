@@ -475,6 +475,61 @@ async function handleConfirmation(request, response, apiKey, segmentId, topicId)
     }
 }
 
+// Starts double opt-in for one email: a pending Resend contact, the confirmation email, and a note to Jonathan.
+// `source` says which form it came from ('newsletter', or 'prayer' / 'contact' when their box was ticked).
+async function startNewsletterSignup(fields, origin, teamInbox, apiKey, source = 'newsletter') {
+    await ensurePendingNewsletterContact(fields.email, apiKey);
+    const now = Date.now();
+    const confirmationUrl = buildConfirmationUrl(fields.email, apiKey, now);
+    await sendEmail({
+        from: 'The Lion Company <welcome@updates.thelioncompany.org>',
+        to: [fields.email],
+        reply_to: teamInbox,
+        subject: 'Confirm your place with The Lion Company',
+        html: newsletterConfirmation(confirmationUrl),
+        text: `Thank you for joining The Lion Company.\n\nConfirm your email to receive ministry updates, teachings, gatherings, and stories of what Jesus is doing through this community:\n${confirmationUrl}\n\nIf you did not request this, you can safely ignore this email.`
+    }, apiKey, idempotencyKey(
+        'lion-newsletter-confirmation',
+        [origin, fields.email],
+        CONFIRMATION_RESEND_WINDOW_MS,
+        now
+    ));
+    // Jonathan hears about every signup. A failed alert must never block the signup itself.
+    try {
+        await sendEmail({
+            from: 'The Lion Company Website <welcome@updates.thelioncompany.org>',
+            to: [teamInbox],
+            reply_to: fields.email,
+            subject: `[Lion Website Form] Newsletter signup — ${fields.email}`,
+            tags: [{ name: 'lion_form_type', value: 'newsletter' }],
+            html: emailShell({
+                preheader: `${fields.email} joined the mailing list.`,
+                eyebrow: 'Mailing list',
+                title: 'New newsletter signup',
+                bodyHtml: `<p style="margin:0 0 14px;"><strong>${escapeHtml(fields.email)}</strong> signed up on thelioncompany.org${source === 'newsletter' ? '' : ` (from the ${source} form)`}.</p><p style="margin:0;">They have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.</p>`
+            }),
+            text: `New newsletter signup on thelioncompany.org${source === 'newsletter' ? '' : ` (from the ${source} form)`}\n\nEmail: ${fields.email}\n\nThey have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.`
+        }, apiKey, idempotencyKey(
+            'lion-newsletter-alert',
+            [origin, fields.email],
+            60 * 60 * 1000
+        ));
+    } catch (alertError) {
+        console.error('Newsletter signup alert failed:', alertError.message);
+    }
+}
+
+// The prayer and contact forms carry an "Also send me the monthly letter" box. The message itself has
+// already gone through by now, so a failed signup is logged and never turns the form into an error.
+async function optInFromForm(body, fields, origin, teamInbox, apiKey, source) {
+    if (body.joinNewsletter !== true) return;
+    try {
+        await startNewsletterSignup(fields, origin, teamInbox, apiKey, source);
+    } catch (error) {
+        console.error(`Newsletter opt-in from the ${source} form failed:`, error.message);
+    }
+}
+
 module.exports = async function handler(request, response) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
@@ -561,6 +616,7 @@ module.exports = async function handler(request, response) {
                 apiKey,
                 keyValues
             );
+            await optInFromForm(body, fields, origin, teamInbox, apiKey, 'prayer');
             return sendJson(response, 200, { ok: true });
         }
 
@@ -591,49 +647,12 @@ module.exports = async function handler(request, response) {
                 apiKey,
                 keyValues
             );
+            await optInFromForm(body, fields, origin, teamInbox, apiKey, 'contact');
             return sendJson(response, 200, { ok: true });
         }
 
         if (type === 'newsletter') {
-            await ensurePendingNewsletterContact(fields.email, apiKey);
-            const now = Date.now();
-            const confirmationUrl = buildConfirmationUrl(fields.email, apiKey, now);
-            await sendEmail({
-                from: 'The Lion Company <welcome@updates.thelioncompany.org>',
-                to: [fields.email],
-                reply_to: teamInbox,
-                subject: 'Confirm your place with The Lion Company',
-                html: newsletterConfirmation(confirmationUrl),
-                text: `Thank you for joining The Lion Company.\n\nConfirm your email to receive ministry updates, teachings, gatherings, and stories of what Jesus is doing through this community:\n${confirmationUrl}\n\nIf you did not request this, you can safely ignore this email.`
-            }, apiKey, idempotencyKey(
-                'lion-newsletter-confirmation',
-                [origin, fields.email],
-                CONFIRMATION_RESEND_WINDOW_MS,
-                now
-            ));
-            // Jonathan hears about every signup. A failed alert must never block the signup itself.
-            try {
-                await sendEmail({
-                    from: 'The Lion Company Website <welcome@updates.thelioncompany.org>',
-                    to: [teamInbox],
-                    reply_to: fields.email,
-                    subject: `[Lion Website Form] Newsletter signup — ${fields.email}`,
-                    tags: [{ name: 'lion_form_type', value: 'newsletter' }],
-                    html: emailShell({
-                        preheader: `${fields.email} joined the mailing list.`,
-                        eyebrow: 'Mailing list',
-                        title: 'New newsletter signup',
-                        bodyHtml: `<p style="margin:0 0 14px;"><strong>${escapeHtml(fields.email)}</strong> signed up on thelioncompany.org.</p><p style="margin:0;">They have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.</p>`
-                    }),
-                    text: `New newsletter signup on thelioncompany.org\n\nEmail: ${fields.email}\n\nThey have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.`
-                }, apiKey, idempotencyKey(
-                    'lion-newsletter-alert',
-                    [origin, fields.email],
-                    60 * 60 * 1000
-                ));
-            } catch (alertError) {
-                console.error('Newsletter signup alert failed:', alertError.message);
-            }
+            await startNewsletterSignup(fields, origin, teamInbox, apiKey);
             return sendJson(response, 200, { ok: true, confirmationRequired: true });
         }
 

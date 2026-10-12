@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/join",
+      "destination": "/#connect",
+      "permanent": false
+    },
+    {
       "source": "/product-page",
       "destination": "/#shop",
       "permanent": true
