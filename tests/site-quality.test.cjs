@@ -138,3 +138,82 @@ test('homepage keeps every Phase 1 connection', () => {
     assert.doesNotMatch(page, /Preview only/);
     assert.doesNotMatch(page, /id="mvt"|motion=full/);
 });
+
+test('homepage fonts are self-hosted and every preloaded font exists', () => {
+    const home = read('index.html');
+    assert.doesNotMatch(home, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+    const preloads = [...home.matchAll(/<link rel="preload" as="font" type="font\/woff2" href="([^"]+)" crossorigin>/g)].map(match => match[1]);
+    assert.equal(preloads.length, 3);
+    const faces = [...home.matchAll(/@font-face\{[^}]*src:url\(([^)]+)\)/g)].map(match => match[1]);
+    assert.equal(faces.length, 6);
+    for (const href of [...preloads, ...faces]) {
+        assert.ok(href.startsWith('/assets/fonts/'), `${href} should be self-hosted`);
+        assert.ok(fs.existsSync(path.join(root, href)), `${href} should exist on disk`);
+    }
+    for (const href of preloads) assert.ok(faces.includes(href), `${href} should be used by an @font-face rule`);
+});
+
+test('images and fonts are cached for a day while pages keep revalidating', () => {
+    const config = JSON.parse(read('vercel.json'));
+    const first = Object.fromEntries(config.headers[0].headers.map(item => [item.key, item.value]));
+    assert.equal(config.headers[0].source, '/(.*)');
+    assert.equal(first['X-Content-Type-Options'], 'nosniff');
+    const rule = config.headers.find(entry => entry.source === '/assets/(.*)\\.(webp|jpg|png|svg|woff2)');
+    assert.ok(rule, 'the asset image and font cache rule should exist');
+    assert.deepEqual(rule.headers, [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }]);
+    const icons = config.headers.find(entry => entry.source.includes('og-image-1200x630'));
+    assert.ok(icons, 'the root image cache rule should exist');
+    for (const file of ['lion_bg.jpg', 'og-image-1200x630.jpg', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-512.png']) {
+        assert.ok(new RegExp(`^${icons.source}$`).test(`/${file}`), `${file} should be cached`);
+        assert.ok(fs.existsSync(path.join(root, file)), `${file} should exist`);
+    }
+    for (const page of ['/', '/index.html', '/assets/common.js', '/assets/pod/podcast.css']) {
+        assert.ok(!config.headers.slice(1).some(entry => new RegExp(`^${entry.source}$`).test(page)), `${page} should not get a long cache`);
+    }
+    assert.ok(new RegExp(`^${rule.source}$`).test('/assets/fonts/anton-400-latin.woff2'));
+});
+
+test('every executable inline script on index, media, privacy and terms has its hash in the policy', () => {
+    // Editing an inline script changes its hash: recompute it (the message below gives the new value) and update vercel.json.
+    const crypto = require('node:crypto');
+    const config = JSON.parse(read('vercel.json'));
+    const all = Object.fromEntries(config.headers[0].headers.map(item => [item.key, item.value]));
+    const csp = all['Content-Security-Policy'] || all['Content-Security-Policy-Report-Only'];
+    assert.ok(csp, 'a CSP header should be configured');
+    let scripts = 0;
+    for (const file of ['index.html', 'media.html', 'privacy.html', 'terms.html']) {
+        for (const match of read(file).matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)) {
+            scripts++;
+            const hash = `'sha256-${crypto.createHash('sha256').update(match[1]).digest('base64')}'`;
+            assert.ok(csp.includes(hash), `${file}: inline script starting "${match[1].trim().slice(0, 40)}" needs ${hash} in the CSP`);
+        }
+        assert.doesNotMatch(read(file), /\son[a-z]+="/, `${file} should have no inline event handlers (the policy does not allow them)`);
+    }
+    assert.ok(scripts >= 4, 'the homepage and media inline scripts should be found');
+    for (const directive of ["frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'self'", 'report-uri /api/csp-report']) assert.ok(csp.includes(directive), directive);
+    assert.doesNotMatch(csp, /'unsafe-eval'|script-src[^;]*'unsafe-inline'/);
+    assert.equal(all['X-Frame-Options'], 'DENY');
+    assert.equal(all['Cross-Origin-Opener-Policy'], 'same-origin');
+    assert.equal(all['Permissions-Policy'], 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+    assert.equal(all['Strict-Transport-Security'], undefined, 'HSTS stays at the Vercel default');
+});
+
+test('CSP reports are accepted with 204 and logged without query strings or form data', async () => {
+    const handler = require('../api/csp-report.js');
+    const recorder = () => ({ statusCode: 200, headers: {}, status(code) { this.statusCode = code; return this; }, setHeader(name, value) { this.headers[name] = value; }, end() { this.ended = true; } });
+    const warn = console.warn, logged = [];
+    console.warn = (...args) => logged.push(args.join(' '));
+    try {
+        const response = recorder();
+        await handler({ method: 'POST', body: { 'csp-report': { 'document-uri': 'https://www.thelioncompany.org/?email=a@b.co#connect', 'effective-directive': 'script-src-elem', 'blocked-uri': 'https://evil.example/x.js?token=1' } } }, response);
+        assert.equal(response.statusCode, 204);
+        assert.equal(response.headers['Cache-Control'], 'no-store');
+        assert.deepEqual(logged, ['CSP report-only: script-src-elem blocked https://evil.example on https://www.thelioncompany.org/']);
+        const get = recorder();
+        await handler({ method: 'GET' }, get);
+        assert.equal(get.statusCode, 405);
+        assert.equal(get.headers.Allow, 'POST');
+    } finally {
+        console.warn = warn;
+    }
+});
