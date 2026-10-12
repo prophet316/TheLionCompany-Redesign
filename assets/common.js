@@ -114,6 +114,8 @@ function lionCover(el, opts) {
   LION_LAYERS.forEach(function (l) {
     if (skip.indexOf(l.n) > -1) return;
     var img = new Image();
+    // the cover sits far below the fold, so its layers load as it comes near
+    img.loading = "lazy"; img.fetchPriority = "low";
     img.src = l.src; img.alt = l.text || ""; img.decoding = "async"; img.draggable = false;
     img.className = "ly ly" + l.n;
     var s = img.style;

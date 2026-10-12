@@ -138,3 +138,37 @@ test('homepage keeps every Phase 1 connection', () => {
     assert.doesNotMatch(page, /Preview only/);
     assert.doesNotMatch(page, /id="mvt"|motion=full/);
 });
+
+test('homepage fonts are self-hosted and every preloaded font exists', () => {
+    const home = read('index.html');
+    assert.doesNotMatch(home, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+    const preloads = [...home.matchAll(/<link rel="preload" as="font" type="font\/woff2" href="([^"]+)" crossorigin>/g)].map(match => match[1]);
+    assert.equal(preloads.length, 3);
+    const faces = [...home.matchAll(/@font-face\{[^}]*src:url\(([^)]+)\)/g)].map(match => match[1]);
+    assert.equal(faces.length, 6);
+    for (const href of [...preloads, ...faces]) {
+        assert.ok(href.startsWith('/assets/fonts/'), `${href} should be self-hosted`);
+        assert.ok(fs.existsSync(path.join(root, href)), `${href} should exist on disk`);
+    }
+    for (const href of preloads) assert.ok(faces.includes(href), `${href} should be used by an @font-face rule`);
+});
+
+test('images and fonts are cached for a day while pages keep revalidating', () => {
+    const config = JSON.parse(read('vercel.json'));
+    const first = Object.fromEntries(config.headers[0].headers.map(item => [item.key, item.value]));
+    assert.equal(config.headers[0].source, '/(.*)');
+    assert.equal(first['X-Content-Type-Options'], 'nosniff');
+    const rule = config.headers.find(entry => entry.source === '/assets/(.*)\\.(webp|jpg|png|svg|woff2)');
+    assert.ok(rule, 'the asset image and font cache rule should exist');
+    assert.deepEqual(rule.headers, [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }]);
+    const icons = config.headers.find(entry => entry.source.includes('og-image-1200x630'));
+    assert.ok(icons, 'the root image cache rule should exist');
+    for (const file of ['lion_bg.jpg', 'og-image-1200x630.jpg', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-512.png']) {
+        assert.ok(new RegExp(`^${icons.source}$`).test(`/${file}`), `${file} should be cached`);
+        assert.ok(fs.existsSync(path.join(root, file)), `${file} should exist`);
+    }
+    for (const page of ['/', '/index.html', '/assets/common.js', '/assets/pod/podcast.css']) {
+        assert.ok(!config.headers.slice(1).some(entry => new RegExp(`^${entry.source}$`).test(page)), `${page} should not get a long cache`);
+    }
+    assert.ok(new RegExp(`^${rule.source}$`).test('/assets/fonts/anton-400-latin.woff2'));
+});

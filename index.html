@@ -144,9 +144,18 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Anonymous+Pro:wght@400;700&family=Manrope:wght@400;500;600&display=swap">
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/anton-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/manrope-400-600-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/anonymous-pro-700-latin.woff2" crossorigin>
+<style>
+/* Anton, Anonymous Pro 700 and Manrope 400-600, self-hosted (SIL OFL): the unhinted builds Google Fonts serves to Safari, same glyphs and unicode ranges */
+@font-face{font-family:'Anonymous Pro';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/anonymous-pro-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Anonymous Pro';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/anonymous-pro-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/anton-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/anton-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 600;font-display:swap;src:url(/assets/fonts/manrope-400-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 600;font-display:swap;src:url(/assets/fonts/manrope-400-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
 <link rel="stylesheet" href="assets/pod/podcast.css">
 <style>
 /* Prototype 3: a glowing particle sculpture that becomes Christ, the risen Lord, every man, woman and family, then loops through a portal. */
@@ -799,38 +808,38 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
     return {p:P,b:B};
   }
   var shopQ={}; function loadShop(i,done){ if(i<0||i>=SHOP.length||shopQ[i]){ if(done) done(); return; } shopQ[i]=1; load('assets/pt-shop-'+SHOP[i][3]+'.webp').then(function(img){ if(img) SH['shop'+(i+1)]=sample(img,{g:1.9,b:.4,depth:1.1,h:6.2,y:.25}); if(done) done(); }); } // a product's particle shape, sampled once
-  function load(src){ return new Promise(function(res){ var i=new Image(); i.onload=function(){ res(i); }; i.onerror=function(){ res(null); }; i.src=src; }); }
+  function load(src){ return new Promise(function(res){ var i=new Image(); i.src=src; if(i.decode) i.decode().then(function(){ res(i); },function(){ res(null); }); else { i.onload=function(){ res(i); }; i.onerror=function(){ res(null); }; } }); }
 
   var SH={}, ready=false;
   var fontReady=(document.fonts&&document.fonts.load)?Promise.race([document.fonts.load('200px Anton'),new Promise(function(r){ setTimeout(r,1800); })]):Promise.resolve();
-  Promise.all(['lion','host','gina','family','cross','tomb','couple','voice','listen','roar','rest'].map(function(n){ return load('assets/pt-'+n+'.webp'); }).concat([fontReady])).then(function(im){
+  Promise.all(['lion','host','gina','family','cross','tomb','couple','voice','listen','roar','rest'].map(function(n){ return load('assets/pt-'+n+'.webp'); }).concat([fontReady])).then(function(im){ var gen=(function*(){ // each figure is sampled in its own task, so the page never freezes while the shapes are built
     // a picture that fails to load borrows another one, so one missing file never blanks every figure
     var any=im.slice(0,11).filter(Boolean)[0];
     if(!any){ any=document.createElement('canvas'); any.width=any.height=320; var fx=any.getContext('2d'); fx.fillStyle='#000'; fx.fillRect(0,0,320,320); fx.fillStyle='#fff'; fx.font='150px Anton, Impact, sans-serif'; fx.textAlign='center'; fx.textBaseline='middle'; fx.fillText('LION',160,170); }
     [0,1,3,4,5].forEach(function(k){ if(!im[k]) im[k]=im[0]||any; });
-    SH.lion=sample(im[0],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.4,y:.35,gain:1.05});
-    SH.man=sample(im[1],{g:2.4,b:0,bp:2.6,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3});
-    if(im[2]) SH.woman=sample(im[2],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3,box:[26,287,18,313]}); // Gina, chest up in a high-necked champagne satin blouse (v17), cut about where Jonathan's portrait ends; box keeps her head exactly where and as big as it was
-    if(im[6]) SH.couple=sample(im[6],{g:2.1,b:.2,bp:2.4,depth:1.2,h:6.6,w:8.8,y:.25,th:.07,gain:1.3});
-    if(im[7]){ var R0=R; R=rnd(4242); SH.duo=sample(im[7],{g:2.3,b:.06,bp:2.5,depth:1.3,h:6.2,w:7.9,y:.15,th:.07,gain:1.3,sw:450,sh:320,box:[8,392,16,307]}); R=R0; } // the podcast: Jonathan (his own portrait) with Gina beside him, on its own random stream so the other figures don't change
-    SH.family=sample(im[3],{g:1.8,b:.45,bp:2.2,depth:1.1,h:6.6,w:8.8,y:.05,th:.07,gain:1.3,box:[7,311,60,300]}); // Jonathan, Gina and Prophet, framed as in v9 so Jonathan and Gina hold their places
-    SH.cross=sample(im[4],{g:.85,b:1.2,depth:.8,h:6.2,w:8.6,y:.2,th:.05,gain:1.2});
-    SH.tomb=sample(im[5],{g:2.2,b:1.4,depth:1,h:6.4,y:.3,gain:.9});
+    yield; SH.lion=sample(im[0],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.4,y:.35,gain:1.05});
+    yield; SH.man=sample(im[1],{g:2.4,b:0,bp:2.6,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3});
+    yield; if(im[2]) SH.woman=sample(im[2],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.6,y:.25,th:.07,gain:1.3,box:[26,287,18,313]}); // Gina, chest up in a high-necked champagne satin blouse (v17), cut about where Jonathan's portrait ends; box keeps her head exactly where and as big as it was
+    yield; if(im[6]) SH.couple=sample(im[6],{g:2.1,b:.2,bp:2.4,depth:1.2,h:6.6,w:8.8,y:.25,th:.07,gain:1.3});
+    yield; if(im[7]){ var R0=R; R=rnd(4242); SH.duo=sample(im[7],{g:2.3,b:.06,bp:2.5,depth:1.3,h:6.2,w:7.9,y:.15,th:.07,gain:1.3,sw:450,sh:320,box:[8,392,16,307]}); R=R0; } // the podcast: Jonathan (his own portrait) with Gina beside him, on its own random stream so the other figures don't change
+    yield; SH.family=sample(im[3],{g:1.8,b:.45,bp:2.2,depth:1.1,h:6.6,w:8.8,y:.05,th:.07,gain:1.3,box:[7,311,60,300]}); // Jonathan, Gina and Prophet, framed as in v9 so Jonathan and Gina hold their places
+    yield; SH.cross=sample(im[4],{g:.85,b:1.2,depth:.8,h:6.2,w:8.6,y:.2,th:.05,gain:1.2});
+    yield; SH.tomb=sample(im[5],{g:2.2,b:1.4,depth:1,h:6.4,y:.3,gain:.9});
     // the wordmark is measured so every letter of THE LION and COMPANY lands inside the sampling canvas
-    SH.word=sample(null,{draw:function(x,S){ x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    yield; SH.word=sample(null,{draw:function(x,S){ x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
       function fit(t,px){ x.font=px+'px Anton, Impact, sans-serif'; var w=x.measureText(t).width; if(w>S*.86){ px=Math.floor(px*S*.86/w); x.font=px+'px Anton, Impact, sans-serif'; } return px; }
       var p1=fit('THE LION',120); x.fillText('THE LION',S/2,S*.38); fit('COMPANY',Math.round(p1*.8)); x.fillText('COMPANY',S/2,S*.38+p1*.86); },depth:.3,jit:.35,h:4.6,w:8.8,y:.3,th:.3});
-    SH.ring=ring();
+    yield; SH.ring=ring();
     // final revisions: the listener (Faith comes from hearing), the roaring lion (The righteous are bold) and the lion at rest (Give boldly), each on its own random stream so the figures above don't change
     var R1=R;
-    if(im[8]){ R=rnd(5151); SH.listen=sample(im[8],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.5,y:.2,th:.07,gain:1.3}); SH.listen.ear=at(SH.listen,.61,.38); SH.listen.neck=at(SH.listen,.47,.62); }
-    if(im[9]){ R=rnd(6262); SH.roar=sample(im[9],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.5,y:.3,gain:1.05}); }
-    if(im[10]){ R=rnd(7373); SH.rest=sample(im[10],{g:1.35,b:.3,bp:1.7,depth:1.6,h:5.3,w:8.4,y:-.75,gain:1.05,sw:420,sh:315}); }
+    yield; if(im[8]){ R=rnd(5151); SH.listen=sample(im[8],{g:2.2,b:.15,bp:2.4,depth:1.3,h:6.5,y:.2,th:.07,gain:1.3}); SH.listen.ear=at(SH.listen,.61,.38); SH.listen.neck=at(SH.listen,.47,.62); }
+    yield; if(im[9]){ R=rnd(6262); SH.roar=sample(im[9],{g:1.35,b:.3,bp:1.7,depth:1.9,h:6.5,y:.3,gain:1.05}); }
+    yield; if(im[10]){ R=rnd(7373); SH.rest=sample(im[10],{g:1.35,b:.3,bp:1.7,depth:1.6,h:5.3,w:8.4,y:-.75,gain:1.05,sw:420,sh:315}); }
     R=R1;
     ready=true; fitBeside();
     // store shirts are sampled after first paint, one per tick, so the hero is never held up
     var si=0; (function next(){ if(si>5) return; loadShop(si++,function(){ setTimeout(next,40); }); })(); // the first six now; the rest as the rail reaches them (loadShop in setShop)
-  });
+  })(); (function step(){ if(!gen.next().done) setTimeout(step,0); })(); });
 
   /* GL setup */
   function sh(type,src){ var s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s)); return s; }
