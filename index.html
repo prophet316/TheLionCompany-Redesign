@@ -934,8 +934,14 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   function fitBeside(){
     if(small||!ready) return;
     secs.forEach(function(s){
-      var w=W[s.k], pn=s.el.querySelector('.panel'); if(!pn||w.off!==1) return;
+      var w=W[s.k], pn=s.el.querySelector('.panel'); if(w.off!==1) return;
       var m=shapes(w), k, sh=null; for(k in m) if(SH[k]){ sh=SH[k]; break; } if(!sh) return;
+      if(!pn){ // tablets: a figure beside plain text keeps its place but is made a little smaller if it would run off the right edge
+        if(innerWidth>=1024||!s.el.classList.contains('sec')) return;
+        var bx=w.ox!=null?w.ox:.34, REx=1-40/innerWidth*2, dx=1, ex;
+        for(var jt=0;jt<4;jt++){ ex=ext(w,sh,dx); var room=REx-bx-.1*ex.mid; if(ex.r<=room||dx>=1.5||room<=0) break; dx=Math.min(1.5,dx*ex.r/room*1.03); }
+        w.dk=dx; return;
+      }
       var r=pn.getBoundingClientRect(), L=(r.right+44)/innerWidth*2-1, RE=1-40/innerWidth*2, base=w.ox!=null?w.ox:.34, dk=1, e, lo, hi;
       for(var it=0;it<4;it++){ e=ext(w,sh,dk); lo=L-e.l-.1*e.mid; hi=RE-e.r-.1*e.mid; if(lo<=hi||dk>=1.7) break; dk=Math.min(1.7,dk*(e.r-e.l)/(RE-L)*1.03); }
       w.oxF=Math.max(lo,Math.min(base,hi)); w.dk=dk;
