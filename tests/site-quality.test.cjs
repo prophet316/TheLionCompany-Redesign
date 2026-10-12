@@ -172,3 +172,48 @@ test('images and fonts are cached for a day while pages keep revalidating', () =
     }
     assert.ok(new RegExp(`^${rule.source}$`).test('/assets/fonts/anton-400-latin.woff2'));
 });
+
+test('every executable inline script on index, media, privacy and terms has its hash in the policy', () => {
+    // Editing an inline script changes its hash: recompute it (the message below gives the new value) and update vercel.json.
+    const crypto = require('node:crypto');
+    const config = JSON.parse(read('vercel.json'));
+    const all = Object.fromEntries(config.headers[0].headers.map(item => [item.key, item.value]));
+    const csp = all['Content-Security-Policy'] || all['Content-Security-Policy-Report-Only'];
+    assert.ok(csp, 'a CSP header should be configured');
+    let scripts = 0;
+    for (const file of ['index.html', 'media.html', 'privacy.html', 'terms.html']) {
+        for (const match of read(file).matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)) {
+            scripts++;
+            const hash = `'sha256-${crypto.createHash('sha256').update(match[1]).digest('base64')}'`;
+            assert.ok(csp.includes(hash), `${file}: inline script starting "${match[1].trim().slice(0, 40)}" needs ${hash} in the CSP`);
+        }
+        assert.doesNotMatch(read(file), /\son[a-z]+="/, `${file} should have no inline event handlers (the policy does not allow them)`);
+    }
+    assert.ok(scripts >= 4, 'the homepage and media inline scripts should be found');
+    for (const directive of ["frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'self'", 'report-uri /api/csp-report']) assert.ok(csp.includes(directive), directive);
+    assert.doesNotMatch(csp, /'unsafe-eval'|script-src[^;]*'unsafe-inline'/);
+    assert.equal(all['X-Frame-Options'], 'DENY');
+    assert.equal(all['Cross-Origin-Opener-Policy'], 'same-origin');
+    assert.equal(all['Permissions-Policy'], 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+    assert.equal(all['Strict-Transport-Security'], undefined, 'HSTS stays at the Vercel default');
+});
+
+test('CSP reports are accepted with 204 and logged without query strings or form data', async () => {
+    const handler = require('../api/csp-report.js');
+    const recorder = () => ({ statusCode: 200, headers: {}, status(code) { this.statusCode = code; return this; }, setHeader(name, value) { this.headers[name] = value; }, end() { this.ended = true; } });
+    const warn = console.warn, logged = [];
+    console.warn = (...args) => logged.push(args.join(' '));
+    try {
+        const response = recorder();
+        await handler({ method: 'POST', body: { 'csp-report': { 'document-uri': 'https://www.thelioncompany.org/?email=a@b.co#connect', 'effective-directive': 'script-src-elem', 'blocked-uri': 'https://evil.example/x.js?token=1' } } }, response);
+        assert.equal(response.statusCode, 204);
+        assert.equal(response.headers['Cache-Control'], 'no-store');
+        assert.deepEqual(logged, ['CSP report-only: script-src-elem blocked https://evil.example on https://www.thelioncompany.org/']);
+        const get = recorder();
+        await handler({ method: 'GET' }, get);
+        assert.equal(get.statusCode, 405);
+        assert.equal(get.headers.Allow, 'POST');
+    } finally {
+        console.warn = warn;
+    }
+});
