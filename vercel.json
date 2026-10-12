@@ -25,6 +25,14 @@
       "destination": "/terms.html"
     }
   ],
+  "functions": {
+    "api/forms.js": {
+      "maxDuration": 30
+    },
+    "api/latest-episode.js": {
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

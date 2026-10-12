@@ -67,18 +67,20 @@ function lionForms(root) {
     var kind = f.getAttribute('data-form');
     // spam trap: people never see or fill this field
     var trap = document.createElement('input');
-    trap.type = 'text'; trap.name = 'website'; trap.tabIndex = -1; trap.autocomplete = 'off';
+    trap.type = 'text'; trap.name = 'lion_hp_x'; trap.tabIndex = -1; trap.autocomplete = 'off';
     trap.setAttribute('aria-hidden', 'true');
     trap.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0';
     f.appendChild(trap);
+    // time trap: the server quietly drops a form sent faster than a person could fill it
+    var startedAt = Date.now();
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      var map = ids[kind] || {}, payload = { type: kind, website: trap.value };
+      var map = ids[kind] || {}, payload = { type: kind, lion_hp_x: trap.value, elapsed: Date.now() - startedAt };
       Object.keys(map).forEach(function (k) { var el = document.getElementById(map[k]); payload[k] = el ? el.value.trim() : ''; });
       var out = f.querySelector('.form-note'), btn = f.querySelector('button[type="submit"]'), label = btn ? btn.textContent : '';
       function note(msg, bad) { if (out) { out.textContent = msg; out.hidden = false; out.classList.toggle('err', !!bad); } }
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-      var send = payload.website ? Promise.resolve({ ok: true, json: function () { return {}; } })
+      var send = payload.lion_hp_x ? Promise.resolve({ ok: true, json: function () { return {}; } })
         : fetch('/api/forms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       send.then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'failed'); });

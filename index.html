@@ -136,7 +136,7 @@
     </script>
 <script>
 /* the full motion is always on; phones and devices that ask for less motion get the calm version. Embers are the ambient effect. */
-(function(){ var A={mission:'risen',prayer:'pray',store:'shop',contact:'book'}, h=location.hash.slice(1); if(A[h]) try{ history.replaceState(null,'','#'+A[h]); }catch(e){} })(); // links to the old site's sections still land in the right place
+(function(){ var A={mission:'risen',prayer:'pray',store:'shop',contact:'book',newsletter:'connect'}, h=location.hash.slice(1); if(A[h]) try{ history.replaceState(null,'','#'+A[h]); }catch(e){} })(); // links to the old site's sections still land in the right place
 (function(){ var d=document.documentElement; d.setAttribute('data-amb','embers'); d.classList.add('moves');
   if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) d.classList.add('rv'); setTimeout(function(){ d.classList.remove('rv'); },3500); })();
 </script>
