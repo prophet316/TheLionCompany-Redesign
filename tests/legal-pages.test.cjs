@@ -66,10 +66,10 @@ test('clean public routes rewrite to the static pages', () => {
 test('all three forms and the homepage footer link to both legal pages', () => {
     const index = read('index.html');
     for (const id of ['prayer-privacy-note', 'contact-privacy-note', 'newsletter-privacy-note']) {
-        const note = index.match(new RegExp(`<p id="${id}"[\\s\\S]*?<\\/p>`));
+        const note = index.match(new RegExp(`<p[^>]*id="${id}"[\\s\\S]*?<\\/p>`));
         assert.ok(note, `${id} should exist`);
         assert.match(note[0], /href="\/privacy"/);
         assert.match(note[0], /href="\/terms"/);
     }
-    assert.match(index, /<footer[\s\S]*href="\/privacy"[\s\S]*href="\/terms"/);
+    assert.match(index, /<div class="copy">[\s\S]*?href="\/privacy"[\s\S]*?href="\/terms"/);
 });

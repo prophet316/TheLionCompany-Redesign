@@ -550,6 +550,29 @@ module.exports = async function handler(request, response) {
                 [origin || 'direct', fields.email],
                 60 * 60 * 1000
             ));
+            // Jonathan hears about every signup. A failed alert must never block the signup itself.
+            try {
+                await sendEmail({
+                    from: 'The Lion Company Website <welcome@updates.thelioncompany.org>',
+                    to: [teamInbox],
+                    reply_to: fields.email,
+                    subject: `[Lion Website Form] Newsletter signup — ${fields.email}`,
+                    tags: [{ name: 'lion_form_type', value: 'newsletter' }],
+                    html: emailShell({
+                        preheader: `${fields.email} joined the mailing list.`,
+                        eyebrow: 'Mailing list',
+                        title: 'New newsletter signup',
+                        bodyHtml: `<p style="margin:0 0 14px;"><strong>${escapeHtml(fields.email)}</strong> signed up on thelioncompany.org.</p><p style="margin:0;">They have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.</p>`
+                    }),
+                    text: `New newsletter signup on thelioncompany.org\n\nEmail: ${fields.email}\n\nThey have been sent the confirmation email. Once they click it, they join the "Lion Monthly Newsletter" segment in Resend.`
+                }, apiKey, idempotencyKey(
+                    'lion-newsletter-alert',
+                    [origin || 'direct', fields.email],
+                    60 * 60 * 1000
+                ));
+            } catch (alertError) {
+                console.error('Newsletter signup alert failed:', alertError);
+            }
             return sendJson(response, 200, { ok: true, confirmationRequired: true });
         }
 

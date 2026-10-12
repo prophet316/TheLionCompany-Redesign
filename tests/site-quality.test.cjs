@@ -11,20 +11,28 @@ function read(file) {
     return fs.readFileSync(path.join(root, file), 'utf8');
 }
 
+// The homepage keeps its links in shared scripts, so its checks read the page and those scripts together.
+function readPage(file) {
+    if (file !== 'index.html') return read(file);
+    return [read('index.html'), read('assets/common.js'), read('assets/pod/podcast.js')].join('\n');
+}
+
 test('homepage and media library expose the official podcast platforms', () => {
     for (const file of ['index.html', 'media.html']) {
-        const page = read(file);
+        const page = readPage(file);
         assert.match(page, new RegExp(applePodcasts.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
         assert.match(page, new RegExp(spotify.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
         assert.match(page, /https:\/\/thelioncompany\.podbean\.com\//);
-        assert.match(page, /data-platform="apple-podcasts"/);
-        assert.match(page, /data-platform="spotify"/);
+        if (file === 'media.html') {
+            assert.match(page, /data-platform="apple-podcasts"/);
+            assert.match(page, /data-platform="spotify"/);
+        }
     }
 });
 
 test('all public site pages use the active Instagram profile', () => {
     for (const file of ['index.html', 'media.html']) {
-        const page = read(file);
+        const page = readPage(file);
         assert.doesNotMatch(page, /instagram\.com\/thelioncompanytx/);
         assert.match(page, /instagram\.com\/thelioncompanyglobal\//);
     }
@@ -78,12 +86,17 @@ test('media library has searchable categories, unique cards, and direct YouTube 
 });
 
 test('accessibility and performance enhancements remain wired', () => {
-    for (const file of ['index.html', 'media.html', 'privacy.html', 'terms.html']) {
+    for (const file of ['media.html', 'privacy.html', 'terms.html']) {
         const page = read(file);
         assert.match(page, /class="skip-link"/);
         assert.match(page, /aria-expanded="false"/);
         assert.match(page, /aria-controls="mobile-menu"/);
     }
+    const home = read('index.html');
+    assert.match(home, /class="skip-link" href="#main"/);
+    assert.match(home, /<main id="main"/);
+    assert.match(home, /aria-controls="menusheet"/);
+    assert.match(home, /prefers-reduced-motion: reduce/);
 
     const app = read('app.js');
     assert.match(app, /initLazyMediaImages\(\)/);
@@ -101,4 +114,20 @@ test('production config includes narrow security headers', () => {
     assert.equal(headers['X-Content-Type-Options'], 'nosniff');
     assert.equal(headers['Referrer-Policy'], 'strict-origin-when-cross-origin');
     assert.match(headers['Permissions-Policy'], /camera=\(\)/);
+});
+
+test('homepage keeps every Phase 1 connection', () => {
+    const page = readPage('index.html');
+    for (const url of [
+        'https://secure.subsplash.com/ui/access/RM87PQ/',
+        'https://the-lion-company.printify.me/',
+        'https://www.tiktok.com/@thelioncompanytx',
+        'https://www.facebook.com/lioncompanytx',
+        'https://www.youtube.com/channel/UCEy6IknxFCGag4UBVGn4wWg',
+        'G-MNK2G065ES'
+    ]) assert.ok(page.includes(url), `${url} should be on the homepage`);
+    assert.match(page, /fetch\('\/api\/forms'/);
+    for (const kind of ['prayer', 'contact', 'newsletter']) assert.match(page, new RegExp(`data-form="${kind}"`));
+    assert.doesNotMatch(page, /Preview only/);
+    assert.doesNotMatch(page, /id="mvt"|motion=full/);
 });

@@ -236,6 +236,37 @@ test('starts newsletter double opt-in and sends a branded confirmation email', a
     assert.match(requests[1].body.html, /lion_bg\.jpg/);
 });
 
+test('emails Jonathan about every newsletter signup', async () => {
+    const requests = [];
+    global.fetch = async (url, options) => {
+        requests.push({ url, options, body: JSON.parse(options.body) });
+        return okJson();
+    };
+
+    const response = await runPost({ type: 'newsletter', email: 'Reader@Example.com' });
+
+    assert.equal(response.statusCode, 200);
+    const alert = requests[2];
+    assert.equal(alert.url, 'https://api.resend.com/emails');
+    assert.deepEqual(alert.body.to, ['jonathan@thelioncompany.org']);
+    assert.equal(alert.body.reply_to, 'reader@example.com');
+    assert.match(alert.body.subject, /^\[Lion Website Form\] Newsletter signup — reader@example\.com$/);
+    assert.match(alert.options.headers['Idempotency-Key'], /^lion-newsletter-alert-/);
+});
+
+test('a failed signup alert does not fail the signup', async () => {
+    let emails = 0;
+    global.fetch = async (url) => {
+        if (url.endsWith('/emails') && ++emails === 2) return { ok: false, status: 500, json: async () => ({}) };
+        return okJson();
+    };
+
+    const response = await runPost({ type: 'newsletter', email: 'reader@example.com' });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(response.body.confirmationRequired, true);
+});
+
 test('does not globally unsubscribe an existing contact during repeat signup', async () => {
     const requests = [];
     global.fetch = async (url, options) => {
@@ -261,7 +292,7 @@ test('confirms a signed newsletter subscription link', async () => {
     let confirmationEmail;
     global.fetch = async (url, options) => {
         const body = JSON.parse(options.body);
-        if (url.endsWith('/emails')) confirmationEmail = body;
+        if (url.endsWith('/emails') && !confirmationEmail) confirmationEmail = body;
         return okJson();
     };
 
@@ -294,7 +325,7 @@ test('keeps a contact globally unsubscribed when targeting is not configured', a
     let confirmationEmail;
     global.fetch = async (url, options) => {
         const body = options.body ? JSON.parse(options.body) : undefined;
-        if (url.endsWith('/emails')) confirmationEmail = body;
+        if (url.endsWith('/emails') && !confirmationEmail) confirmationEmail = body;
         return okJson();
     };
 
