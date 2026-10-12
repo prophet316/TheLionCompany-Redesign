@@ -100,7 +100,7 @@ document.addEventListener('click', function (e) {
   var href = a.href || '';
   var plat = (LION.podcast || []).filter(function (p) { return href === p[1]; })[0];
   if (plat && a.closest('#podcast,.pod,[data-fill="podcast"]')) lionTrack('podcast_platform_click', { platform: plat[0], link_url: href });
-  else if (href === LION.give) lionTrack('give_click', { link_url: href });
+  else if (href === LION.give) { var f = a.querySelector('b'); lionTrack('give_click', { link_url: href, fund: f ? f.textContent : 'top band' }); }
   else if (a.hostname && a.hostname !== location.hostname) lionTrack('outbound_click', { link_url: href, link_domain: a.hostname });
 }, true);
 

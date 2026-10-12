@@ -1,0 +1,12 @@
+# Working files that should never be served on thelioncompany.org.
+# Search engines were able to reach these (internal notes, raw YouTube page copies).
+docs/
+tests/
+*.py
+*.md
+p1.html
+p2.html
+p3.html
+playlists_grid.html
+all_playlists.txt
+feed.xml
