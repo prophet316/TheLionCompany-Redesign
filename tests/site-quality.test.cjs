@@ -86,17 +86,15 @@ test('media library has searchable categories, unique cards, and direct YouTube 
 });
 
 test('accessibility and performance enhancements remain wired', () => {
-    for (const file of ['privacy.html', 'terms.html']) {
+    for (const file of ['media.html', 'privacy.html', 'terms.html']) {
         const page = read(file);
-        assert.match(page, /class="skip-link"/);
+        assert.match(page, /class="skip-link" href="#main"/);
+        assert.match(page, /<main id="main"/);
         assert.match(page, /aria-expanded="false"/);
-        assert.match(page, /aria-controls="mobile-menu"/);
+        assert.match(page, /aria-controls="menusheet"/);
+        assert.match(page, /assets\/media\.js/);
+        assert.doesNotMatch(page, /styles\.css|Cinzel/);
     }
-    const media = read('media.html');
-    assert.match(media, /class="skip-link" href="#main"/);
-    assert.match(media, /<main id="main"/);
-    assert.match(media, /aria-controls="menusheet"/);
-    assert.match(media, /assets\/media\.js/);
     const mediaScript = read('assets/media.js');
     assert.match(mediaScript, /data-bg-image/);
     assert.match(mediaScript, /youtube-nocookie\.com\/embed/);

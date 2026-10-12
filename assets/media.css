@@ -36,9 +36,9 @@ a{color:inherit}
 .give{flex:none;background:var(--orange);color:#111;font:400 18px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 20px 11px;text-decoration:none;white-space:nowrap;transition:background-color .35s ease,color .35s ease,scale .4s cubic-bezier(.3,1.6,.5,1)}
 .give:hover{background:var(--ink)}
 .give:active{scale:.96}
-.menubtn{display:none;flex:none;width:44px;height:42px;justify-content:center;padding:0}
+.menubtn{display:inline-flex;flex:none;width:44px;height:42px;justify-content:center;padding:0} /* the menu button shows at every width, as on the homepage */
 .menubtn i{display:block;width:18px;height:1.5px;background:currentColor;box-shadow:0 -6px 0 currentColor,0 6px 0 currentColor}
-@media (max-width:1060px){.nav{display:none}.menubtn{display:inline-flex}}
+@media (max-width:1060px){.nav{display:none}}
 @media (max-width:420px){.brand .the{display:none}.brand{font-size:19px}.bbtn{padding:12px 10px;letter-spacing:.1em}.give{padding:12px 14px 11px}}
 @media (max-width:360px){.band{gap:6px}.brand{font-size:17px}#socbtn{padding:12px 8px;letter-spacing:.06em}.give{padding:12px 10px 11px}}
 .sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:45;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 88px);overflow:auto;background:rgba(16,18,24,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .16s ease-in,transform .22s cubic-bezier(.4,0,1,1),visibility 0s linear .22s}
@@ -201,6 +201,19 @@ main{position:relative;z-index:2;overflow-x:clip;padding:64px clamp(16px,6vw,96p
   .card:hover{transform:none}
   .kick:hover,.count:hover{letter-spacing:.24em}.label:hover{letter-spacing:.22em}
 }
+
+/* privacy and terms: the same band, a quiet opener and the policy in one readable column */
+.legal-open{min-height:0;padding:clamp(110px,18vh,190px) 0 clamp(28px,5vh,48px)}
+.legal-open .htitle{font-size:clamp(52px,7vw,112px)}
+.legal-copy{max-width:860px;padding:clamp(24px,4vw,56px);display:grid;gap:clamp(28px,4vw,44px)}
+.legal-copy section{display:grid;gap:12px}
+.legal-copy h2{margin:0;font:400 clamp(24px,2.4vw,32px)/1.05 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.legal-copy p,.legal-copy li{margin:0;color:#c3c9d3;max-width:68ch}
+.legal-copy ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
+.legal-copy a{color:var(--ink);text-decoration-color:var(--orange);text-underline-offset:3px}
+.legal-copy a:hover{color:var(--orange)}
+.legal-copy strong,.legal-copy b{color:var(--ink)}
+.legal .copy{max-width:860px;margin-bottom:48px}
 
 /* the opening figure: the podcast's half-sketch, half-geometric lion face (tradition meeting the new), the two halves breathing apart and back */
 .opener{position:relative}
