@@ -692,7 +692,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
 
   /* ---------- real content ---------- */
   document.getElementById('watch').innerHTML=LION.videos.map(function(v){ return '<a class="vc" href="'+v[3]+'" target="_blank" rel="noopener"><small>'+v[0]+(v[2]?' · '+v[2]:'')+'</small><b>'+v[1]+'</b><span>PLAY ON YOUTUBE ↗</span></a>'; }).join('');
-  var SHOP=[["Lion Co Hoodie, Minimal Logo (est. 2020)","$46.25","27083573"],["Cool Sunglasses Lion T-Shirt","$24.99","27083413"],["Lion Co. Est. 2020 T-Shirt","$24.99","27082936"],["Lion Face 'Unveiled' Graphic Tee","$24.99","27082601"],["Lion Portrait T-Shirt","$24.99","27082491"],["1 John 3:2 \"We do not know what we will become.\" Tee","$24.99","27079317"],["Vintage Lion Head Illustration Tee","$24.99","27069138"]];
+  var SHOP=[["Lion Co Hoodie, Minimal Logo (est. 2020)","$48","27083573"],["Cool Sunglasses Lion T-Shirt","$25","27083413"],["Lion Co. Est. 2020 T-Shirt","$25","27082936"],["Lion Face 'Unveiled' Graphic Tee","$25","27082601"],["Lion Portrait T-Shirt","$25","27082491"],["1 John 3:2 \"We do not know what we will become.\" Tee","$25","27079317"],["Vintage Lion Head Illustration Tee","$30","27069138"]];
   document.getElementById('rail').innerHTML=SHOP.map(function(s,i){ return '<a class="prod" href="https://the-lion-company.printify.me/product/'+s[2]+'" target="_blank" rel="noopener"><img src="assets/hy-store-'+(i+1)+'.webp" alt="" loading="lazy"><b>'+s[0]+'</b><span>'+s[1]+' ↗</span></a>'; }).join('');
 
   function sheet(btnId,id){ var b=document.getElementById(btnId), s=document.getElementById(id);
