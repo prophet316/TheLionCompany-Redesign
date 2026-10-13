@@ -58,6 +58,8 @@ function lionForms(root) {
     contact: { firstName: 'q-cf', lastName: 'q-cl', email: 'q-ce', message: 'q-cm' },
     newsletter: { email: 'q-ne' }
   };
+  // the "Also send me the monthly letter" box on the prayer and contact forms
+  var optIn = { prayer: 'q-pn', contact: 'q-cn' };
   var done = {
     prayer: "Thank you. Your request has been received, and we are praying. Check your inbox for a note from us.",
     contact: "Thank you. Your message has been sent, and we will be in touch soon.",
@@ -82,6 +84,7 @@ function lionForms(root) {
       if (f.dataset.busy) return; // one request at a time, so a double click sends once
       var map = ids[kind] || {}, payload = { type: kind, lion_hp_x: trap.value, elapsed: Date.now() - startedAt };
       Object.keys(map).forEach(function (k) { var el = document.getElementById(map[k]); payload[k] = el ? el.value.trim() : ''; });
+      var box = optIn[kind] && document.getElementById(optIn[kind]); if (box && box.checked) payload.joinNewsletter = true;
       var out = f.querySelector('.form-note'), btn = f.querySelector('button[type="submit"]'), label = btn ? btn.textContent : '';
       function note(msg, bad) { if (out) { out.textContent = msg; out.hidden = false; out.classList.toggle('err', !!bad); } live.setAttribute('role', bad ? 'alert' : 'status'); live.textContent = ''; setTimeout(function () { live.textContent = msg; }, 60); }
       // busy, not disabled: a disabled button would drop keyboard focus to the top of the page
@@ -92,8 +95,10 @@ function lionForms(root) {
       send.then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'failed'); });
       }).then(function () {
-        f.reset(); note(done[kind] || 'Thank you.'); f.classList.add('sent');
+        var joined = payload.joinNewsletter;
+        f.reset(); note((done[kind] || 'Thank you.') + (joined ? ' To get the monthly letter, confirm the separate email we just sent.' : '')); f.classList.add('sent');
         lionTrack('form_submission_success', { form_type: kind });
+        if (joined) lionTrack('newsletter_optin', { form_type: kind });
         if (window.onLionForm) window.onLionForm(kind, f);
       }).catch(function () {
         note('We could not send that just now. Please email Jonathan@TheLionCompany.org.', true);

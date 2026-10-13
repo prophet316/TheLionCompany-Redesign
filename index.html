@@ -288,6 +288,12 @@ button.sub:hover{background:var(--orange)}
 .form-note.err{background:rgba(220,60,40,.14);border-left-color:#e0533c}
 .sub:disabled,.sub[aria-disabled="true"]{opacity:.6;cursor:progress}
 .fine{font-size:14px;color:var(--muted);margin:2px 0 0}
+label.optin{display:flex;align-items:center;gap:10px;margin:2px 0 0;font:400 15px/1.4 var(--sans);letter-spacing:0;text-transform:none;color:#c3c9d3;cursor:pointer}
+.optin input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:20px;height:20px;padding:0;margin:0;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.05);display:grid;place-content:center;cursor:pointer}
+.optin input::before{content:"";width:10px;height:10px;background:var(--orange);transform:scale(0);transition:transform .15s}
+.optin input:checked{border-color:var(--orange)}
+.optin input:checked::before{transform:scale(1)}
+.optin input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 
 .watch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:22px}
 @media (max-width:760px){.watch{grid-template-columns:1fr}}
@@ -562,6 +568,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
         <div class="row"><div><label for="q-pf">First name *</label><input id="q-pf" required autocomplete="given-name"></div><div><label for="q-pl">Last name</label><input id="q-pl" autocomplete="family-name"></div></div>
         <div class="row"><div><label for="q-pe">Email *</label><input id="q-pe" type="email" required autocomplete="email"></div><div><label for="q-pp">Phone</label><input id="q-pp" type="tel" autocomplete="tel"></div></div>
         <div><label for="q-pr">Your request *</label><textarea id="q-pr" required></textarea></div>
+        <label class="optin" for="q-pn"><input id="q-pn" type="checkbox"> Also send me the monthly letter</label>
         <button class="sub" type="submit">Submit request</button>
         <p class="form-note" hidden></p>
         <p class="fine" id="prayer-privacy-note">Delivered privately to The Lion Company for prayer and, when appropriate, a response. <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>
@@ -648,6 +655,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
           <div class="row"><div><label for="q-cf">First name *</label><input id="q-cf" required autocomplete="given-name"></div><div><label for="q-cl">Last name</label><input id="q-cl" autocomplete="family-name"></div></div>
           <div><label for="q-ce">Email *</label><input id="q-ce" type="email" required autocomplete="email"></div>
           <div><label for="q-cm">Message *</label><textarea id="q-cm" required></textarea></div>
+          <label class="optin" for="q-cn"><input id="q-cn" type="checkbox"> Also send me the monthly letter</label>
           <button class="sub" type="submit">Send message</button>
           <p class="form-note" hidden></p>
           <p class="fine" id="contact-privacy-note">Or write directly: <span data-email></span> · <a data-href="privacy" href="/privacy">Privacy</a> · <a data-href="terms" href="/terms">Terms</a></p>

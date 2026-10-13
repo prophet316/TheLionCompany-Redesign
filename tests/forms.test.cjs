@@ -257,6 +257,51 @@ test('starts newsletter double opt-in and sends a branded confirmation email (GE
     assert.match(requests[2].body.html, /lion_bg\.jpg/);
 });
 
+test('a ticked "monthly letter" box on the prayer form also starts double opt-in', async () => {
+    const requests = recordRequests(newContact);
+
+    const response = await runPost({
+        type: 'prayer',
+        firstName: 'Grace',
+        email: 'Grace@Example.com',
+        message: 'Please pray for my family.',
+        joinNewsletter: true
+    });
+
+    assert.equal(response.statusCode, 200);
+    assert.match(requests[0].options.headers['Idempotency-Key'], /^lion-prayer-team-/);
+    assert.match(requests[1].options.headers['Idempotency-Key'], /^lion-prayer-ack-/);
+    assert.deepEqual(requests[3].body, { email: 'grace@example.com', unsubscribed: true });
+    assert.match(requests[4].options.headers['Idempotency-Key'], /^lion-newsletter-confirmation-/);
+    assert.deepEqual(requests[4].body.to, ['grace@example.com']);
+    const alert = requests[5].body;
+    assert.match(alert.subject, /Newsletter signup — grace@example\.com$/);
+    assert.match(alert.text, /\(from the prayer form\)/);
+});
+
+test('the contact form box works the same way, and an unticked box adds nobody', async () => {
+    let requests = recordRequests(newContact);
+    await runPost({ type: 'contact', firstName: 'Ana', email: 'ana@example.com', message: 'Hello', joinNewsletter: true });
+    assert.ok(requests.some((r) => r.options.headers?.['Idempotency-Key']?.startsWith('lion-newsletter-confirmation-')));
+
+    for (const joinNewsletter of [undefined, false, 'true']) {
+        requests = recordRequests(newContact);
+        await runPost({ type: 'contact', firstName: 'Ana', email: 'ana@example.com', message: 'Hello', joinNewsletter });
+        assert.equal(requests.length, 2);
+    }
+});
+
+test('a failed opt-in never fails the prayer request it rode in on', async () => {
+    recordRequests((request) => request.url.includes('/contacts') ? failJson(500) : okJson());
+
+    const response = await runPost({
+        type: 'prayer', firstName: 'Grace', email: 'grace@example.com', message: 'Pray for us.', joinNewsletter: true
+    });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(response.body.ok, true);
+});
+
 test('emails Jonathan about every newsletter signup', async () => {
     const requests = recordRequests();
 
