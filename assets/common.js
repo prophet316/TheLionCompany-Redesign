@@ -20,9 +20,9 @@ window.LION = {
     ["Podbean", "https://thelioncompany.podbean.com/"]
   ],
   videos: [
+    ["Podcast", "Stop Trying to Win Her Back", "Ep. 09", "https://www.youtube.com/watch?v=tKbmGBu1wpo"],
     ["Podcast", "What Silence Costs: Confession, Forgiveness & Real Connection", "Ep. 08", "https://www.youtube.com/watch?v=VT5XZH471c0"],
-    ["Podcast", "When God's Will Doesn't Go Your Way", "Ep. 07", "https://www.youtube.com/watch?v=TOj6tefx3rI"],
-    ["Podcast", "Confessions of a Truth Teller", "Ep. 06", "https://www.youtube.com/watch?v=x8s5DPF68kQ"]
+    ["Podcast", "When God's Will Doesn't Go Your Way", "Ep. 07", "https://www.youtube.com/watch?v=TOj6tefx3rI"]
   ]
 };
 
