@@ -151,9 +151,13 @@ test('team notification is sent before the acknowledgment (prayer), each as its 
     const [teamNotification, acknowledgment] = requests.map((request) => request.body);
     assert.equal(acknowledgment.from, 'The Lion Company <prayer@updates.thelioncompany.org>');
     assert.deepEqual(acknowledgment.to, ['grace@example.com']);
-    assert.match(acknowledgment.html, /THE LION COMPANY/);
-    assert.match(acknowledgment.html, /We are standing with you/);
-    assert.match(acknowledgment.html, /testimony and miracle unfold/);
+    assert.equal(acknowledgment.subject, "We're praying with you");
+    assert.match(acknowledgment.html, /We are praying<br><span[^>]*>with you\./);
+    assert.match(acknowledgment.html, /Hi Grace,/);
+    assert.match(acknowledgment.html, /\/assets\/email\/prayer-masthead\.jpg/);
+    assert.match(acknowledgment.html, /James 5:16/);
+    assert.match(acknowledgment.html, /The Lion Company &middot; Austin, TX/);
+    assert.match(acknowledgment.text, /James 5:16 \(NIV\)/);
     assert.doesNotMatch(acknowledgment.html, /family decision/);
 
     assert.equal(teamNotification.from, 'The Lion Company Prayer Team <prayer@updates.thelioncompany.org>');

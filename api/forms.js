@@ -2,6 +2,7 @@ const crypto = require('node:crypto');
 
 const SITE_URL = 'https://www.thelioncompany.org';
 const LION_IMAGE_URL = `${SITE_URL}/lion_bg.jpg`;
+const PRAYER_MASTHEAD_URL = `${SITE_URL}/assets/email/prayer-masthead.jpg`;
 const DEFAULT_TEAM_INBOX = 'jonathan@thelioncompany.org';
 const DEFAULT_CONTACT_INBOX = 'jonathan@thelioncompany.org';
 const CONFIRMATION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -127,17 +128,59 @@ function emailShell({ preheader, eyebrow, title, bodyHtml, cta }) {
 </html>`;
 }
 
+// Matches the redesigned site and the monthly letter: masthead, Anton headline, one orange accent.
+// Never echoes anything from the request itself.
 function prayerAcknowledgment(firstName) {
     const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : 'Hello,';
-    return emailShell({
-        preheader: 'Your prayer request has been received by The Lion Company.',
-        eyebrow: 'Prayer received',
-        title: 'We are standing with you.',
-        bodyHtml: `
-            <p style="margin:0 0 18px;">${greeting}</p>
-            <p style="margin:0 0 18px;">Thank you for trusting The Lion Company with your prayer request. It will be submitted to our prayer team, and we will be standing with you in faith.</p>
-            <p style="margin:0;">Please keep us updated as your testimony and miracle unfold. We would be honored to celebrate what Jesus does with you.</p>`
-    });
+    return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>We are praying with you</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Anonymous+Pro:wght@700&family=Manrope:wght@400&display=swap">
+</head>
+<body style="margin:0;padding:0;background:#050608;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Your prayer request reached us. It stays private, and we are praying with you.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#050608">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#050608;">
+  <tr><td style="padding:0 0 14px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8f97a5;">The Lion Company</td>
+      <td align="right" style="font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;"><a href="${SITE_URL}/" style="color:#e48d1d;text-decoration:none;">thelioncompany.org &#8599;</a></td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="padding:0;"><img src="${PRAYER_MASTHEAD_URL}" width="600" alt="LION COMPANY" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>
+  <tr><td style="padding:36px 32px 8px;">
+    <div style="font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#e48d1d;">Prayer received</div>
+    <div style="font-family:Anton,Impact,'Arial Narrow Bold',sans-serif;font-size:50px;line-height:54px;text-transform:uppercase;color:#eef1f6;margin-top:12px;">We are praying<br><span style="color:#e48d1d;">with you.</span></div>
+  </td></tr>
+  <tr><td style="padding:18px 32px 0;font-family:Manrope,Helvetica,Arial,sans-serif;font-size:16px;line-height:27px;color:#c9ced8;">
+    <p style="margin:0 0 18px;">${greeting}</p>
+    <p style="margin:0 0 18px;">Thank you for trusting us with what's on your heart. Your request reached us, it stays private, and we are bringing it before Jesus with you.</p>
+    <p style="margin:0 0 18px;">You are not carrying this alone. When God moves, write back and tell us. We would love to celebrate it with you.</p>
+  </td></tr>
+  <tr><td style="padding:10px 32px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0d0f13;border-left:4px solid #e48d1d;"><tr><td style="padding:20px 22px;">
+      <div style="font-family:Manrope,Helvetica,Arial,sans-serif;font-size:18px;line-height:28px;color:#eef1f6;font-style:italic;">&ldquo;The prayer of a righteous person is powerful and effective.&rdquo;</div>
+      <div style="font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8f97a5;margin-top:10px;">James 5:16 &middot; NIV</div>
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="padding:28px 32px 0;font-family:Manrope,Helvetica,Arial,sans-serif;font-size:16px;line-height:27px;color:#c9ced8;">
+    <p style="margin:0;">Standing with you,<br><span style="color:#eef1f6;">Jonathan &amp; Gina</span><br><span style="font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8f97a5;">The Lion Company</span></p>
+  </td></tr>
+  <tr><td style="padding:30px 32px 0;">
+    <a href="${SITE_URL}/#podcast" style="display:inline-block;background:#e48d1d;color:#050608;text-decoration:none;font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px 24px;">Listen to the podcast &#8599;</a>
+  </td></tr>
+  <tr><td style="padding:40px 32px 8px;border-bottom:1px solid #1c2028;"></td></tr>
+  <tr><td align="center" style="padding:20px 32px 0;font-family:'Anonymous Pro','Courier New',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8f97a5;">The Lion Company &middot; Austin, TX</td></tr>
+  <tr><td align="center" style="padding:8px 32px 0;font-family:Manrope,Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#6b7280;">You're receiving this one email because you sent a prayer request at thelioncompany.org. Reply to this email to reach us directly.<br>Scripture taken from the Holy Bible, NEW INTERNATIONAL VERSION&reg;, NIV&reg;. Copyright &copy; 1973, 1978, 1984, 2011 by Biblica, Inc.&reg; Used by permission. All rights reserved worldwide.</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
 }
 
 function prayerTeamNotification(fields) {
@@ -609,9 +652,9 @@ module.exports = async function handler(request, response) {
                     from: 'The Lion Company <prayer@updates.thelioncompany.org>',
                     to: [fields.email],
                     reply_to: teamInbox,
-                    subject: 'We received your prayer request',
+                    subject: "We're praying with you",
                     html: prayerAcknowledgment(safeFirst),
-                    text: `${safeFirst ? `Hi ${safeFirst},` : 'Hello,'}\n\nThank you for trusting The Lion Company with your prayer request. It will be submitted to our prayer team, and we will be standing with you in faith.\n\nPlease keep us updated as your testimony and miracle unfold. We would be honored to celebrate what Jesus does with you.\n\nUnity Through Christ\nThe Lion Company`
+                    text: `${safeFirst ? `Hi ${safeFirst},` : 'Hello,'}\n\nThank you for trusting us with what's on your heart. Your request reached us, it stays private, and we are bringing it before Jesus with you.\n\nYou are not carrying this alone. When God moves, write back and tell us. We would love to celebrate it with you.\n\n"The prayer of a righteous person is powerful and effective." James 5:16 (NIV)\n\nStanding with you,\nJonathan & Gina\nThe Lion Company\n\nThe Lion Company · Austin, TX\nYou're receiving this one email because you sent a prayer request at thelioncompany.org. Reply to this email to reach us directly.`
                 },
                 apiKey,
                 keyValues
