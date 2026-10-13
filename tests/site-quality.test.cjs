@@ -245,3 +245,17 @@ test('video counts on the homepage and media library match the library, and home
     assert.ok(home.length > 0);
     home.forEach((id) => assert.ok(ids.includes(id), `homepage video ${id} is not in the media library`));
 });
+
+test('every page loads section tracking and the homepage parts carry unique anchors', () => {
+    for (const file of ['index.html', 'media.html', 'privacy.html', 'terms.html']) {
+        assert.match(read(file), /<script src="assets\/engage\.js" defer><\/script>/);
+    }
+    for (const file of ['index.html', 'media.html']) {
+        const names = [...read(file).matchAll(/data-track="([^"]+)"/g)].map(match => match[1]);
+        assert.ok(names.length >= 8, `${file} should mark its main parts`);
+        assert.equal(new Set(names).size, names.length, `${file} anchors should be unique`);
+    }
+    const engage = read('assets/engage.js');
+    for (const event of ['section_view', 'section_time', 'scroll_depth']) assert.match(engage, new RegExp(`'${event}'`));
+    assert.doesNotMatch(engage, /\.value\b|input|textarea/, 'tracking must never read form fields');
+});
