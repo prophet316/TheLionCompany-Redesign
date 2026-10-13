@@ -115,6 +115,8 @@ document.addEventListener('click', function (e) {
   var plat = (LION.podcast || []).filter(function (p) { return href === p[1]; })[0];
   if (plat && a.closest('#podcast,.pod,[data-fill="podcast"]')) lionTrack('podcast_platform_click', { platform: plat[0], link_url: href });
   else if (href === LION.give) { var f = a.querySelector('b'); lionTrack('give_click', { link_url: href, fund: f ? f.textContent : 'top band' }); }
+  else if (/(^|\.)printify\.me$/.test(a.hostname)) { var p = a.querySelector('b'); lionTrack('store_click', { link_url: href, product_name: p ? p.textContent.trim().slice(0, 100) : 'full store' }); }
+  else if (/(^|\.)(youtube\.com|youtu\.be)$/.test(a.hostname) && a.closest('#watch')) { var v = a.querySelector('b'); lionTrack('video_play', { link_url: href, video_title: v ? v.textContent.trim().slice(0, 100) : '' }); }
   else if (a.hostname && a.hostname !== location.hostname) lionTrack('outbound_click', { link_url: href, link_domain: a.hostname });
 }, true);
 

@@ -14,7 +14,8 @@ test('privacy and terms are publication-ready and indexable', () => {
         const page = read(file);
         assert.doesNotMatch(page, /REVIEW DRAFT|NOT FOR PRODUCTION/);
         assert.doesNotMatch(page, /noindex|nofollow/);
-        assert.match(page, /Effective August 8, 2026/);
+        // the privacy policy was updated when Microsoft Clarity and Google signals were added
+        assert.match(page, file === 'privacy.html' ? /Effective October 12, 2026/ : /Effective August 8, 2026/);
         assert.match(page, /href="\/privacy"/);
         assert.match(page, /href="\/terms"/);
     }
@@ -72,4 +73,15 @@ test('all three forms and the homepage footer link to both legal pages', () => {
         assert.match(note[0], /href="\/terms"/);
     }
     assert.match(index, /<div class="copy">[\s\S]*?href="\/privacy"[\s\S]*?href="\/terms"/);
+});
+
+test('the privacy policy discloses every analytics tool and the forms are hidden from session replay', () => {
+    const privacy = read('privacy.html');
+    for (const phrase of [/Google Analytics/, /Microsoft Clarity/, /Google signals/, /heatmaps and visit replays/, /14 months/, /gaoptout/]) {
+        assert.match(privacy, phrase);
+    }
+    const home = read('index.html');
+    const forms = home.match(/<form [^>]*>/g) || [];
+    assert.equal(forms.length, 3);
+    for (const form of forms) assert.match(form, /data-clarity-mask="True"/);
 });
