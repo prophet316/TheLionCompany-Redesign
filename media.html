@@ -85,7 +85,7 @@
 
 <main id="main" tabindex="-1">
   <div class="wrap">
-    <section class="opener">
+    <section class="opener" data-track="opener">
       <div class="face" id="face" aria-hidden="true"><img class="fs" src="assets/03-lion-sketch-half-large-faded.webp" alt="" width="464" height="1092"><img class="fg" src="assets/04-lion-geometric-half-large-faded.webp" alt="" width="442" height="1078"></div>
       <p class="kick">The Lion Company · Media library</p>
       <h1 class="htitle">Watch and<span>listen.</span></h1>
@@ -93,7 +93,7 @@
       <nav class="jump" aria-label="Go to a shelf"><a href="#shelf-podcast" data-jump="podcast">I · Podcast</a><a href="#shelf-teaching" data-jump="teaching">II · Teachings</a><a href="#shelf-series" data-jump="series">III · Series</a><a href="#shelf-conversation" data-jump="conversation">IV · Conversations</a><a href="#shelf-relationships" data-jump="relationships">V · Relationships</a></nav>
     </section>
 
-    <section class="feature" aria-label="The Lion Company Podcast">
+    <section class="feature" aria-label="The Lion Company Podcast" data-track="podcast-feature">
       <div class="panel pod" id="podcast">
         <div class="pod-grid">
           <a class="pod-art" id="podArt" target="_blank" rel="noopener" aria-label="Listen to The Lion Company Podcast">
@@ -125,7 +125,7 @@
   </div>
 
   <div class="wrap">
-    <section class="shelf" id="shelf-podcast" data-media-category="podcast" aria-labelledby="podcast-h">
+    <section class="shelf" id="shelf-podcast" data-track="podcast-shelf" data-media-category="podcast" aria-labelledby="podcast-h">
       <div class="shelf-head rise">
         <div><p class="kick"><b>I</b> Podcast</p><h2 id="podcast-h">The <em>podcast.</em></h2></div>
         <p>Full episodes of The Lion Company Podcast: honest conversations on faith, marriage, family and following Jesus.</p>
@@ -153,7 +153,7 @@
         </a>
       </div>
     </section>
-    <section class="shelf" id="shelf-teaching" data-media-category="teaching" aria-labelledby="teaching-h">
+    <section class="shelf" id="shelf-teaching" data-track="teachings" data-media-category="teaching" aria-labelledby="teaching-h">
       <div class="shelf-head rise">
         <div><p class="kick"><b>II</b> Teachings</p><h2 id="teaching-h">Teachings.</h2></div>
         <p>Messages on the heart, the family and the life of faith.</p>
@@ -185,7 +185,7 @@
         </a>
       </div>
     </section>
-    <section class="shelf" id="shelf-series" data-media-category="series" aria-labelledby="series-h">
+    <section class="shelf" id="shelf-series" data-track="gideon-series" data-media-category="series" aria-labelledby="series-h">
       <div class="shelf-head rise">
         <div><p class="kick"><b>III</b> Series</p><h2 id="series-h">Gideon &amp; God&#39;s <em>agenda.</em></h2></div>
         <p>A five-part walk through the story of Gideon.</p>
@@ -213,7 +213,7 @@
         </a>
       </div>
     </section>
-    <section class="shelf" id="shelf-conversation" data-media-category="conversation" aria-labelledby="conversation-h">
+    <section class="shelf" id="shelf-conversation" data-track="conversations" data-media-category="conversation" aria-labelledby="conversation-h">
       <div class="shelf-head rise">
         <div><p class="kick"><b>IV</b> Conversations</p><h2 id="conversation-h">Conversations.</h2></div>
         <p>Revival, obedience, significance and what it means to love Jesus and love people.</p>
@@ -277,7 +277,7 @@
         </a>
       </div>
     </section>
-    <section class="shelf" id="shelf-relationships" data-media-category="relationships" aria-labelledby="relationships-h">
+    <section class="shelf" id="shelf-relationships" data-track="relationships" data-media-category="relationships" aria-labelledby="relationships-h">
       <div class="shelf-head rise">
         <div><p class="kick"><b>V</b> Relationships</p><h2 id="relationships-h">Relationships.</h2></div>
         <p>A four-part series on the relationships God made us for.</p>
@@ -304,7 +304,7 @@
 
     <div class="empty" id="media-empty" hidden><b>Nothing by that name yet.</b>Try another word, or see everything in the library.<br><button type="button" class="btn ghost" data-clear>Show all videos</button></div>
 
-    <section class="close" aria-label="Stay connected">
+    <section class="close" aria-label="Stay connected" data-track="stay-connected">
       <div class="panel">
         <div>
           <span class="label">Keep going</span>
@@ -344,6 +344,7 @@
 <script src="assets/layers.js"></script>
 <script src="assets/pod/podcast.js"></script>
 <script src="assets/media.js"></script>
+<script src="assets/engage.js" defer></script>
 </body>
 
 </html>
