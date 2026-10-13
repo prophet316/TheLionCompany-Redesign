@@ -78,7 +78,7 @@
       ]
     },
     {
-      "source": "/(lion_bg\\.jpg|og-image-1200x630\\.jpg|favicon\\.ico|favicon\\.svg|apple-touch-icon\\.png|icon-512\\.png)",
+      "source": "/(lion_bg\\.jpg|og-image-1200x630\\.jpg|favicon\\.ico|favicon\\.svg|apple-touch-icon\\.png|icon-192\\.png|icon-512\\.png)",
       "headers": [
         {
           "key": "Cache-Control",
