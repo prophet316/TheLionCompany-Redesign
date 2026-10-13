@@ -21,8 +21,8 @@ window.LION = {
   ],
   videos: [
     ["Podcast", "What Silence Costs: Confession, Forgiveness & Real Connection", "Ep. 08", "https://www.youtube.com/watch?v=VT5XZH471c0"],
-    ["Podcast", "When God's Will Doesn't Go Your Way", "", "https://www.youtube.com/watch?v=lCpA1olkGXA"],
-    ["Teaching", "Confessions of a Truth Teller", "", "https://www.youtube.com/watch?v=bq6jMHDQS84"]
+    ["Podcast", "When God's Will Doesn't Go Your Way", "Ep. 07", "https://www.youtube.com/watch?v=TOj6tefx3rI"],
+    ["Podcast", "Confessions of a Truth Teller", "Ep. 06", "https://www.youtube.com/watch?v=x8s5DPF68kQ"]
   ]
 };
 

@@ -233,3 +233,15 @@ test('every public page loads Google Analytics and the main actions are counted'
     assert.match(policy, /script-src[^;]*https:\/\/www\.googletagmanager\.com/);
     assert.match(policy, /connect-src[^;]*https:\/\/\*\.google-analytics\.com[^;]*https:\/\/\*\.analytics\.google\.com/);
 });
+
+test('video counts on the homepage and media library match the library, and homepage videos are library uploads', () => {
+    const media = read('media.html');
+    const ids = [...media.matchAll(/data-video-id="([^"]+)"/g)].map((m) => m[1]);
+    const count = `${ids.length} videos`;
+    assert.match(media, new RegExp(`<b>${count}</b>`));
+    assert.match(media, new RegExp(`id="media-results"[^>]*>${count}<`));
+    assert.match(read('index.html'), new RegExp(`All ${count} in the media library`));
+    const home = [...read('assets/common.js').matchAll(/youtube\.com\/watch\?v=([A-Za-z0-9_-]+)/g)].map((m) => m[1]);
+    assert.ok(home.length > 0);
+    home.forEach((id) => assert.ok(ids.includes(id), `homepage video ${id} is not in the media library`));
+});
