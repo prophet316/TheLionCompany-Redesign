@@ -196,7 +196,7 @@ main [tabindex="-1"]:focus,main[tabindex="-1"]:focus{outline:none}
 .give:hover{background:var(--ink)}
 .menubtn{display:inline-flex;width:44px;height:42px;justify-content:center;padding:0} /* always there, at every window size, alongside the links and the side map */
 .menubtn i{display:block;width:18px;height:1.5px;background:currentColor;box-shadow:0 -6px 0 currentColor,0 6px 0 currentColor}
-@media (max-width:980px){.nav{display:none}}
+@media (max-width:1060px){.nav{display:none}} /* seven links need the room the media page gives them */
 @media (max-width:420px){.brand .the{display:none}.brand{font-size:19px}.bbtn{padding:12px 10px;letter-spacing:.1em}.give{padding:12px 14px 11px}}
 .sheet{position:fixed;top:72px;right:clamp(16px,3vw,36px);z-index:39;width:min(380px,calc(100vw - 32px));background:rgba(16,18,24,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);padding:22px 22px 18px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .4s cubic-bezier(.2,.8,.2,1),visibility .25s}
 .sheet.open{opacity:1;visibility:visible;transform:none}
@@ -491,7 +491,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="band">
   <a class="brand" href="#top"><span class="the">THE </span>LION <b>COMPANY</b></a>
-  <nav class="nav" aria-label="Main"><a href="#cross">Journey</a><a href="#pray">Pray</a><a href="#podcast">Podcast</a><a href="#shop">Shop</a><a href="#connect">Connect</a><a class="bk" href="#book" title="Book Jonathan and Gina to speak, teach or connect">Book us to speak</a></nav>
+  <nav class="nav" aria-label="Main"><a href="#cross">Journey</a><a href="#pray">Pray</a><a href="#podcast">Podcast</a><a href="/media">Media</a><a href="#shop">Shop</a><a href="#connect">Connect</a><a class="bk" href="#book" title="Book Jonathan and Gina to speak, teach or connect">Book us to speak</a></nav>
   <button class="bbtn" id="socbtn" type="button" aria-expanded="false" aria-controls="socsheet">Socials</button>
   <a class="give" data-href="give">Give</a>
   <button class="bbtn menubtn" id="menubtn" type="button" aria-expanded="false" aria-controls="menusheet" aria-label="Menu"><i></i></button>
@@ -507,6 +507,7 @@ html.rv #top .htitle,html.rv #top .hsub,html.rv #top .scrollhint{opacity:0}
   <ul>
     <li><a class="bk" href="#book">Book us to speak<span aria-hidden="true">→</span></a></li>
     <li><a href="#podcast">Podcast<span aria-hidden="true">→</span></a></li>
+    <li><a href="/media">Media library<span aria-hidden="true">→</span></a></li>
     <li><a href="#pray">Prayer<span aria-hidden="true">→</span></a></li>
     <li><a href="#give">Give<span aria-hidden="true">→</span></a></li>
     <li><a href="#shop">Shop<span aria-hidden="true">→</span></a></li>
